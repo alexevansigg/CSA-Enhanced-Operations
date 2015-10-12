@@ -1,5 +1,5 @@
 #########################################
-#  CSA Operations/Audit Plugin 	        #
+#  CSA operationsEnhanced	 	        #
 #  Version 0.04 						#
 #########################################
 
@@ -12,28 +12,21 @@ This plugin allows a "Super Admin" to manage Subscriptions across multiple users
 1. Create the folder custom-content in directory <csahome>/jboss-as/standalone/csa.war
 2. Extract the content of audit.zip into the custom-content folder, observe the correct folder structure in the custom-content folder as below:
 
-	#############################################
-	#  File Contents / Folder Structure 		#
-	#############################################
-	# 											#
-	# audit/index.jsp 							#
-	# audit/setup.json 							#
-	# audit/getSubs.jsp 						#
-	# audit/action.jsp 							#
-	# audit/README.md  							#
-	# audit/css/audit.css 						#
-	# audit/js/audit.js 						#
-	#											#
-	# assets/css/datatables.bootstrap.css 		#
-	# assets/css/dataTables.responsive.css 		#
-	# assets/css/dataTables.fixedHeader.css 	#
-	#											#
-	# assets/js/dataTables.bootstrap.js 		#
-	# assets/js/dataTables.responsive.js 		#
-	# assets/js/dataTables.fixedHeader.min.js 	#
-	# assets/js/jquery.dataTables.min.js 		#
-	#											#
-	#############################################
+ File Contents / Folder Structure
+ * audit/index.jsp 						
+ * audit/setup.json 					
+ * audit/getSubs.jsp 
+ * audit/action.jsp
+ * audit/README.md
+ * audit/css/audit.css
+ * audit/js/audit.js
+ * assets/css/datatables.bootstrap.css
+ * assets/css/dataTables.responsive.css
+ * assets/css/dataTables.fixedHeader.css
+ * assets/js/dataTables.bootstrap.js
+ * assets/js/dataTables.responsive.js
+ * assets/js/dataTables.fixedHeader.min.js
+ * assets/js/jquery.dataTables.min.js
 
 3. Add the following entry to the csa.war/dashboard/config.json (inside main.tiles array or in sub panel see Configuration guide if unsure how to manipulate this file)
 
