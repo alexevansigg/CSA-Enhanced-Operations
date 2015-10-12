@@ -29,7 +29,7 @@ This plugin allows a "Super Admin" to manage Subscriptions across multiple users
  * assets/js/jquery.dataTables.min.js
 
 3. Add the following entry to the csa.war/dashboard/config.json (inside main.tiles array or in sub panel see Configuration guide if unsure how to manipulate this file)
-
+```JSON
 	{
 		"id": "audit",
 		"name": "audit",
@@ -41,7 +41,7 @@ This plugin allows a "Super Admin" to manage Subscriptions across multiple users
 		"helptopic": "console_help",
 		"roles": ["CSA_ADMIN"]
 	}
-
+´´´
 4. Open the file csa.war/dashboard/messages/common/messages.properties and location section entitled:
 	# Page titles and descriptions, used for the dashboard tiles and for navigation views
 
