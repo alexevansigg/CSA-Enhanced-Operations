@@ -5,6 +5,7 @@
 
 This plugin allows a *Super Admin* to manage Subscriptions across multiple users and organisations efficiently.
 
+[See Here](http://alexevansigg.github.io/CSA-Enhanced-Operations)
 #########################################
 ### Installation Instructions 		  ###
 #########################################
@@ -93,35 +94,3 @@ Add the following entries
 3. No visual feedback on refresh action (unless the data response has changed)
 4. FixedHeader sometimes doesn't align to column widths
 
-
-#############################################
-#### Release notes v.0.2					#
-#############################################
-- Updated README.md
-  - File Path corrections
-  - Added Step about Dashboard CSS
-  - Updated Tile Title (to Include Experimental)
-- Fixed Delete Action URL path (now is relative)
-- New Render for Retired Column to avoid filter clash with Subscription Status. (Active renamed to "Not Retired")
-- Public Action Failed can now be cancelled.
-- Updated Fullscreen to use iframe overlay instead of new page load (To prevent lose of filter)
-- Removed NoCache include.
-- Added colVis plugin to customize which columns are displayed.
-- Added CACHE_CONFIG setup parameter (for storing Cached configuration setup)
-- Removed SHOW_ICON Setup (deprecated due to ColVis plugin)
-- Added DEFAULT_DISPLAY_LENGTH to setup 
-- Added VISIBLE config attribute to set the default columns which are visible.
-- Add StyleRule for Icons when displyed in the row detail
-
-#############################################
-#### Release notes v.0.3					#
-#############################################
-- Add Restore Settings button which will clear any cached configuration and reload the datatable.
-- Added SEARCH_TERM to the setup config
-
-#############################################
-#### Release notes v.0.4					#
-#############################################
-- Typo in Delete Sub condition.
-- Updated Default visible config to include user.
-- Updated Default Retired to be hidden.
