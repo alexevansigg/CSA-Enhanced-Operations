@@ -1,0 +1,235 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>CSA Enhanced Operations by alexevansigg</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>CSA Enhanced Operations</h1>
+        <p>An Extension to CSA 4.x for Super Users</p>
+
+        <p class="view"><a href="https://github.com/alexevansigg/CSA-Enhanced-Operations">View the Project on GitHub <small>alexevansigg/CSA-Enhanced-Operations</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/alexevansigg/CSA-Enhanced-Operations/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/alexevansigg/CSA-Enhanced-Operations/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/alexevansigg/CSA-Enhanced-Operations">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a id="csa-operations-enhanced" class="anchor" href="#csa-operations-enhanced" aria-hidden="true"><span class="octicon octicon-link"></span></a>CSA Operations Enhanced</h1>
+
+<h3>
+<a id="version-004" class="anchor" href="#version-004" aria-hidden="true"><span class="octicon octicon-link"></span></a>Version 0.04</h3>
+
+<p>This plugin allows a <em>Super Admin</em> to manage Subscriptions across multiple users and organisations efficiently.</p>
+
+<h3>
+<a id="installation-instructions" class="anchor" href="#installation-instructions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation Instructions</h3>
+
+<ol>
+<li>Create the folder custom-content in directory <strong>/jboss-as/standalone/csa.war</strong>
+</li>
+<li>
+<p>Extract the content of <strong>audit.zip</strong> into the custom-content folder, observe the correct folder structure in the custom-content folder as below:</p>
+
+<p>File Contents / Folder Structure</p>
+
+<ul>
+<li>audit/index.jsp<br>
+</li>
+<li>audit/setup.json<br>
+</li>
+<li>audit/getSubs.jsp </li>
+<li>audit/action.jsp</li>
+<li>audit/README.md</li>
+<li>audit/css/audit.css</li>
+<li>audit/js/audit.js</li>
+<li>assets/css/datatables.bootstrap.css</li>
+<li>assets/css/dataTables.responsive.css</li>
+<li>assets/css/dataTables.fixedHeader.css</li>
+<li>assets/js/dataTables.bootstrap.js</li>
+<li>assets/js/dataTables.responsive.js</li>
+<li>assets/js/dataTables.fixedHeader.min.js</li>
+<li>assets/js/jquery.dataTables.min.js</li>
+</ul>
+</li>
+<li><p>Add the following entry to the csa.war/dashboard/config.json 
+(inside main.tiles array or in sub panel see <strong>Configuration guide</strong> if unsure how to manipulate this file)</p></li>
+</ol>
+
+<div class="highlight highlight-source-json"><pre>    {
+        <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>audit<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>audit<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>description<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>audit_description<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>enabled<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>,
+        <span class="pl-s"><span class="pl-pds">"</span>style<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>custom-tile-header<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>target<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>iframe<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>/csa/custom-content/audit/<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>helptopic<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>console_help<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>roles<span class="pl-pds">"</span></span>: [<span class="pl-s"><span class="pl-pds">"</span>CSA_ADMIN<span class="pl-pds">"</span></span>]
+    }</pre></div>
+
+<ol>
+<li>Open the file csa.war/dashboard/messages/common/messages.properties and location section entitled:
+# Page titles and descriptions, used for the dashboard tiles and for navigation views</li>
+</ol>
+
+<p>Add the following entries</p>
+
+<pre><code>    audit=Audit / Operations
+    audit_description=This experimental feature allows a Super User to 
+    Manage Subscriptions across all organisations Efficiently (Experimental)
+</code></pre>
+
+<ol>
+<li>To fix the CSA styling on the dashboard you can add the following css snippet to the end of the file <strong>csa.war/dashboard/css/base.css</strong> to make the Tile Title fit better.</li>
+</ol>
+
+<div class="highlight highlight-source-css"><pre>    <span class="pl-e">.tile</span> <span class="pl-ent">h3</span> {
+        <span class="pl-c1"><span class="pl-c1">white-space</span></span>:<span class="pl-c1">inherit</span>;
+        <span class="pl-c1"><span class="pl-c1">font-size</span></span>:<span class="pl-c1">1.4<span class="pl-k">em</span></span>;
+    }</pre></div>
+
+<ol>
+<li>
+<p>Configure the settings in csa.war/custom-content/audit/setup.json</p>
+
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>MPP_HOST</td>
+<td>The url of the MPP instance  e.g https://W2K12CSA420OO:8089/</td>
+</tr>
+<tr>
+<td>DATA_URL</td>
+<td>The path to the URL for retrieving the Subscriptions default. getSubs.jsp</td>
+</tr>
+<tr>
+<td>ENABLE_CONSUMER_ADMIN_LINKS</td>
+<td>Set as false disable direct links to Manage Subscriptions as Consumer admin</td>
+</tr>
+<tr>
+<td>ENABLE_CANCEL_LINKS</td>
+<td>Set as false to disable cancel subscription functionality</td>
+</tr>
+<tr>
+<td>ENABLE_RESUME_LINKS</td>
+<td>Set as false to disable resuming paused subscription functionality</td>
+</tr>
+<tr>
+<td>ENABLE_DELETE_LINKS</td>
+<td>Set as false to disable deleting offline subscription functionality</td>
+</tr>
+<tr>
+<td>REQUIRE_CONFIRMATION</td>
+<td>Set as false to determine the default behaviour regarding confirmation prompts</td>
+</tr>
+<tr>
+<td>SHOW_RETIRED</td>
+<td>Set as false to only show active artifacts (Can be overriden on Load)</td>
+</tr>
+<tr>
+<td>DEFAULT_DISPLAY_LENGTH</td>
+<td>How many rows should be displayed (Default 25, Possible values 10,25,50 or ALL)</td>
+</tr>
+<tr>
+<td>USE_FIXED_HEADER</td>
+<td>Set as false to disable the fixed header behaviour</td>
+</tr>
+<tr>
+<td>CONFIG_CACHE</td>
+<td>Integer representing the number of days end user configuration remain in browser cache (Default 5)</td>
+</tr>
+<tr>
+<td>SEARCH_TERM</td>
+<td>The default value set in the Datatables search field (Default Empty String)</td>
+</tr>
+<tr>
+<td>VISIBLE</td>
+<td>An object array of Data which is shown in the sortable table, true = in table, false = in detail.</td>
+</tr>
+</tbody>
+</table>
+</li>
+</ol>
+
+<h4>
+<a id="known-issues" class="anchor" href="#known-issues" aria-hidden="true"><span class="octicon octicon-link"></span></a>Known Issues</h4>
+
+<ol>
+<li>If not signed into MPP organisation then Consumer Admin links may redirect to incorrect login screen (needs some attention)</li>
+<li>After session timeout Refresh request on Datatable throws json error instead of redirecting to login.</li>
+<li>No visual feedback on refresh action (unless the data response has changed)</li>
+<li>FixedHeader sometimes doesn't align to column widths</li>
+</ol>
+
+<h4>
+<a id="release-notes-v02" class="anchor" href="#release-notes-v02" aria-hidden="true"><span class="octicon octicon-link"></span></a>Release notes v.0.2</h4>
+
+<ul>
+<li>Updated README.md
+
+<ul>
+<li>File Path corrections</li>
+<li>Added Step about Dashboard CSS</li>
+<li>Updated Tile Title (to Include Experimental)</li>
+</ul>
+</li>
+<li>Fixed Delete Action URL path (now is relative)</li>
+<li>New Render for Retired Column to avoid filter clash with Subscription Status. (Active renamed to "Not Retired")</li>
+<li>Public Action Failed can now be cancelled.</li>
+<li>Updated Fullscreen to use iframe overlay instead of new page load (To prevent lose of filter)</li>
+<li>Removed NoCache include.</li>
+<li>Added colVis plugin to customize which columns are displayed.</li>
+<li>Added CACHE_CONFIG setup parameter (for storing Cached configuration setup)</li>
+<li>Removed SHOW_ICON Setup (deprecated due to ColVis plugin)</li>
+<li>Added DEFAULT_DISPLAY_LENGTH to setup </li>
+<li>Added VISIBLE config attribute to set the default columns which are visible.</li>
+<li>Add StyleRule for Icons when displyed in the row detail</li>
+</ul>
+
+<h4>
+<a id="release-notes-v03" class="anchor" href="#release-notes-v03" aria-hidden="true"><span class="octicon octicon-link"></span></a>Release notes v.0.3</h4>
+
+<ul>
+<li>Add Restore Settings button which will clear any cached configuration and reload the datatable.</li>
+<li>Added SEARCH_TERM to the setup config</li>
+</ul>
+
+<h4>
+<a id="release-notes-v04" class="anchor" href="#release-notes-v04" aria-hidden="true"><span class="octicon octicon-link"></span></a>Release notes v.0.4</h4>
+
+<ul>
+<li>Typo in Delete Sub condition.</li>
+<li>Updated Default visible config to include user.</li>
+<li>Updated Default Retired to be hidden.</li>
+</ul>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/alexevansigg">alexevansigg</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
