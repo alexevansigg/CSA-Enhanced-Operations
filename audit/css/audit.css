@@ -1,0 +1,70 @@
+#audit td{
+  vertical-align: middle;
+}
+#audit td.csaIcons, #audit td.csaIcons img, #audit tr.child img{
+  width:45px;
+  max-width:45px;!important
+}
+#audit_wrapper .input-group, .dataTables_length label{ 
+  margin-right:10px;
+}
+#audit_wrapper div.rightToolbar, div.colVis{
+  margin-left:10px;
+}
+
+ul.ColVis_collection {
+  width:auto;
+  height:400px;
+  overflow-y:scroll;
+  background-color: white;
+}
+.toggleMargin{
+  margin-left:5px;
+}
+div.dataTables_length{
+  float:left;
+}
+div.container-fluid{
+  margin-top:4px;!important
+}
+div.dataTables_info { 
+  float: left;!important 
+}
+.tooltip > .tooltip-inner {
+  background-color: #fff; 
+  color: #000; 
+  border: 1px solid #CCCCCC; 
+}
+
+.tooltip.top > .tooltip-arrow{
+  bottom:0;
+  left:50%;
+  margin-left:-5px;
+  border-left:5px solid transparent;
+  border-right:5px solid transparent;
+  border-top:5px solid #CCC
+}
+.tooltip.left > .tooltip-arrow{
+    top:50%;
+    right:0;
+    margin-top:-5px;
+    border-top:5px solid transparent;
+    border-bottom:5px solid transparent;
+    border-left:5px solid #CCC;
+}
+.tooltip.bottom > .tooltip-arrow{
+  top:0;
+  left:50%;
+  margin-left:-5px;
+  border-left:5px solid transparent;
+  border-right:5px solid transparent;
+  border-bottom:5px solid #CCC;
+}
+.tooltip.right > .tooltip-arrow{
+  top:50%;
+  left:0;
+  margin-top:-5px;
+  border-top:5px solid transparent;
+  border-bottom:5px solid transparent;
+  border-right:5px solid #CCC;
+}
