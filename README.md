@@ -1,16 +1,16 @@
 #########################################
-#  CSA operationsEnhanced	 	        #
+#  CSA Operations Enhanced	 	        #
 ###  Version 0.04 					  ###
 #########################################
 
-This plugin allows a "Super Admin" to manage Subscriptions across multiple users and organisations efficiently.
+This plugin allows a *Super Admin* to manage Subscriptions across multiple users and organisations efficiently.
 
 #########################################
 ### Installation Instructions 		  ###
 #########################################
 
-1. Create the folder custom-content in directory <csahome>/jboss-as/standalone/csa.war
-2. Extract the content of audit.zip into the custom-content folder, observe the correct folder structure in the custom-content folder as below:
+1. Create the folder custom-content in directory **<csahome>/jboss-as/standalone/csa.war**
+2. Extract the content of **audit.zip** into the custom-content folder, observe the correct folder structure in the custom-content folder as below:
 
  File Contents / Folder Structure
  * audit/index.jsp 						
@@ -28,7 +28,9 @@ This plugin allows a "Super Admin" to manage Subscriptions across multiple users
  * assets/js/dataTables.fixedHeader.min.js
  * assets/js/jquery.dataTables.min.js
 
-3. Add the following entry to the csa.war/dashboard/config.json (inside main.tiles array or in sub panel see Configuration guide if unsure how to manipulate this file)
+3. Add the following entry to the csa.war/dashboard/config.json 
+(inside main.tiles array or in sub panel see **Configuration guide** if unsure how to manipulate this file)
+
 ```JSON
 	{
 		"id": "audit",
@@ -49,10 +51,11 @@ Add the following entries
 
 ```	
 	audit=Audit / Operations
-	audit_description=This experimental feature allows a Super User to Manage Subscriptions across all organisations Efficiently (Experimental)
+	audit_description=This experimental feature allows a Super User to 
+	Manage Subscriptions across all organisations Efficiently (Experimental)
 ```
 
-5. To fix the CSA styling on the dashboard you can add the following to the end of the file csa.war/dashboard/css/base.css to make the Tile Title fit better.
+5. To fix the CSA styling on the dashboard you can add the following css snippet to the end of the file **csa.war/dashboard/css/base.css** to make the Tile Title fit better.
 
 ```CSS
 	.tile h3 {
