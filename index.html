@@ -28,18 +28,24 @@
         </ul>
       </header>
       <section>
-        <h1>
+        <hr>
+
+<h1>
 <a id="csa-operations-enhanced" class="anchor" href="#csa-operations-enhanced" aria-hidden="true"><span class="octicon octicon-link"></span></a>CSA Operations Enhanced</h1>
 
 <h3>
 <a id="version-004" class="anchor" href="#version-004" aria-hidden="true"><span class="octicon octicon-link"></span></a>Version 0.04</h3>
 
+<hr>
+
 <p>This plugin allows a <em>Super Admin</em> to manage Subscriptions across multiple users and organisations efficiently.</p>
 
 <p><img src="https://cloud.githubusercontent.com/assets/656022/10440050/019e063a-7136-11e5-8263-d63a928fd52e.JPG" alt="CSA Enhanced Operations"></p>
 
-<h3>
-<a id="installation-instructions" class="anchor" href="#installation-instructions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation Instructions</h3>
+<hr>
+
+<h2>
+<a id="-installation-instructions" class="anchor" href="#-installation-instructions" aria-hidden="true"><span class="octicon octicon-link"></span></a> Installation Instructions</h2>
 
 <ol>
 <li>Create the folder custom-content in directory <strong>/jboss-as/standalone/csa.war</strong>
@@ -91,19 +97,19 @@
 
 <p>Add the following entries</p>
 
-<pre><code>    audit=Audit / Operations
-    audit_description=This experimental feature allows a Super User to 
-    Manage Subscriptions across all organisations Efficiently (Experimental)
+<pre><code>  audit=Audit / Operations
+  audit_description=This experimental feature allows a Super User to 
+  Manage Subscriptions across all organisations Efficiently (Experimental)
 </code></pre>
 
 <ol>
 <li>To fix the CSA styling on the dashboard you can add the following css snippet to the end of the file <strong>csa.war/dashboard/css/base.css</strong> to make the Tile Title fit better.</li>
 </ol>
 
-<div class="highlight highlight-source-css"><pre>    <span class="pl-e">.tile</span> <span class="pl-ent">h3</span> {
-        <span class="pl-c1"><span class="pl-c1">white-space</span></span>:<span class="pl-c1">inherit</span>;
-        <span class="pl-c1"><span class="pl-c1">font-size</span></span>:<span class="pl-c1">1.4<span class="pl-k">em</span></span>;
-    }</pre></div>
+<div class="highlight highlight-source-css"><pre><span class="pl-e">.tile</span> <span class="pl-ent">h3</span> {
+  <span class="pl-c1"><span class="pl-c1">white-space</span></span>:<span class="pl-c1">inherit</span>;
+  <span class="pl-c1"><span class="pl-c1">font-size</span></span>:<span class="pl-c1">1.4<span class="pl-k">em</span></span>;
+}</pre></div>
 
 <ol>
 <li>
@@ -174,8 +180,10 @@
 </li>
 </ol>
 
-<h4>
-<a id="known-issues" class="anchor" href="#known-issues" aria-hidden="true"><span class="octicon octicon-link"></span></a>Known Issues</h4>
+<hr>
+
+<h2>
+<a id="-known-issues" class="anchor" href="#-known-issues" aria-hidden="true"><span class="octicon octicon-link"></span></a> Known Issues</h2>
 
 <ol>
 <li>If not signed into MPP organisation then Consumer Admin links may redirect to incorrect login screen (needs some attention)</li>
@@ -184,8 +192,10 @@
 <li>FixedHeader sometimes doesn't align to column widths</li>
 </ol>
 
-<h4>
-<a id="release-notes-v02" class="anchor" href="#release-notes-v02" aria-hidden="true"><span class="octicon octicon-link"></span></a>Release notes v.0.2</h4>
+<hr>
+
+<h2>
+<a id="-release-notes-v02" class="anchor" href="#-release-notes-v02" aria-hidden="true"><span class="octicon octicon-link"></span></a> Release notes v.0.2</h2>
 
 <ul>
 <li>Updated README.md
@@ -209,16 +219,20 @@
 <li>Add StyleRule for Icons when displyed in the row detail</li>
 </ul>
 
-<h4>
-<a id="release-notes-v03" class="anchor" href="#release-notes-v03" aria-hidden="true"><span class="octicon octicon-link"></span></a>Release notes v.0.3</h4>
+<hr>
+
+<h2>
+<a id="-release-notes-v03" class="anchor" href="#-release-notes-v03" aria-hidden="true"><span class="octicon octicon-link"></span></a> Release notes v.0.3</h2>
 
 <ul>
 <li>Add Restore Settings button which will clear any cached configuration and reload the datatable.</li>
 <li>Added SEARCH_TERM to the setup config</li>
 </ul>
 
-<h4>
-<a id="release-notes-v04" class="anchor" href="#release-notes-v04" aria-hidden="true"><span class="octicon octicon-link"></span></a>Release notes v.0.4</h4>
+<hr>
+
+<h2>
+<a id="-release-notes-v04" class="anchor" href="#-release-notes-v04" aria-hidden="true"><span class="octicon octicon-link"></span></a> Release notes v.0.4</h2>
 
 <ul>
 <li>Typo in Delete Sub condition.</li>
