@@ -51,6 +51,72 @@
   }
 
 
+  /* This function will convert the JSON into CSV */
+  function JSON2CSV(objArray) {
+    var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+    var str = '', line = '';
+        /*Add Labels*/
+        var head = array[0];
+            for (var index in array[0]) {
+                var value = index + "";
+                line += '"' + value.replace(/"/g, '""') + '",';
+            }
+      
+        line = line.slice(0, -1);
+        str += line + '\r\n';
+   
+
+    for (var i = 0; i < array.length; i++) {
+        var line = '';
+
+          //Quote cell entry
+            for (var index in array[i]) {
+                var value = array[i][index] + "";
+                line += '"' + value.replace(/"/g, '""') + '",';
+            }
+        
+
+        /* else {
+            for (var index in array[i]) {
+                line += array[i][index] + ',';
+            }
+        } */
+
+        line = line.slice(0, -1);
+        str += line + '\r\n';
+    }
+    return str;
+    
+}
+
+/* This function makes a download link to the CSV */
+ function download(content, fileName, mimeType) {
+  var a = document.createElement('a');
+  mimeType = mimeType || 'application/octet-stream';
+
+  if (navigator.msSaveBlob) { // IE10
+    return navigator.msSaveBlob(new Blob([content], { type: mimeType }),     fileName);
+  } else if ('download' in a) { //html5 A[download]
+    a.href = 'data:' + mimeType + ',' + encodeURIComponent(content);
+    a.setAttribute('download', fileName);
+    document.body.appendChild(a);
+    setTimeout(function() {
+      a.click();
+      document.body.removeChild(a);
+    }, 66);
+    return true;
+  } else { //do iframe dataURL download (old ch+FF):
+    var f = document.createElement('iframe');
+    document.body.appendChild(f);
+    f.src = 'data:' + mimeType + ',' + encodeURIComponent(content);
+
+    setTimeout(function() {
+      document.body.removeChild(f);
+    }, 333);
+    return true;
+  }
+}
+
   $(document).ready(function() {
       /*
         Column Header Definitions for audit Table
@@ -312,6 +378,7 @@
       /* Add Buttons for Help, Fullscreen and minimize to the table header*/
       $("div.rightToolbar .btn-group")
           .append("<button class='btn btn-default refresh' data-toggle='tooltip' data-placement='bottom' title='Refresh Data'><span class='glyphicon glyphicon-refresh'></span></button>")
+          .append("<button class='btn btn-default export' data-toggle='tooltip' data-placement='bottom' title='Export CSV'><span class='glyphicon glyphicon-send'></span></button>") 
           .append("<button class='btn btn-default restore' data-toggle='tooltip' data-placement='bottom' title='Restore Defaults' ><span class='glyphicon glyphicon-saved'></span></button>")
           .append("<button class='btn btn-default help' data-toggle='modal' rel='tooltip' data-target='#helpModal' data-placement='bottom' title='About Plugin'><span class='glyphicon glyphicon-question-sign'></span></button>")
           .append("<button class='btn btn-default fullscreen'  data-toggle='tooltip' data-placement='bottom' title='Go FullScreen'><span class='glyphicon glyphicon-fullscreen'></span></button>")
@@ -373,6 +440,16 @@
         location.reload();
       });
       
+      $("body").on("click", "button.export", function() {
+        var jsData = auditDT.rows({"search":"applied"}).data();
+        var csvdata =[];
+        for (i=0; i < jsData.length; i++){
+            csvdata.push(jsData[i]);
+        }
+        download(JSON2CSV(csvdata), 'subscriptions.csv', 'text/csv'); 
+      });
+      
+
 
       $("body").on("click", "button.embed", function() {
               window.parent.$("iframe").css({
