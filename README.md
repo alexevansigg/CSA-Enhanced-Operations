@@ -10,7 +10,7 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
 ### Installation Instructions 		  ###
 #########################################
 
-1. Create the folder custom-content in directory **<csahome>/jboss-as/standalone/csa.war**
+1. Create the folder custom-content in directory **<csahome\jboss-as\standalone\deployments\csa.war
 2. Extract the content of **audit.zip** into the custom-content folder, observe the correct folder structure in the custom-content folder as below:
 
  File Contents / Folder Structure
@@ -69,7 +69,7 @@ Add the following entries
 
 	Name | Description
 	------------- | -------------
-	MPP_HOST 					| The url of the MPP instance  e.g https://W2K12CSA420OO:8089/
+	MPP_HOST 					| The url of the MPP instance  e.g https://localhost:8089/
 	DATA_URL 					| The path to the URL for retrieving the Subscriptions default. getSubs.jsp
 	ENABLE_CONSUMER_ADMIN_LINKS | Set as false disable direct links to Manage Subscriptions as Consumer admin
 	ENABLE_CANCEL_LINKS 		| Set as false to disable cancel subscription functionality
