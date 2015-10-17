@@ -10,7 +10,7 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
 ### Installation Instructions 		  ###
 #########################################
 
-1. Create the folder custom-content in directory **<csahome>/jboss-as/standalone/csa.war**
+1. Create the folder custom-content in directory <csahome>\jboss-as\standalone\deployments\csa.war
 2. Extract the content of **audit.zip** into the custom-content folder, observe the correct folder structure in the custom-content folder as below:
 
  File Contents / Folder Structure
