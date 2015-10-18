@@ -1,5 +1,5 @@
 {
-	"MPP_HOST":"https://W2K12CSA420OO:8089/",
+	"MPP_HOST":"https://localhost:8089/",
 	"DATA_URL":"getSubs.jsp",
 	"ENABLE_CONSUMER_ADMIN_LINKS":true,
 	"ENABLE_CANCEL_LINKS":true,
