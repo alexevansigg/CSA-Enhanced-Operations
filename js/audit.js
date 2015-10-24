@@ -448,8 +448,6 @@
         }
         download(JSON2CSV(csvdata), 'subscriptions.csv', 'text/csv'); 
       });
-      
-
 
       $("body").on("click", "button.embed", function() {
               window.parent.$("iframe").css({
@@ -542,7 +540,7 @@
                   .next().find("button.confirmAction").data("action-type", "delete");
               $("#confirmModal").modal();
           } else {
-              var url = "action.jsp?action=delete&subId=" + rowData["DT_RowId"] + "&catId=" + rowData["cat_id"];
+              var url = "pages/action.jsp?action=delete&subId=" + rowData["DT_RowId"] + "&catId=" + rowData["cat_id"];
               $.get(url, function(response) {
                   $("#responseModal").find("div.modal-body").html(response).end().modal();
               });
@@ -552,7 +550,7 @@
       /* Generic Confirm button, calls the correct action based on the context. */
       $("body").on("click", "button.confirmAction", function() {
           var myAction = $(this).data("action-type");
-          var url = "action.jsp?action=" + myAction + "&subId=" + rowData["DT_RowId"] + "&catId=" + rowData["cat_id"];
+          var url = "pages/action.jsp?action=" + myAction + "&subId=" + rowData["DT_RowId"] + "&catId=" + rowData["cat_id"];
           $.get(url, function(response) {
               $("#responseModal").find("div.modal-body").html(response).end().modal();
           });
