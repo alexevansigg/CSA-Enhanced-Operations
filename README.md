@@ -10,37 +10,49 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
 ### Installation Instructions 		  ###
 #########################################
 
-1. Create the folder custom-content in directory <csahome>\jboss-as\standalone\deployments\csa.war
-2. Extract the content of **audit.zip** into the custom-content folder, observe the correct folder structure in the custom-content folder as below:
+1. Create the folder custom-content in directory **<csahome>/jboss-as/standalone/csa.war**
+2. Extract the Plugin contents into the custom-content folder, observe the correct folder structure in the custom-content folder as below:
 
  File Contents / Folder Structure
- * audit/index.jsp 						
- * audit/setup.json 					
- * audit/getSubs.jsp 
- * audit/action.jsp
- * audit/README.md
- * audit/css/audit.css
- * audit/js/audit.js
+ * assets/css/bootstrap-toggle.css
+ * assets/css/bootstrap-toggle.min.css
+ * assets/css/bootstrap.min.css
  * assets/css/datatables.bootstrap.css
+ * assets/css/datatables.colVis.css
  * assets/css/dataTables.responsive.css
  * assets/css/dataTables.fixedHeader.css
+ * assets/css/dataTables.responsive.css
+ * assets/fonts/glyphicons.*
+ * assets/js/bootstrap-toggle.js
+ * assets/js/bootstrap-toggle.min.js
+ * assets/js/bootstrap.min.js
  * assets/js/dataTables.bootstrap.js
- * assets/js/dataTables.responsive.js
+ * assets/js/bootstrap-colVis.js
  * assets/js/dataTables.fixedHeader.min.js
+ * assets/js/dataTables.responsive.js
  * assets/js/jquery.dataTables.min.js
+ * assets/js/jquery.js
+ * assets/js/jquery.min.js
+ * css/audit.css
+ * js/audit.js
+ * pages/getSubs.jsp 
+ * pages/action.jsp
+ * index.jsp 						
+ * README.md
+ * setup.json 
 
 3. Add the following entry to the csa.war/dashboard/config.json 
 (inside main.tiles array or in sub panel see **Configuration guide** if unsure how to manipulate this file)
 
 ```JSON
 	{
-		"id": "audit",
-		"name": "audit",
-		"description": "audit_description",
+		"id": "CSA-Enhanced-Operations",
+		"name": "Enhanced Operations",
+		"description": "CSA-Enhanced-Operations_description",
 		"enabled": true,
 		"style": "custom-tile-header",
 		"target": "iframe",
-		"data": "/csa/custom-content/audit/",
+		"data": "/csa/custom-content/CSA-Enhanced-Operations/",
 		"helptopic": "console_help",
 		"roles": ["CSA_ADMIN"]
 	}
@@ -51,8 +63,8 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
 Add the following entries
 
 ```	
-	audit=Audit / Operations
-	audit_description=This experimental feature allows a Super User to 
+	CSA-Enhanced-Operations=Enhanced Operations
+	EO_description=This experimental feature allows a Super User to 
 	Manage Subscriptions across all organisations Efficiently (Experimental)
 ```
 
@@ -69,7 +81,7 @@ Add the following entries
 
 	Name | Description
 	------------- | -------------
-	MPP_HOST 					| The url of the MPP instance  e.g https://W2K12CSA420OO:8089/
+	MPP_HOST 					| The url of a MPP instance, Required for Consumer Admin Links  e.g https://localhost:8089/
 	DATA_URL 					| The path to the URL for retrieving the Subscriptions default. getSubs.jsp
 	ENABLE_CONSUMER_ADMIN_LINKS | Set as false disable direct links to Manage Subscriptions as Consumer admin
 	ENABLE_CANCEL_LINKS 		| Set as false to disable cancel subscription functionality

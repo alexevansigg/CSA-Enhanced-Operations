@@ -124,9 +124,7 @@ try{
       jsObj.put("offering_name",rs.getString("service_offering_name"));
       jsObj.put("org_id",rs.getString("organization_id"));
       jsObj.put("org_name",rs.getString("organization_name"));
-
-
-       jsArr.add(jsObj);
+      jsArr.add(jsObj);
 
     }
   

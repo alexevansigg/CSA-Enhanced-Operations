@@ -18,27 +18,26 @@
   <head>
     <link rel="icon" href="/csa/static/img/favicon.ico" sizes="32x32 48x48" type="image/vnd.microsoft.icon"><!-- Default CSA Favicon -->
     
-    <link rel="stylesheet" href="/csa/lib/bootstrap/3.2.0/dist/css/bootstrap.min.css"><!-- bootstrap borrowed from CSA -->
-    <link rel="stylesheet" href="../assets/css/dataTables.responsive.css"> <!-- datatables responsive plugin -->
-    <link rel="stylesheet" href="../assets/css/dataTables.bootstrap.css"> <!-- datatables from datatables.net -->
-    <link rel="stylesheet" href="../assets/css/dataTables.fixedHeader.css"> <!-- datatables from datatables.net -->
-    <link rel="stylesheet" href="../assets/css/dataTables.colVis.css">
-    <link rel="stylesheet" href="../assets/css/bootstrap-toggle.min.css">
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css"><!-- bootstrap borrowed from CSA -->
+    <link rel="stylesheet" href="assets/css/dataTables.responsive.css"> <!-- datatables responsive plugin -->
+    <link rel="stylesheet" href="assets/css/dataTables.bootstrap.css"> <!-- datatables from datatables.net -->
+    <link rel="stylesheet" href="assets/css/dataTables.fixedHeader.css"> <!-- datatables from datatables.net -->
+    <link rel="stylesheet" href="assets/css/dataTables.colVis.css">
+    <link rel="stylesheet" href="assets/css/bootstrap-toggle.min.css">
 
     <link rel="stylesheet" type="text/css" media="all" href="css/audit.css"><!-- Core style sheet for Audit/Operations plugin -->
     
     <script>
     var setup = <%@include file="setup.json" %>;
     </script>
-    <script src="/csa/lib/jquery/2.1.1/dist/jquery.min.js"></script> <!-- jQuery borrowed from CSA -->
-    <script src="/csa/lib/bootstrap/3.2.0/dist/js/bootstrap.min.js"></script><!-- bootstrap borrowed from CSA -->
-    <script src="../assets/js/jquery.dataTables.min.js"></script><!-- dataTables from datatables.net -->
-    <script src="../assets/js/dataTables.bootstrap.js"></script><!-- datatables bootstrap plugin -->
-    <script src="../assets/js/dataTables.responsive.js"></script><!-- datatables responsibe plugin -->
-    <script src="../assets/js/dataTables.fixedHeader.min.js"></script><!-- datatables responsibe plugin -->
-    <script src="../assets/js/dataTables.colVis.js"></script><!-- datatables colVis plugin -->
-  
-    <script src="../assets/js/bootstrap-toggle.min.js"></script>
+    <script src="assets/js/jquery.min.js"></script> <!-- jQuery borrowed from CSA -->
+    <script src="assets/js/bootstrap.min.js"></script><!-- bootstrap borrowed from CSA -->
+    <script src="assets/js/jquery.dataTables.min.js"></script><!-- dataTables from datatables.net -->
+    <script src="assets/js/dataTables.bootstrap.js"></script><!-- datatables bootstrap plugin -->
+    <script src="assets/js/dataTables.responsive.js"></script><!-- datatables responsibe plugin -->
+    <script src="assets/js/dataTables.fixedHeader.min.js"></script><!-- datatables responsibe plugin -->
+    <script src="assets/js/dataTables.colVis.js"></script><!-- datatables colVis plugin -->
+    <script src="assets/js/bootstrap-toggle.min.js"></script>
    
    
     <script type="text/javascript" charset="utf8" src="js/audit.js"></script><!-- Core script for Audit/Operations Plugin -->

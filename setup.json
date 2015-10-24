@@ -1,6 +1,6 @@
 {
-	"MPP_HOST":"https://localhost:8089/",
-	"DATA_URL":"getSubs.jsp",
+	"MPP_HOST":"https://W2K12CSA420OO:8089/",
+	"DATA_URL":"pages/getSubs.jsp",
 	"ENABLE_CONSUMER_ADMIN_LINKS":true,
 	"ENABLE_CANCEL_LINKS":true,
 	"ENABLE_RESUME_LINKS":true,
@@ -8,7 +8,7 @@
 	"REQUIRE_CONFIRMATION":false,
 	"SHOW_RETIRED":false,
 	"USE_FIXED_HEADER":false,
-	"CONFIG_CACHE":5,
+	"CONFIG_CACHE":0,
 	"DEFAULT_DISPLAY_LENGTH":25,
 	"SEARCH_TERM":"",
 	"VISIBLE":{
