@@ -506,20 +506,20 @@
           }
       });
 
-      /* On Click Cancel Sub check for confirmation otherwise trigger cancellation 
+      /* On Click Cancel Sub check for confirmation otherwise trigger Deletion
+      Todo: the X-Auth-Token doesnt seem to work correctly for this action just yet 
       $("table").on("click","button.deleteSub", function(){
          myRow = $(this).closest("tr");
          rowData = auditDT.row(myRow).data();
-         if(reqConfirm){
+         if ($('#reqConfirm').prop('checked')) {
            $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'><strong>Are you sure</strong> you wish to Delete the Subscription<span class='label label-warning'>" + rowData["subscription"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["user"] +"</span> ?</div>")
            .next().find("button.confirmAction").data("action-type","delete");
            $("#confirmModal").modal();
          }else{
            var url = "/csa/api/mpp/mpp-subscription/" + rowData["DT_RowId"];
            var token = readCookie("x-csrf-token");
-           var xtoken = readCookie("XSRF-TOKEN");
           
-         $.ajax({type:"DELETE","url":url, headers:{"x-csrf-token":token},"data":{"subscriptionid":rowData["DT_RowId"],"X-Auth-Token":xtoken, "onBehalf":rowData["user"]}, success:function(response){
+         $.ajax({type:"DELETE","url":url, headers:{"x-csrf-token":token},"data":{"subscriptionid":rowData["DT_RowId"],"X-Auth-Token":XauthToken, "onBehalf":rowData["user"]}, success:function(response){
             $("#responseModal").find("div.modal-body").html("Subscription Cancelled").end().modal();
            }, failure:function(response){
             $("#responseModal").find("div.modal-body").html("Something went wrong").end().modal();  
@@ -529,7 +529,8 @@
        });
        */
 
-      /* On click delete Subscription first check if confirmation is required, otherwise invoke cancel action in action.jsp. */
+      /* On click delete Subscription first check if confirmation is required, otherwise invoke Delete action in action.jsp. 
+      */
       $("table").on("click", "button.deleteSub", function() {
           myRow = $(this).closest("tr");
           rowData = auditDT.row(myRow).data();

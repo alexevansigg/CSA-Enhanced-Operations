@@ -22,7 +22,7 @@ String userId;
 String userpass;
 String url;
 String body;
-String myResponse;  // Will hld the response body from the cancel request
+String myResponse;  // Will hold the response body from the cancel request
 int status;         // Will hold the http response status from cancel request
 HttpClient client;
 Logger log;
@@ -84,6 +84,7 @@ log.setLevel(Level.INFO);
 log.info(action + "  Subscription (Experimental) Called");
 
 /* Setup the HTTP Client */
+/* Todo: encrypt the transport password used here. see JBOSS AS7 encryption */
 client = new HttpClient();
 client.getParams().setAuthenticationPreemptive(true);
 client.getState().setCredentials(

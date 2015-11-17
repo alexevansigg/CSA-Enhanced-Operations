@@ -6,6 +6,7 @@
   - Description: audit.jsp is a custom Servelet designed to make managing CSA subscritpion easier.
   - It makes extensive use of the Datatables library more information can be found at http://datatables.net .
   --%>
+<%@ page import="java.util.*" %>
 <%
     response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
     response.setHeader("Pragma", "no-cache"); //HTTP 1.0
@@ -13,6 +14,9 @@
 %>
 <!-- Renive this line if the page doesnt exist in your version of csa -->
 <%@include file="/components/pages/partials/user.jsp" %>
+
+
+   
 
 <html>
   <head>
@@ -29,6 +33,25 @@
     
     <script>
     var setup = <%@include file="setup.json" %>;
+  
+   <%
+   /*
+   Small snippet to read the X-Auth-Token
+   Todo: Abstract and clean this up
+   */
+    Cookie[] cookies = null;
+    Cookie cookie = null;
+    cookies = request.getCookies();
+    if( cookies != null ){
+      for (int i = 0; i < cookies.length; i++){
+         cookie = cookies[i];
+        if (cookie.getName( ).equals("X-Auth-Token")){
+          out.print("var XauthToken = '" + cookie.getValue( )+"';");
+        } 
+      } 
+    }
+   %>
+ 
     </script>
     <script src="assets/js/jquery.min.js"></script> <!-- jQuery borrowed from CSA -->
     <script src="assets/js/bootstrap.min.js"></script><!-- bootstrap borrowed from CSA -->
