@@ -10,36 +10,36 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
 ### Installation Instructions 		  ###
 #########################################
 
-1. Create the folder custom-content in directory **<csahome>/jboss-as/standalone/csa.war**
+1. Create the folder custom-content (if it doesnt allready exist) in directory **<csahome>/jboss-as/standalone/csa.war**
 2. Extract the Plugin contents into the custom-content folder, observe the correct folder structure in the custom-content folder as below:
 
  File Contents / Folder Structure
- * assets/css/bootstrap-toggle.css
- * assets/css/bootstrap-toggle.min.css
- * assets/css/bootstrap.min.css
- * assets/css/datatables.bootstrap.css
- * assets/css/datatables.colVis.css
- * assets/css/dataTables.responsive.css
- * assets/css/dataTables.fixedHeader.css
- * assets/css/dataTables.responsive.css
- * assets/fonts/glyphicons.*
- * assets/js/bootstrap-toggle.js
- * assets/js/bootstrap-toggle.min.js
- * assets/js/bootstrap.min.js
- * assets/js/dataTables.bootstrap.js
- * assets/js/bootstrap-colVis.js
- * assets/js/dataTables.fixedHeader.min.js
- * assets/js/dataTables.responsive.js
- * assets/js/jquery.dataTables.min.js
- * assets/js/jquery.js
- * assets/js/jquery.min.js
- * css/audit.css
- * js/audit.js
- * pages/getSubs.jsp 
- * pages/action.jsp
- * index.jsp 						
- * README.md
- * setup.json 
+ * CSA-Enhanced-Operations/assets/css/bootstrap-toggle.css
+ * CSA-Enhanced-Operations/assets/css/bootstrap-toggle.min.css
+ * CSA-Enhanced-Operations/assets/css/bootstrap.min.css
+ * CSA-Enhanced-Operations/assets/css/datatables.bootstrap.css
+ * CSA-Enhanced-Operations/assets/css/datatables.colVis.css
+ * CSA-Enhanced-Operations/assets/css/dataTables.responsive.css
+ * CSA-Enhanced-Operations/assets/css/dataTables.fixedHeader.css
+ * CSA-Enhanced-Operations/assets/css/dataTables.responsive.css
+ * CSA-Enhanced-Operations/assets/fonts/glyphicons.*
+ * CSA-Enhanced-Operations/assets/js/bootstrap-toggle.js
+ * CSA-Enhanced-Operations/assets/js/bootstrap-toggle.min.js
+ * CSA-Enhanced-Operations/assets/js/bootstrap.min.js
+ * CSA-Enhanced-Operations/assets/js/dataTables.bootstrap.js
+ * CSA-Enhanced-Operations/assets/js/bootstrap-colVis.js
+ * CSA-Enhanced-Operations/assets/js/dataTables.fixedHeader.min.js
+ * CSA-Enhanced-Operations/assets/js/dataTables.responsive.js
+ * CSA-Enhanced-Operations/assets/js/jquery.dataTables.min.js
+ * CSA-Enhanced-Operations/assets/js/jquery.js
+ * CSA-Enhanced-Operations/assets/js/jquery.min.js
+ * CSA-Enhanced-Operations/css/audit.css
+ * CSA-Enhanced-Operations/js/audit.js
+ * CSA-Enhanced-Operations/pages/getSubs.jsp 
+ * CSA-Enhanced-Operations/pages/action.jsp
+ * CSA-Enhanced-Operations/index.jsp 						
+ * CSA-Enhanced-Operations/README.md
+ * CSA-Enhanced-Operations/setup.json 
 
 3. Add the following entry to the csa.war/dashboard/config.json 
 (inside main.tiles array or in sub panel see **Configuration guide** if unsure how to manipulate this file)
@@ -47,7 +47,7 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
 ```JSON
 	{
 		"id": "CSA-Enhanced-Operations",
-		"name": "Enhanced Operations",
+		"name": "CSA-Enhanced-Operations",
 		"description": "CSA-Enhanced-Operations_description",
 		"enabled": true,
 		"style": "custom-tile-header",
@@ -64,7 +64,7 @@ Add the following entries
 
 ```	
 	CSA-Enhanced-Operations=Enhanced Operations
-	EO_description=This experimental feature allows a Super User to 
+	CSA-Enhanced-Operations_description=This experimental feature allows a Super User to 
 	Manage Subscriptions across all organisations Efficiently (Experimental)
 ```
 
@@ -77,7 +77,7 @@ Add the following entries
 	}
 ```
 
-6. Configure the settings in csa.war/custom-content/audit/setup.json
+6. Configure the settings in csa.war/custom-content/CSA-Enhanced-Operations/setup.json
 
 	Name | Description
 	------------- | -------------
@@ -93,7 +93,7 @@ Add the following entries
 	USE_FIXED_HEADER			| Set as false to disable the fixed header behaviour
 	CONFIG_CACHE				| Integer representing the number of days end user configuration remain in browser cache (Default 5)
 	SEARCH_TERM					| The default value set in the Datatables search field (Default Empty String)
-	VISIBLE						| An object array of Data which is shown in the sortable table, true = in table, false = in detail.
+	VISIBLE						| An object array of column visibility which is shown in the sortable table, true = show in table, false = show only in detail (drilldown).
 
 
 
