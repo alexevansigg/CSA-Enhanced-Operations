@@ -7,7 +7,7 @@
 
     <link rel="stylesheet" href="stylesheets/styles.css">
     <link rel="stylesheet" href="stylesheets/github-light.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -48,30 +48,41 @@
 <a id="-installation-instructions" class="anchor" href="#-installation-instructions" aria-hidden="true"><span class="octicon octicon-link"></span></a> Installation Instructions</h2>
 
 <ol>
-<li>Create the folder custom-content in directory <strong>/jboss-as/standalone/csa.war</strong>
+<li>Create the folder custom-content (if it doesnt allready exist) in directory <strong>/jboss-as/standalone/csa.war</strong>
 </li>
 <li>
-<p>Extract the content of <strong>audit.zip</strong> into the custom-content folder, observe the correct folder structure in the custom-content folder as below:</p>
+<p>Extract the Plugin contents into the custom-content folder, observe the correct folder structure in the custom-content folder as below:</p>
 
 <p>File Contents / Folder Structure</p>
 
 <ul>
-<li>audit/index.jsp<br>
+<li>CSA-Enhanced-Operations/assets/css/bootstrap-toggle.css</li>
+<li>CSA-Enhanced-Operations/assets/css/bootstrap-toggle.min.css</li>
+<li>CSA-Enhanced-Operations/assets/css/bootstrap.min.css</li>
+<li>CSA-Enhanced-Operations/assets/css/datatables.bootstrap.css</li>
+<li>CSA-Enhanced-Operations/assets/css/datatables.colVis.css</li>
+<li>CSA-Enhanced-Operations/assets/css/dataTables.responsive.css</li>
+<li>CSA-Enhanced-Operations/assets/css/dataTables.fixedHeader.css</li>
+<li>CSA-Enhanced-Operations/assets/css/dataTables.responsive.css</li>
+<li>CSA-Enhanced-Operations/assets/fonts/glyphicons.*</li>
+<li>CSA-Enhanced-Operations/assets/js/bootstrap-toggle.js</li>
+<li>CSA-Enhanced-Operations/assets/js/bootstrap-toggle.min.js</li>
+<li>CSA-Enhanced-Operations/assets/js/bootstrap.min.js</li>
+<li>CSA-Enhanced-Operations/assets/js/dataTables.bootstrap.js</li>
+<li>CSA-Enhanced-Operations/assets/js/bootstrap-colVis.js</li>
+<li>CSA-Enhanced-Operations/assets/js/dataTables.fixedHeader.min.js</li>
+<li>CSA-Enhanced-Operations/assets/js/dataTables.responsive.js</li>
+<li>CSA-Enhanced-Operations/assets/js/jquery.dataTables.min.js</li>
+<li>CSA-Enhanced-Operations/assets/js/jquery.js</li>
+<li>CSA-Enhanced-Operations/assets/js/jquery.min.js</li>
+<li>CSA-Enhanced-Operations/css/audit.css</li>
+<li>CSA-Enhanced-Operations/js/audit.js</li>
+<li>CSA-Enhanced-Operations/pages/getSubs.jsp </li>
+<li>CSA-Enhanced-Operations/pages/action.jsp</li>
+<li>CSA-Enhanced-Operations/index.jsp<br>
 </li>
-<li>audit/setup.json<br>
-</li>
-<li>audit/getSubs.jsp </li>
-<li>audit/action.jsp</li>
-<li>audit/README.md</li>
-<li>audit/css/audit.css</li>
-<li>audit/js/audit.js</li>
-<li>assets/css/datatables.bootstrap.css</li>
-<li>assets/css/dataTables.responsive.css</li>
-<li>assets/css/dataTables.fixedHeader.css</li>
-<li>assets/js/dataTables.bootstrap.js</li>
-<li>assets/js/dataTables.responsive.js</li>
-<li>assets/js/dataTables.fixedHeader.min.js</li>
-<li>assets/js/jquery.dataTables.min.js</li>
+<li>CSA-Enhanced-Operations/README.md</li>
+<li>CSA-Enhanced-Operations/setup.json </li>
 </ul>
 </li>
 <li><p>Add the following entry to the csa.war/dashboard/config.json 
@@ -79,13 +90,13 @@
 </ol>
 
 <div class="highlight highlight-source-json"><pre>    {
-        <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>audit<span class="pl-pds">"</span></span>,
-        <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>audit<span class="pl-pds">"</span></span>,
-        <span class="pl-s"><span class="pl-pds">"</span>description<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>audit_description<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>CSA-Enhanced-Operations<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>CSA-Enhanced-Operations<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>description<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>CSA-Enhanced-Operations_description<span class="pl-pds">"</span></span>,
         <span class="pl-s"><span class="pl-pds">"</span>enabled<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>,
         <span class="pl-s"><span class="pl-pds">"</span>style<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>custom-tile-header<span class="pl-pds">"</span></span>,
         <span class="pl-s"><span class="pl-pds">"</span>target<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>iframe<span class="pl-pds">"</span></span>,
-        <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>/csa/custom-content/audit/<span class="pl-pds">"</span></span>,
+        <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>/csa/custom-content/CSA-Enhanced-Operations/<span class="pl-pds">"</span></span>,
         <span class="pl-s"><span class="pl-pds">"</span>helptopic<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>console_help<span class="pl-pds">"</span></span>,
         <span class="pl-s"><span class="pl-pds">"</span>roles<span class="pl-pds">"</span></span>: [<span class="pl-s"><span class="pl-pds">"</span>CSA_ADMIN<span class="pl-pds">"</span></span>]
     }</pre></div>
@@ -97,23 +108,23 @@
 
 <p>Add the following entries</p>
 
-<pre><code>  audit=Audit / Operations
-  audit_description=This experimental feature allows a Super User to 
-  Manage Subscriptions across all organisations Efficiently (Experimental)
+<pre><code>    CSA-Enhanced-Operations=Enhanced Operations
+    CSA-Enhanced-Operations_description=This experimental feature allows a Super User to 
+    Manage Subscriptions across all organisations Efficiently (Experimental)
 </code></pre>
 
 <ol>
 <li>To fix the CSA styling on the dashboard you can add the following css snippet to the end of the file <strong>csa.war/dashboard/css/base.css</strong> to make the Tile Title fit better.</li>
 </ol>
 
-<div class="highlight highlight-source-css"><pre><span class="pl-e">.tile</span> <span class="pl-ent">h3</span> {
-  <span class="pl-c1"><span class="pl-c1">white-space</span></span>:<span class="pl-c1">inherit</span>;
-  <span class="pl-c1"><span class="pl-c1">font-size</span></span>:<span class="pl-c1">1.4<span class="pl-k">em</span></span>;
-}</pre></div>
+<div class="highlight highlight-source-css"><pre>    <span class="pl-e">.tile</span> <span class="pl-ent">h3</span> {
+        <span class="pl-c1"><span class="pl-c1">white-space</span></span>:<span class="pl-c1">inherit</span>;
+        <span class="pl-c1"><span class="pl-c1">font-size</span></span>:<span class="pl-c1">1.4<span class="pl-k">em</span></span>;
+    }</pre></div>
 
 <ol>
 <li>
-<p>Configure the settings in csa.war/custom-content/audit/setup.json</p>
+<p>Configure the settings in csa.war/custom-content/CSA-Enhanced-Operations/setup.json</p>
 
 <table>
 <thead>
@@ -125,7 +136,7 @@
 <tbody>
 <tr>
 <td>MPP_HOST</td>
-<td>The url of the MPP instance  e.g https://W2K12CSA420OO:8089/</td>
+<td>The url of a MPP instance, Required for Consumer Admin Links  e.g https://localhost:8089/</td>
 </tr>
 <tr>
 <td>DATA_URL</td>
@@ -173,23 +184,11 @@
 </tr>
 <tr>
 <td>VISIBLE</td>
-<td>An object array of Data which is shown in the sortable table, true = in table, false = in detail.</td>
+<td>An object array of column visibility which is shown in the sortable table, true = show in table, false = show only in detail (drilldown).</td>
 </tr>
 </tbody>
 </table>
 </li>
-</ol>
-
-<hr>
-
-<h2>
-<a id="-known-issues" class="anchor" href="#-known-issues" aria-hidden="true"><span class="octicon octicon-link"></span></a> Known Issues</h2>
-
-<ol>
-<li>If not signed into MPP organisation then Consumer Admin links may redirect to incorrect login screen (needs some attention)</li>
-<li>After session timeout Refresh request on Datatable throws json error instead of redirecting to login.</li>
-<li>No visual feedback on refresh action (unless the data response has changed)</li>
-<li>FixedHeader sometimes doesn't align to column widths</li>
 </ol>
 
 <hr>
