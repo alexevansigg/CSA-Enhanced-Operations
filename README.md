@@ -15,32 +15,32 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
 2. Extract the Plugin contents into the custom-content folder, observe the correct folder structure in the custom-content folder as below:
 
  File Contents / Folder Structure
- * CSA-Enhanced-Operations/assets/css/bootstrap-toggle.css
- * CSA-Enhanced-Operations/assets/css/bootstrap-toggle.min.css
- * CSA-Enhanced-Operations/assets/css/bootstrap.min.css
- * CSA-Enhanced-Operations/assets/css/datatables.bootstrap.css
- * CSA-Enhanced-Operations/assets/css/datatables.colVis.css
- * CSA-Enhanced-Operations/assets/css/dataTables.responsive.css
- * CSA-Enhanced-Operations/assets/css/dataTables.fixedHeader.css
- * CSA-Enhanced-Operations/assets/css/dataTables.responsive.css
- * CSA-Enhanced-Operations/assets/fonts/glyphicons.*
- * CSA-Enhanced-Operations/assets/js/bootstrap-toggle.js
- * CSA-Enhanced-Operations/assets/js/bootstrap-toggle.min.js
- * CSA-Enhanced-Operations/assets/js/bootstrap.min.js
- * CSA-Enhanced-Operations/assets/js/dataTables.bootstrap.js
- * CSA-Enhanced-Operations/assets/js/bootstrap-colVis.js
- * CSA-Enhanced-Operations/assets/js/dataTables.fixedHeader.min.js
- * CSA-Enhanced-Operations/assets/js/dataTables.responsive.js
- * CSA-Enhanced-Operations/assets/js/jquery.dataTables.min.js
- * CSA-Enhanced-Operations/assets/js/jquery.js
- * CSA-Enhanced-Operations/assets/js/jquery.min.js
- * CSA-Enhanced-Operations/css/audit.css
- * CSA-Enhanced-Operations/js/audit.js
- * CSA-Enhanced-Operations/pages/getSubs.jsp
- * CSA-Enhanced-Operations/pages/action.jsp
- * CSA-Enhanced-Operations/index.jsp 						
- * CSA-Enhanced-Operations/README.md
- * CSA-Enhanced-Operations/setup.json
+ + CSA-Enhanced-Operations/assets/css/bootstrap-toggle.css
+ + CSA-Enhanced-Operations/assets/css/bootstrap-toggle.min.css
+ + CSA-Enhanced-Operations/assets/css/bootstrap.min.css
+ + CSA-Enhanced-Operations/assets/css/datatables.bootstrap.css
+ + CSA-Enhanced-Operations/assets/css/datatables.colVis.css
+ + CSA-Enhanced-Operations/assets/css/dataTables.responsive.css
+ + CSA-Enhanced-Operations/assets/css/dataTables.fixedHeader.css
+ + CSA-Enhanced-Operations/assets/css/dataTables.responsive.css
+ + CSA-Enhanced-Operations/assets/fonts/glyphicons.*
+ + CSA-Enhanced-Operations/assets/js/bootstrap-toggle.js
+ + CSA-Enhanced-Operations/assets/js/bootstrap-toggle.min.js
+ + CSA-Enhanced-Operations/assets/js/bootstrap.min.js
+ + CSA-Enhanced-Operations/assets/js/dataTables.bootstrap.js
+ + CSA-Enhanced-Operations/assets/js/bootstrap-colVis.js
+ + CSA-Enhanced-Operations/assets/js/dataTables.fixedHeader.min.js
+ + CSA-Enhanced-Operations/assets/js/dataTables.responsive.js
+ + CSA-Enhanced-Operations/assets/js/jquery.dataTables.min.js
+ + CSA-Enhanced-Operations/assets/js/jquery.js
+ + CSA-Enhanced-Operations/assets/js/jquery.min.js
+ + CSA-Enhanced-Operations/css/audit.css
+ + CSA-Enhanced-Operations/js/audit.js
+ + CSA-Enhanced-Operations/pages/getSubs.jsp
+ + CSA-Enhanced-Operations/pages/action.jsp
+ + CSA-Enhanced-Operations/index.jsp 						
+ + CSA-Enhanced-Operations/README.md
+ + CSA-Enhanced-Operations/setup.json
 
 3. Add the following entry to the csa.war/dashboard/config.json
 	(inside main.tiles array or in sub panel see **Configuration guide** if unsure how to manipulate this file)
@@ -58,8 +58,9 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
   	}
   ```
 4. Open the file csa.war/dashboard/messages/common/messages.properties and location section entitled:
-	```
-  # Page titles and descriptions, used for the dashboard tiles and for navigation views   ```
+  ```
+  # Page titles and descriptions, used for the dashboard tiles and for navigation views
+  ```
   Add the following entries
 
   ```JSON
