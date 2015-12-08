@@ -32,7 +32,8 @@ JSONObject jsRes;
 /* Override the Clause if the retired attribute is sent. */
 if(request.getParameterMap().containsKey("retired")){
   if(request.getParameter("retired").equals("true")){
-    retiredClause ="";
+  //Oracle doesnt like blank string so making one up here
+    retiredClause ="Yeahaa";
   }
 }
 
