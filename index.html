@@ -28,24 +28,26 @@
         </ul>
       </header>
       <section>
-        <hr>
-
-<h1>
+        <h1>
 <a id="csa-operations-enhanced" class="anchor" href="#csa-operations-enhanced" aria-hidden="true"><span class="octicon octicon-link"></span></a>CSA Operations Enhanced</h1>
-
-<h3>
-<a id="version-004" class="anchor" href="#version-004" aria-hidden="true"><span class="octicon octicon-link"></span></a>Version 0.04</h3>
 
 <hr>
 
-<p>This plugin allows a <em>Super Admin</em> to manage Subscriptions across multiple users and organisations efficiently.</p>
+<h4>
+<a id="version-004" class="anchor" href="#version-004" aria-hidden="true"><span class="octicon octicon-link"></span></a>Version 0.04</h4>
+
+<hr>
+
+<p>This plugin allows a <em>Super Admin</em> to manage Subscriptions across multiple users and organisations efficiently. <a href="http://alexevansigg.github.io/CSA-Enhanced-Operations">See Here</a></p>
 
 <p><img src="https://cloud.githubusercontent.com/assets/656022/10440050/019e063a-7136-11e5-8263-d63a928fd52e.JPG" alt="CSA Enhanced Operations"></p>
 
 <hr>
 
-<h2>
-<a id="-installation-instructions" class="anchor" href="#-installation-instructions" aria-hidden="true"><span class="octicon octicon-link"></span></a> Installation Instructions</h2>
+<h4>
+<a id="installation-instructions" class="anchor" href="#installation-instructions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation Instructions</h4>
+
+<hr>
 
 <ol>
 <li>Create the folder custom-content (if it doesnt allready exist) in directory <strong>/jboss-as/standalone/csa.war</strong>
@@ -77,52 +79,50 @@
 <li>CSA-Enhanced-Operations/assets/js/jquery.min.js</li>
 <li>CSA-Enhanced-Operations/css/audit.css</li>
 <li>CSA-Enhanced-Operations/js/audit.js</li>
-<li>CSA-Enhanced-Operations/pages/getSubs.jsp </li>
+<li>CSA-Enhanced-Operations/pages/getSubs.jsp</li>
 <li>CSA-Enhanced-Operations/pages/action.jsp</li>
 <li>CSA-Enhanced-Operations/index.jsp<br>
 </li>
 <li>CSA-Enhanced-Operations/README.md</li>
-<li>CSA-Enhanced-Operations/setup.json </li>
+<li>CSA-Enhanced-Operations/setup.json</li>
 </ul>
 </li>
-<li><p>Add the following entry to the csa.war/dashboard/config.json 
-(inside main.tiles array or in sub panel see <strong>Configuration guide</strong> if unsure how to manipulate this file)</p></li>
-</ol>
+<li>
+<p>Add the following entry to the csa.war/dashboard/config.json
+(inside main.tiles array or in sub panel see <strong>Configuration guide</strong> if unsure how to manipulate this file)</p>
 
-<div class="highlight highlight-source-json"><pre>    {
-        <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>CSA-Enhanced-Operations<span class="pl-pds">"</span></span>,
-        <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>CSA-Enhanced-Operations<span class="pl-pds">"</span></span>,
-        <span class="pl-s"><span class="pl-pds">"</span>description<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>CSA-Enhanced-Operations_description<span class="pl-pds">"</span></span>,
-        <span class="pl-s"><span class="pl-pds">"</span>enabled<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>,
-        <span class="pl-s"><span class="pl-pds">"</span>style<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>custom-tile-header<span class="pl-pds">"</span></span>,
-        <span class="pl-s"><span class="pl-pds">"</span>target<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>iframe<span class="pl-pds">"</span></span>,
-        <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>/csa/custom-content/CSA-Enhanced-Operations/<span class="pl-pds">"</span></span>,
-        <span class="pl-s"><span class="pl-pds">"</span>helptopic<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>console_help<span class="pl-pds">"</span></span>,
-        <span class="pl-s"><span class="pl-pds">"</span>roles<span class="pl-pds">"</span></span>: [<span class="pl-s"><span class="pl-pds">"</span>CSA_ADMIN<span class="pl-pds">"</span></span>]
-    }</pre></div>
+<div class="highlight highlight-source-json"><pre>  {
+      <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>CSA-Enhanced-Operations<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>CSA-Enhanced-Operations<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>description<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>CSA-Enhanced-Operations_description<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>enabled<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>,
+      <span class="pl-s"><span class="pl-pds">"</span>style<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>custom-tile-header<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>target<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>iframe<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>/csa/custom-content/CSA-Enhanced-Operations/<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>helptopic<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>console_help<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>roles<span class="pl-pds">"</span></span>: [<span class="pl-s"><span class="pl-pds">"</span>CSA_ADMIN<span class="pl-pds">"</span></span>]
+  }</pre></div>
+</li>
+<li>
+<p>Open the file csa.war/dashboard/messages/common/messages.properties and location section entitled:</p>
 
-<ol>
-<li>Open the file csa.war/dashboard/messages/common/messages.properties and location section entitled:
-# Page titles and descriptions, used for the dashboard tiles and for navigation views</li>
-</ol>
+<pre><code># Page titles and descriptions, used for the dashboard tiles and for navigation views
+</code></pre>
 
 <p>Add the following entries</p>
 
-<pre><code>    CSA-Enhanced-Operations=Enhanced Operations
-    CSA-Enhanced-Operations_description=This experimental feature allows a Super User to 
-    Manage Subscriptions across all organisations Efficiently (Experimental)
-</code></pre>
+<div class="highlight highlight-source-json"><pre>  CSA-Enhanced-Operations=Enhanced Operations
+  CSA-Enhanced-Operations_description=This experimental feature allows a Super User to
+  Manage Subscriptions across all organizations efficiently (Experimental)</pre></div>
+</li>
+<li>
+<p>To fix the CSA styling on the dashboard you can add the following css snippet to the end of the file <strong>csa.war/dashboard/css/base.css</strong> to make the Tile Title fit better.</p>
 
-<ol>
-<li>To fix the CSA styling on the dashboard you can add the following css snippet to the end of the file <strong>csa.war/dashboard/css/base.css</strong> to make the Tile Title fit better.</li>
-</ol>
-
-<div class="highlight highlight-source-css"><pre>    <span class="pl-e">.tile</span> <span class="pl-ent">h3</span> {
-        <span class="pl-c1"><span class="pl-c1">white-space</span></span>:<span class="pl-c1">inherit</span>;
-        <span class="pl-c1"><span class="pl-c1">font-size</span></span>:<span class="pl-c1">1.4<span class="pl-k">em</span></span>;
-    }</pre></div>
-
-<ol>
+<div class="highlight highlight-source-css"><pre>  <span class="pl-e">.tile</span> <span class="pl-ent">h3</span> {
+      <span class="pl-c1"><span class="pl-c1">white-space</span></span>:<span class="pl-c1">inherit</span>;
+      <span class="pl-c1"><span class="pl-c1">font-size</span></span>:<span class="pl-c1">1.4<span class="pl-k">em</span></span>;
+  }</pre></div>
+</li>
 <li>
 <p>Configure the settings in csa.war/custom-content/CSA-Enhanced-Operations/setup.json</p>
 
