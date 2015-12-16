@@ -4,6 +4,8 @@
 <%@ page import="java.lang.RuntimeException"%>
 <%@ page import="java.io.*"%>
 <%@ page import="org.w3c.dom.*"%>
+<%@page import="java.io.InputStream" %>
+<%@page import="java.util.Properties" %>
 <%@ page import="org.apache.commons.codec.binary.Base64"%>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils"%>
 <%@ page import="org.apache.commons.httpclient.Header" %>
@@ -14,6 +16,11 @@
 <%@page trimDirectiveWhitespaces="true" %>
 <%
 
+
+
+
+
+
 /* Initialize the variables*/
 String action;
 String subId;
@@ -23,10 +30,19 @@ String userpass;
 String url;
 String body;
 String myResponse;  // Will hold the response body from the cancel request
+String csaBaseURL;
 int status;         // Will hold the http response status from cancel request
 HttpClient client;
 Logger log;
 StringEscapeUtils esc;
+
+/* Load the csa.properties file */
+ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+InputStream stream = classLoader.getResourceAsStream("/csa.properties");
+Properties props = new Properties();
+props.load(stream);
+
+csaBaseURL = props.getProperty("csa.provider.rest.protocol") + "://" + props.getProperty("csa.provider.hostname") + ":" + props.getProperty("csa.provider.port");
 
 /* Validate required Inputs */
 if (request.getParameterMap().containsKey("action")){
@@ -55,7 +71,7 @@ url = "";
 body="";
 
 if (action.equals("delete")){
-  url        = "https://localhost:8444/csa/rest/user/multipleSubscription/delete?userIdentifier=" + userId;
+  url        = csaBaseURL + "/csa/rest/user/multipleSubscription/delete?userIdentifier=" + userId;
   body       = "<ServiceSubscriptionList><ServiceSubscription>"
               +"<id>" + subId + "</id>"
               + "<catalogItem>"
@@ -68,7 +84,7 @@ if (action.equals("delete")){
               +"</ServiceSubscriptionList>";
 } 
 else if (action.equals("cancel")){
-  url        = "https://localhost:8444/csa/rest/catalog/" + catId + "/request?userIdentifier=" + userId;
+  url        = csaBaseURL + "/csa/rest/catalog/" + catId + "/request?userIdentifier=" + userId;
   body       = "<ServiceRequest><description>Manual Fail</description>"
               + "<name>My Fail</name>"
               + "<displayName>My Fail</displayName>"
