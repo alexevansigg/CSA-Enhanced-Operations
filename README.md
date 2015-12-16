@@ -34,8 +34,8 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
  + CSA-Enhanced-Operations/assets/js/jquery.dataTables.min.js
  + CSA-Enhanced-Operations/assets/js/jquery.js
  + CSA-Enhanced-Operations/assets/js/jquery.min.js
- + CSA-Enhanced-Operations/css/audit.css
- + CSA-Enhanced-Operations/js/audit.js
+ + CSA-Enhanced-Operations/css/CSA-Enhanced-Operations.css
+ + CSA-Enhanced-Operations/js/CSA-Enhanced-Operations.js
  + CSA-Enhanced-Operations/pages/getSubs.jsp
  + CSA-Enhanced-Operations/pages/action.jsp
  + CSA-Enhanced-Operations/index.jsp 						

@@ -16,8 +16,6 @@
 <%@include file="/components/pages/partials/user.jsp" %>
 
 
-   
-
 <html>
   <head>
     <link rel="icon" href="/csa/static/img/favicon.ico" sizes="32x32 48x48" type="image/vnd.microsoft.icon"><!-- Default CSA Favicon -->
@@ -29,7 +27,7 @@
     <link rel="stylesheet" href="assets/css/dataTables.colVis.css">
     <link rel="stylesheet" href="assets/css/bootstrap-toggle.min.css">
 
-    <link rel="stylesheet" type="text/css" media="all" href="css/audit.css"><!-- Core style sheet for Audit/Operations plugin -->
+    <link rel="stylesheet" type="text/css" media="all" href="css/CSA-Enhanced-Operations.css"><!-- Core style sheet for Audit/Operations plugin -->
     
     <script>
     var setup = <%@include file="setup.json" %>;
@@ -63,7 +61,7 @@
     <script src="assets/js/bootstrap-toggle.min.js"></script>
    
    
-    <script type="text/javascript" charset="utf8" src="js/audit.js"></script><!-- Core script for Audit/Operations Plugin -->
+    <script type="text/javascript" charset="utf8" src="js/CSA-Enhanced-Operations.js"></script><!-- Core script for Audit/Operations Plugin -->
 
 
   </head>
