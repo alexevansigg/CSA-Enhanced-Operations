@@ -2,7 +2,7 @@
 #  CSA Operations Enhanced
 
 ---
-####  Version 0.04
+####  Version 0.05
 ----
 
 This plugin allows a *Super Admin* to manage Subscriptions across multiple users and organisations efficiently. [See Here](http://alexevansigg.github.io/CSA-Enhanced-Operations)
@@ -75,7 +75,7 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
 
 	Name | Description  | Default
 	------------- | ------------- |-------------
-	MPP_HOST 					| The url of a MPP instance, Required for Consumer Admin Links  | e.g https://localhost:8089/
+	MPP_HOST 					| The url of a MPP instance, Required for Consumer Admin Links  | https://localhost:8089/
 	DATA_URL 					| The path to the URL for retrieving the Subscriptions          | pages/getSubs.jsp
 	ENABLE_CONSUMER_ADMIN_LINKS | Set as false to disable direct links to Manage Subscriptions as Consumer Admin | true
 	ENABLE_CANCEL_LINKS 		| Set as false to disable Cancel subscription functionality  | true
@@ -90,5 +90,4 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
 	SEARCH_TERM					| The default value set in the Datatables search field | "<Empty String>"
 	COLUMNS						| An object array of columns show in the datatable, the order here is the default order the columns show in, the titles represent the column headers, the data values should not be changed, add/remove the call "none" to move the column into the child row (drill down). | 
 
-}
 
