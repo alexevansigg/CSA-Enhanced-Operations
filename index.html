@@ -34,7 +34,7 @@
 <hr>
 
 <h4>
-<a id="version-004" class="anchor" href="#version-004" aria-hidden="true"><span class="octicon octicon-link"></span></a>Version 0.04</h4>
+<a id="version-005" class="anchor" href="#version-005" aria-hidden="true"><span class="octicon octicon-link"></span></a>Version 0.05</h4>
 
 <hr>
 
@@ -61,24 +61,16 @@
 <li>CSA-Enhanced-Operations/assets/css/bootstrap-toggle.css</li>
 <li>CSA-Enhanced-Operations/assets/css/bootstrap-toggle.min.css</li>
 <li>CSA-Enhanced-Operations/assets/css/bootstrap.min.css</li>
-<li>CSA-Enhanced-Operations/assets/css/datatables.bootstrap.css</li>
-<li>CSA-Enhanced-Operations/assets/css/datatables.colVis.css</li>
-<li>CSA-Enhanced-Operations/assets/css/dataTables.responsive.css</li>
-<li>CSA-Enhanced-Operations/assets/css/dataTables.fixedHeader.css</li>
-<li>CSA-Enhanced-Operations/assets/css/dataTables.responsive.css</li>
+<li>CSA-Enhanced-Operations/assets/css/dataTables.combined.css</li>
 <li>CSA-Enhanced-Operations/assets/fonts/glyphicons.*</li>
 <li>CSA-Enhanced-Operations/assets/js/bootstrap-toggle.js</li>
 <li>CSA-Enhanced-Operations/assets/js/bootstrap-toggle.min.js</li>
 <li>CSA-Enhanced-Operations/assets/js/bootstrap.min.js</li>
-<li>CSA-Enhanced-Operations/assets/js/dataTables.bootstrap.js</li>
-<li>CSA-Enhanced-Operations/assets/js/bootstrap-colVis.js</li>
-<li>CSA-Enhanced-Operations/assets/js/dataTables.fixedHeader.min.js</li>
-<li>CSA-Enhanced-Operations/assets/js/dataTables.responsive.js</li>
-<li>CSA-Enhanced-Operations/assets/js/jquery.dataTables.min.js</li>
+<li>CSA-Enhanced-Operations/assets/js/dataTables.combined.js</li>
 <li>CSA-Enhanced-Operations/assets/js/jquery.js</li>
 <li>CSA-Enhanced-Operations/assets/js/jquery.min.js</li>
-<li>CSA-Enhanced-Operations/css/audit.css</li>
-<li>CSA-Enhanced-Operations/js/audit.js</li>
+<li>CSA-Enhanced-Operations/css/CSA-Enhanced-Operations.css</li>
+<li>CSA-Enhanced-Operations/js/CSA-Enhanced-Operations.js</li>
 <li>CSA-Enhanced-Operations/pages/getSubs.jsp</li>
 <li>CSA-Enhanced-Operations/pages/action.jsp</li>
 <li>CSA-Enhanced-Operations/index.jsp<br>
@@ -131,113 +123,84 @@
 <tr>
 <th>Name</th>
 <th>Description</th>
+<th>Default</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>MPP_HOST</td>
-<td>The url of a MPP instance, Required for Consumer Admin Links  e.g https://localhost:8089/</td>
+<td>The url of a MPP instance, Required for Consumer Admin Links</td>
+<td>https://localhost:8089/</td>
 </tr>
 <tr>
 <td>DATA_URL</td>
-<td>The path to the URL for retrieving the Subscriptions default. getSubs.jsp</td>
+<td>The path to the URL for retrieving the Subscriptions</td>
+<td>pages/getSubs.jsp</td>
 </tr>
 <tr>
 <td>ENABLE_CONSUMER_ADMIN_LINKS</td>
-<td>Set as false disable direct links to Manage Subscriptions as Consumer admin</td>
+<td>Set as false to disable direct links to Manage Subscriptions as Consumer Admin</td>
+<td>true</td>
 </tr>
 <tr>
 <td>ENABLE_CANCEL_LINKS</td>
-<td>Set as false to disable cancel subscription functionality</td>
+<td>Set as false to disable Cancel subscription functionality</td>
+<td>true</td>
 </tr>
 <tr>
 <td>ENABLE_RESUME_LINKS</td>
 <td>Set as false to disable resuming paused subscription functionality</td>
+<td>true</td>
 </tr>
 <tr>
 <td>ENABLE_DELETE_LINKS</td>
 <td>Set as false to disable deleting offline subscription functionality</td>
+<td>true</td>
 </tr>
 <tr>
 <td>REQUIRE_CONFIRMATION</td>
 <td>Set as false to determine the default behaviour regarding confirmation prompts</td>
+<td>true</td>
 </tr>
 <tr>
 <td>SHOW_RETIRED</td>
-<td>Set as false to only show active artifacts (Can be overriden on Load)</td>
-</tr>
-<tr>
-<td>DEFAULT_DISPLAY_LENGTH</td>
-<td>How many rows should be displayed (Default 25, Possible values 10,25,50 or ALL)</td>
+<td>Choose weather to include retired artifacts by default</td>
+<td>false</td>
 </tr>
 <tr>
 <td>USE_FIXED_HEADER</td>
 <td>Set as false to disable the fixed header behaviour</td>
+<td>true</td>
+</tr>
+<tr>
+<td>CACHE_NAME</td>
+<td>The name of the http cookie used for storing user preferences</td>
+<td>CSA-E-O-Conf</td>
 </tr>
 <tr>
 <td>CONFIG_CACHE</td>
-<td>Integer representing the number of days end user configuration remain in browser cache (Default 5)</td>
+<td>Integer representing the number of days end user configuration remain in browser cache</td>
+<td>5</td>
+</tr>
+<tr>
+<td>DEFAULT_DISPLAY_LENGTH</td>
+<td>Set the Default number of rows should be displayed, possible values 10,25,50 or ALL</td>
+<td>25</td>
 </tr>
 <tr>
 <td>SEARCH_TERM</td>
-<td>The default value set in the Datatables search field (Default Empty String)</td>
+<td>The default value set in the Datatables search field</td>
+<td>""</td>
 </tr>
 <tr>
-<td>VISIBLE</td>
-<td>An object array of column visibility which is shown in the sortable table, true = show in table, false = show only in detail (drilldown).</td>
+<td>COLUMNS</td>
+<td>An object array of columns show in the datatable, the order here is the default order the columns show in, the titles represent the column headers, the data values should not be changed, add/remove the call "none" to move the column into the child row (drill down).</td>
+<td></td>
 </tr>
 </tbody>
 </table>
 </li>
 </ol>
-
-<hr>
-
-<h2>
-<a id="-release-notes-v02" class="anchor" href="#-release-notes-v02" aria-hidden="true"><span class="octicon octicon-link"></span></a> Release notes v.0.2</h2>
-
-<ul>
-<li>Updated README.md
-
-<ul>
-<li>File Path corrections</li>
-<li>Added Step about Dashboard CSS</li>
-<li>Updated Tile Title (to Include Experimental)</li>
-</ul>
-</li>
-<li>Fixed Delete Action URL path (now is relative)</li>
-<li>New Render for Retired Column to avoid filter clash with Subscription Status. (Active renamed to "Not Retired")</li>
-<li>Public Action Failed can now be cancelled.</li>
-<li>Updated Fullscreen to use iframe overlay instead of new page load (To prevent lose of filter)</li>
-<li>Removed NoCache include.</li>
-<li>Added colVis plugin to customize which columns are displayed.</li>
-<li>Added CACHE_CONFIG setup parameter (for storing Cached configuration setup)</li>
-<li>Removed SHOW_ICON Setup (deprecated due to ColVis plugin)</li>
-<li>Added DEFAULT_DISPLAY_LENGTH to setup </li>
-<li>Added VISIBLE config attribute to set the default columns which are visible.</li>
-<li>Add StyleRule for Icons when displyed in the row detail</li>
-</ul>
-
-<hr>
-
-<h2>
-<a id="-release-notes-v03" class="anchor" href="#-release-notes-v03" aria-hidden="true"><span class="octicon octicon-link"></span></a> Release notes v.0.3</h2>
-
-<ul>
-<li>Add Restore Settings button which will clear any cached configuration and reload the datatable.</li>
-<li>Added SEARCH_TERM to the setup config</li>
-</ul>
-
-<hr>
-
-<h2>
-<a id="-release-notes-v04" class="anchor" href="#-release-notes-v04" aria-hidden="true"><span class="octicon octicon-link"></span></a> Release notes v.0.4</h2>
-
-<ul>
-<li>Typo in Delete Sub condition.</li>
-<li>Updated Default visible config to include user.</li>
-<li>Updated Default Retired to be hidden.</li>
-</ul>
       </section>
       <footer>
         <p>This project is maintained by <a href="https://github.com/alexevansigg">alexevansigg</a></p>
