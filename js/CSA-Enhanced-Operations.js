@@ -1,29 +1,44 @@
-  /*  File: audit.js
+  /*  File: CSA-Enhanced-Operations.js
         Authour: Alex Evans
-        Description: Contains the datatables initialization and accompanying event listeners for the Audit/Operation page.
+        Description: Contains the datatables initialization and accompanying event listeners for the Enhanced Operations page.
     */
   /* Initialize the common variables */
-  var currentVersion, auditDT, myRow, rowData, columns, dataUrl, openSub, openInst, modifySub, viewTop, cancelSub, deleteSub, config, cookieSetup, colvis;
-  currentVersion = 0.4;
-  cookieSetup = readCookie("auditConf");
+  var currentVersion, myRow, rowData, columns, dataUrl, openSub, openInst, modifySub, viewTop, cancelSub, deleteSub, config, cookieSetup;
+  currentVersion = 0.5;
+  cookieSetup = readCookie(setup.CACHE_NAME);
 
   /* when the cookie doesnt exist or the version is superceded override it */
   if (!cookieSetup || JSON.parse(cookieSetup).currentVersion != currentVersion) {
-      setup.currentVersion = currentVersion;
-      cookieSetup = createCookie("auditConf", JSON.stringify(setup), setup.CONFIG_CACHE);
-      cookieSetup = readCookie("auditConf");
+    setup.currentVersion = currentVersion;
+     
+    /* Clone the column data to the column classes */
+    for(var i in setup.COLUMNS) {
+       var colClass= setup.COLUMNS[i].class;
+       var colData = setup.COLUMNS[i].data;
+       setup.COLUMNS[i].class = (typeof(colClass) != 'undefined') ? colClass + " " + colData : colData;
+    } 
+    /* Add the Options Row */
+    setup.COLUMNS.push({"title":"Options","data":"options","class":"options all"});
+
+    cookieSetup = createCookie(setup.CACHE_NAME, JSON.stringify(setup), setup.CONFIG_CACHE);
+    cookieSetup = readCookie(setup.CACHE_NAME);
   }
 
 
   /* Copy the initial config to the setup param */
   config = JSON.parse(cookieSetup);
 
+  /* Clone the column data to the Column classes */
+  for(var i in config.COLUMNS) {
+    var colClass= config.COLUMNS[i].class;
+    var colData = config.COLUMNS[i].data;
+    config.COLUMNS[i].class = (typeof(colClass) != 'undefined') ? colClass + " " + colData : colData;
+  } 
+
   /* Read the Default Setup Params */
   config.REQUIRE_CONFIRMATION = (config.REQUIRE_CONFIRMATION) ? "checked" : "";
   config.SHOW_RETIRED = (config.SHOW_RETIRED) ? "checked" : "";
   config.URL_PARAMS = (config.SHOW_RETIRED) ? "?retired=true" : "";
-
-
 
   // Some Handlers for Cookies
   function createCookie(name, value, days) {
@@ -50,7 +65,6 @@
       createCookie(name, "", -1);
   }
 
-
   /* This function will convert the JSON into CSV */
   function JSON2CSV(objArray) {
     var array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
@@ -74,19 +88,26 @@
                 var value = array[i][index] + "";
                 line += '"' + value.replace(/"/g, '""') + '",';
             }
-        
-
-        /* else {
-            for (var index in array[i]) {
-                line += array[i][index] + ',';
-            }
-        } */
 
         line = line.slice(0, -1);
         str += line + '\r\n';
     }
     return str;
     
+}
+/* function to get Column index by class */
+function getColumnIndexesWithClass( columns, className ) {
+    var indexes = [];
+    $.each( columns, function( index, columnInfo ) {
+        var re = '/\b'+columnInfo.class+'\b/';
+        if ( re.match(  className) ) {
+       
+          indexes.push( index );
+        }
+
+    } );
+ 
+    return indexes;
 }
 
 /* This function makes a download link to the CSV */
@@ -118,132 +139,92 @@
 }
 
   $(document).ready(function() {
-      /*
-        Column Header Definitions for audit Table
-        Note: The Data fields correlate directly to what is returned in the JSON object of getSubs.jsp
-        Note2: The class none will move the column to the drill down.
-        Note3: The clsss never will allow for hidden fields.
-      */
-      columns = [{
-          "title": "Subscription Name",
-          "data": "sub_name",
-          "class": "none"
-      }, {
-          "title": "Icon",
-          "data": "icon_url",
-          "class": "csaIcons text-center none",
-          "sWidth": "45px"
-      }, {
-          "title": "Instance Name",
-          "data": "inst_name",
-          "class": "none"
-      }, {
-          "title": "Owner Group",
-          "data": "owner",
-          "class": "text-center none"
-      }, {
-          "title": "Start Date",
-          "data": "start_date",
-          "class": "text-center none"
-      }, {
-          "title": "End Date",
-          "data": "end_date",
-          "class": "text-center none"
-      }, {
-          "title": "Subs State",
-          "data": "sub_status",
-          "class": "text-center none",
-          "sWidth": "100px"
-      }, {
-          "title": "Inst State",
-          "data": "inst_state",
-          "class": "text-center none"
-      }, {
-          "title": "Retired Artifact",
-          "data": "artifact_state",
-          "class": "retired none"
-      }, {
-          "title": "Instance Id",
-          "data": "inst_id",
-          "class": "none"
-      }, {
-          "title": "Subscription Id",
-          "data": "DT_RowId",
-          "class": "none"
-      }, {
-          "title": "User",
-          "data": "user",
-          "class": "none"
-      }, {
-          "title": "User Common Name",
-          "data": "common",
-          "class": "none"
-      }, {
-          "title": "User Email",
-          "data": "email",
-          "class": "none"
-      }, {
-          "title": "Catalog Id",
-          "data": "cat_id",
-          "class": "none"
-      }, {
-          "title": "Offering Name",
-          "data": "offering_name",
-          "class": "none"
-      }, {
-          "title": "Organisation Id",
-          "data": "org_id",
-          "class": "none"
-      }, {
-          "title": "Organisation Name",
-          "data": "org_name",
-          "class": "none"
-      }, {
-          "title": "Options",
-          "data": "options",
-          "width": "175px",
-          "class": "text-center none"
-      }];
-
-      /*Set the visibility of columns*/
-      for (col in columns) {
-          for (vis in config.VISIBLE) {
-              if (columns[col].data == vis && config.VISIBLE[vis]) {
-                  columns[col].class = columns[col].class.replace("none", "");
-              }
-          }
-      }
-
+     
+      
       /* Builds a direct Link to a Subscription Page in Operations Tab */
       function makeSubLink(subId) {
           return "<a class='btn btn-default  btn-sm' type='button' data-toggle='tooltip' data-placement='top' title='Open Subscription' href='/csa/operations/index.jsp#subscription/" + subId + "/overview' target='new'><span class='glyphicon glyphicon-share-alt' aria-hidden='true'></span></a>"
       }
-      auditDT = $('#audit').DataTable({
-          "responsive": true,
-          "lengthMenu": [
+      opsTable = $('#opsTable').DataTable({
+          responsive: true,
+          stateSave:  true,
+          colReorder:  true,
+          autoWidth: false,
+          lengthMenu: [
               [10, 25, 50, -1],
-              [10, 25, 50, "All"]
+              ["10", "25", "50", "All"]
           ],
-          "displayLength": config.DEFAULT_DISPLAY_LENGTH,
-          "oSearch": {
-              "sSearch": config.SEARCH_TERM
-          },
           // getIPs is returns a JSON Array with one object for each Entry Optionally if retired default is on the add retired subscriptions to default url
-          "ajax": config.DATA_URL + config.URL_PARAMS,
-          // Autowidth false prevents some funny resizing stuff.
-          "autoWidth": false,
+          ajax: config.DATA_URL + config.URL_PARAMS,
+      
           // Columns are defined above.
-          "columns": columns,
+          columns: config.COLUMNS,
+          buttons: [
+            { text: '<span class="glyphicon glyphicon-eye-open"></span>',
+              titleAttr: 'Set Column Visibility',
+              extend: 'colvis'   
+            },
+            { text: '<span class="glyphicon glyphicon-copy"></span>',
+              titleAttr: 'Copy to Clipboard',
+              extend: 'copyHtml5'  
+            },
+            { text: '<span class="glyphicon glyphicon-send"></span>',
+              titleAttr: 'Export as CSV',
+              extend: 'csvHtml5'
+            },
+            { text:'<span class="glyphicon glyphicon-refresh"></span>',
+               titleAttr: 'Reload Data',
+              action: function ( e, dt, node, config ) {
+                 dt.ajax.reload();
+              }
+            },
+            { text: '<span class="glyphicon glyphicon-saved"></span>',
+              titleAttr: 'Restore Default Layout',
+              action: function ( e, dt, node, config ) {
+                //Clear the Session and Reload
+                dt.state.clear();
+                cookieSetup = createCookie(setup.CACHE_NAME, JSON.stringify(setup), setup.CONFIG_CACHE);
+                window.location.reload();
+              }
+            },
+            { text:'<span class="glyphicon glyphicon-question-sign"></span>',
+              titleAttr:'About Plugin',
+              action: function ( dt, node ) {
+                $('#helpModal').modal();
+              }
+            },
+            { text:'<span class="glyphicon glyphicon-fullscreen"></span>',
+              titleAttr:'Go Fullscreen',
+              action: function ( e, dt, node, config ) {
+                window.parent.$("iframe").css({
+                  "position": "fixed",
+                  "top": 0
+                });
+               node.hide().next().show();
+               //parent.location.href= window.location.href;
+              }
+            },
+            { text:'<span class="glyphicon glyphicon-resize-small"></span>',
+              titleAttr:'Minimize Table',
+              init: function(dt, node){  node.hide(); },
+              action: function ( e, dt, node, config ) {
+                window.parent.$("iframe").css({
+                  "position": "relative",
+                  "top": 0
+                 });
+                node.hide().prev().show();
+                //window.location.href="/csa/dashboard/index.jsp/dashboard/CSA-Enhanced-Operations"
+              }
+            }
+           ],
           /* Toolbar and Refresh are custom components added for showing retired artifacts and refreshing the table*/
-          "dom": 'lr<"toolbar"><"rightToolbar">ftip',
-         
-          "columnDefs": [
+          dom: 'lr<"toolbar">fBtip',
+          columnDefs: [
               // This Adds dynamic links to the the Options column.
               {
-                  "targets": -1,
+                  "targets": getColumnIndexesWithClass(config.COLUMNS, "options"),
                   "data": "options",
                   "render": function(data, type, full, meta) {
-
 
                       /* Builds a direct Link to a Service Instance Page in MPP (Requires Consumer Admin Impersonation) */
                       openInst = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm openInst' type='button' data-toggle='tooltip' data-placement='top' title='Open Instance (MPP)' href='" + config.MPP_HOST + "myservice/" + full.inst_id + "/catalog/" + full.cat_id + "?fromSub=" + full.DT_RowId + "&onBehalf=" + full.user + "' target='new'><span class='glyphicon glyphicon-share-alt' aria-hidden='true'></span></a>" : "";
@@ -267,7 +248,7 @@
                       if (full.artifact_state == "Retired") {
                           return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + makeSubLink(full.DT_RowId) + "</div></div>";
                       }
-                      /* Paused Subs can cancel and resume but No delete */
+                      /* Paused Subs can cancel and resume but Not delete */
                       else if (full.lifecycle_status == "Transition paused") {
                           return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + makeSubLink(full.DT_RowId) + openInst + modifySub + viewTop + resumeSub + cancelSub + "</div></div>";
                       }
@@ -282,14 +263,14 @@
                   }
               }, {
                   /* Render Icon Imange or N/A */
-                  "targets": 1,
+                  "targets": getColumnIndexesWithClass(config.COLUMNS, "icon_url"),
                   "type": "string",
                   "render": function(data, type, full, meta) {
                       return (data == null) ? '<span class="label label-info">N/A</span>' : '<img alt="instance icon" class="img-thumbnail" src="' + data + '" aria-hidden="true" />';
                   }
               }, {
                   /* Render only a friendly version of the Group Name not the full DN */
-                  "targets": 3,
+                  "targets": getColumnIndexesWithClass( config.COLUMNS, "owner" ),
                   "render": function(data, type, full, meta) {
                       if (data == null) {
                           return '<span class="label label-info">N/A</span>';
@@ -300,13 +281,13 @@
                   }
               }, {
                   /* Render N/A if no End Date exists */
-                  "targets": 5,
+                  "targets": getColumnIndexesWithClass( config.COLUMNS, "end_date" ),
                   "render": function(data, type, full, meta) {
                       return (data == null) ? '<span class="label label-info">N/A</span>' : data;
                   }
               }, {
                   /* Render Label Color based on Subscription Status*/
-                  "targets": 6,
+                  "targets": getColumnIndexesWithClass( config.COLUMNS, "sub_status" ),
                   "render": function(data, type, full, meta) {
                       if (data == "Cancelled") {
                           return '<span class="label label-danger">' + data + '</span>';
@@ -318,7 +299,7 @@
                   }
               }, {
                   /* Render Label Color based on Instance State*/
-                  "targets": 7,
+                  "targets": getColumnIndexesWithClass( config.COLUMNS, "inst_state" ),
                   "render": function(data, type, full, meta) {
                       if (data == "Cancel Failed" || data == "Failed") {
                           return '<span class="label label-danger">' + data + '</span>';
@@ -335,57 +316,21 @@
                   }
               }, {
                   /* Render Not retired if Active */
-                  "targets": 8,
+                  "targets": getColumnIndexesWithClass( config.COLUMNS, "artifact_state" ),
                   "render": function(data, type, full, meta) {
                       return (data == "Active") ? '<span class="label label-success">Not Retired</span>' : '<span class="label label-danger">' + data + '</span>';
                   }
               }
-          ],
-          "fnDrawCallback": function(oSettings) {
-              /* If the Length Is changed then change the cache */
-              if (config.DEFAULT_DISPLAY_LENGTH != oSettings._iDisplayLength) {
-                  config.DEFAULT_DISPLAY_LENGTH = oSettings._iDisplayLength;
-                  createCookie("auditConf", JSON.stringify(config), setup.CONFIG_CACHE);
-              }
-          }
+          ]
       });
 
       /* Fixed Header disabled as not working nicely with responsive table */
       if (config.USE_FIXED_HEADER) {
-          new $.fn.dataTable.FixedHeader(auditDT);
+          new $.fn.dataTable.FixedHeader(opsTable);
       }
 
-      /* Add ColVis functionality - Any change to configuration added to cookie */
-      colvis = new $.fn.dataTable.ColVis(auditDT, {
-          "stateChange": function(iColumn, bVisible) {
-              var colData = columns[iColumn].data;
-              config.VISIBLE[colData] = bVisible;
-              createCookie("auditConf", JSON.stringify(config), setup.CONFIG_CACHE);
-          }
-      });
-      $(colvis.button()).insertAfter('div.rightToolbar');
-
-      /* Ensure the colvis list is rebuilt correctly whenever the button is clicked (to capture visibility changes) */
-      $("div.ColVis").on("click", function() {
-          colvis.rebuild();
-      });
-
-      $("div.colVis, div.rightToolbar").addClass("pull-right");
-
-      /* Add a refresh button to the toolbar */
-      $("div.rightToolbar").html("<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'></div></div>");
-
-      /* Add Buttons for Help, Fullscreen and minimize to the table header*/
-      $("div.rightToolbar .btn-group")
-          .append("<button class='btn btn-default refresh' data-toggle='tooltip' data-placement='bottom' title='Refresh Data'><span class='glyphicon glyphicon-refresh'></span></button>")
-          .append("<button class='btn btn-default export' data-toggle='tooltip' data-placement='bottom' title='Export CSV'><span class='glyphicon glyphicon-send'></span></button>") 
-          .append("<button class='btn btn-default restore' data-toggle='tooltip' data-placement='bottom' title='Restore Defaults' ><span class='glyphicon glyphicon-saved'></span></button>")
-          .append("<button class='btn btn-default help' data-toggle='modal' rel='tooltip' data-target='#helpModal' data-placement='bottom' title='About Plugin'><span class='glyphicon glyphicon-question-sign'></span></button>")
-          .append("<button class='btn btn-default fullscreen'  data-toggle='tooltip' data-placement='bottom' title='Go FullScreen'><span class='glyphicon glyphicon-fullscreen'></span></button>")
-          .append("<button class='btn btn-default embed' data-toggle='tooltip' data-placement='bottom' title='Minimize Table'><span class='glyphicon glyphicon-resize-small'></span></button>");
-
-      /* Hide the minamize on initial load. */
-      $("button.embed").hide();
+      $("div.dt-buttons").addClass("pull-right");
+      $("div.dt-buttons a").data("placement","bottom");
 
       /* Add the Show/Hide Retired buttons */
       $("div.toolbar").addClass("pull-left")
@@ -407,41 +352,21 @@
       });
 
       /* Make friendly tooltip on Action Buttons */
-      $('#audit_wrapper').tooltip({
+      $('#opsTable_wrapper').tooltip({
           "container": "body",
-          "selector": "[data-toggle='tooltip'],[rel='tooltip']"
+          "selector": "div.dt-buttons a,[data-toggle='tooltip'],[rel='tooltip']"
       });
 
       /* Replace the default Search label with a placeholder */
-      $("#audit_filter input").attr({
+      $("#opsTable_filter input").attr({
               "Placeholder": "Search"
-          }).parent().contents()
+          }).parent().addClass("pull-left").contents()
           .filter(function() {
               return this.nodeType == 3; //Node.TEXT_NODE
           }).remove();
 
-      /* On Click Refresh reload the datatable */
-      $("body").on("click", "button.refresh", function() {
-          auditDT.ajax.reload();
-      });
-
-      $("body").on("click", "button.fullscreen", function() {
-          window.parent.$("iframe").css({
-              "position": "fixed",
-              "top": 0
-          });
-          $(this).hide().next().show();
-          //parent.location.href= window.location.href;
-      });
-
-      /* On a Restore force override setup to cookie and refresh */
-      $("body").on("click", "button.restore", function() {
-        cookieSetup = createCookie("auditConf", JSON.stringify(setup), setup.CONFIG_CACHE);
-        location.reload();
-      });
-      
-      $("body").on("click", "button.export", function() {
-        var jsData = auditDT.rows({"search":"applied"}).data();
+     $("body").on("click", "button.export", function() {
+        var jsData = opsTable.rows({"search":"applied"}).data();
         var csvdata =[];
         for (i=0; i < jsData.length; i++){
             csvdata.push(jsData[i]);
@@ -449,18 +374,11 @@
         download(JSON2CSV(csvdata), 'subscriptions.csv', 'text/csv'); 
       });
 
-      $("body").on("click", "button.embed", function() {
-              window.parent.$("iframe").css({
-                  "position": "relative",
-                  "top": 0
-              });
-              $(this).hide().prev().show();
-              //window.location.href="/csa/dashboard/index.jsp#dashboard/main/audit"
-          })
+    
           /* On click Resume do MPP API Resume action */
       $("table").on("click", "button.resumeSub", function() {
           myRow = $(this).closest("tr");
-          rowData = auditDT.row(myRow).data();
+          rowData = opsTable.row(myRow).data();
           var url = "/csa/api/service/subscription/" + rowData["DT_RowId"] + "/resume";
           var token = readCookie("x-csrf-token");
           $.ajax({
@@ -481,7 +399,7 @@
       /* On Click Cancel Sub check for confirmation otherwise trigger cancellation */
       $("table").on("click", "button.cancelSub", function() {
           myRow = $(this).closest("tr");
-          rowData = auditDT.row(myRow).data();
+          rowData = opsTable.row(myRow).data();
           if ($('#reqConfirm').prop('checked')) {
               var message = "<strong>Are you sure</strong> you want to Cancel the Subscription<span class='label label-warning'>" + rowData["subscription"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["user"] + "</span> ?";
               $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'>" + message + "</div>")
@@ -510,7 +428,7 @@
       Todo: the X-Auth-Token doesnt seem to work correctly for this action just yet 
       $("table").on("click","button.deleteSub", function(){
          myRow = $(this).closest("tr");
-         rowData = auditDT.row(myRow).data();
+         rowData = opsTable.row(myRow).data();
          if ($('#reqConfirm').prop('checked')) {
            $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'><strong>Are you sure</strong> you wish to Delete the Subscription<span class='label label-warning'>" + rowData["subscription"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["user"] +"</span> ?</div>")
            .next().find("button.confirmAction").data("action-type","delete");
@@ -533,7 +451,7 @@
       */
       $("table").on("click", "button.deleteSub", function() {
           myRow = $(this).closest("tr");
-          rowData = auditDT.row(myRow).data();
+          rowData = opsTable.row(myRow).data();
           if ($('#reqConfirm').prop('checked')) {
               var message = "<strong>Are you sure</strong> that you wish to Delete the Subscription<span class='label label-warning'>" + rowData["subscription"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["user"] + "</span> ?";
 
@@ -562,21 +480,15 @@
           config.URL_PARAMS = ($(this).prop('checked')) ? "?retired=true" : "";
           config.SHOW_RETIRED = ($(this).prop('checked'));
           /* Catch this new Config Setting */
-          createCookie("auditConf", JSON.stringify(config), setup.CONFIG_CACHE);
-          auditDT.ajax.url(config.DATA_URL + config.URL_PARAMS).load();
+          createCookie(setup.CACHE_NAME, JSON.stringify(config), setup.CONFIG_CACHE);
+          opsTable.ajax.url(config.DATA_URL + config.URL_PARAMS).load();
       })
 
       /* On Click "Use Confirm" reset the confirm flag */
       $('#reqConfirm').change(function() {
           /* Cache this new Config Setting */
           config.REQUIRE_CONFIRMATION = $(this).prop('checked');
-          createCookie("auditConf", JSON.stringify(config), setup.CONFIG_CACHE);
-      });
-
-      /* search.dt is a built in Datatable event */
-      auditDT.on('search.dt', function() {
-          config.SEARCH_TERM = auditDT.search();
-          createCookie("auditConf", JSON.stringify(config), setup.CONFIG_CACHE);
+          createCookie(setup.CACHE_NAME, JSON.stringify(config), setup.CONFIG_CACHE);
       });
 
       /* turn on bootstrap toggle for all checkboxes */

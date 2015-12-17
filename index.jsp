@@ -21,10 +21,8 @@
     <link rel="icon" href="/csa/static/img/favicon.ico" sizes="32x32 48x48" type="image/vnd.microsoft.icon"><!-- Default CSA Favicon -->
     
     <link rel="stylesheet" href="assets/css/bootstrap.min.css"><!-- bootstrap borrowed from CSA -->
-    <link rel="stylesheet" href="assets/css/dataTables.responsive.css"> <!-- datatables responsive plugin -->
-    <link rel="stylesheet" href="assets/css/dataTables.bootstrap.css"> <!-- datatables from datatables.net -->
-    <link rel="stylesheet" href="assets/css/dataTables.fixedHeader.css"> <!-- datatables from datatables.net -->
-    <link rel="stylesheet" href="assets/css/dataTables.colVis.css">
+    <link rel="stylesheet" href="assets/css/dataTables.combined.css"> <!-- datatables responsive plugin -->
+   
     <link rel="stylesheet" href="assets/css/bootstrap-toggle.min.css">
 
     <link rel="stylesheet" type="text/css" media="all" href="css/CSA-Enhanced-Operations.css"><!-- Core style sheet for Audit/Operations plugin -->
@@ -53,11 +51,7 @@
     </script>
     <script src="assets/js/jquery.min.js"></script> <!-- jQuery borrowed from CSA -->
     <script src="assets/js/bootstrap.min.js"></script><!-- bootstrap borrowed from CSA -->
-    <script src="assets/js/jquery.dataTables.min.js"></script><!-- dataTables from datatables.net -->
-    <script src="assets/js/dataTables.bootstrap.js"></script><!-- datatables bootstrap plugin -->
-    <script src="assets/js/dataTables.responsive.js"></script><!-- datatables responsibe plugin -->
-    <script src="assets/js/dataTables.fixedHeader.min.js"></script><!-- datatables responsibe plugin -->
-    <script src="assets/js/dataTables.colVis.js"></script><!-- datatables colVis plugin -->
+    <script src="assets/js/dataTables.combined.js"></script><!-- dataTables from datatables.net -->
     <script src="assets/js/bootstrap-toggle.min.js"></script>
    
    
@@ -71,7 +65,7 @@
       <div class="row">
        <div class="col-md-12">
         <!--Place holder for the datatable -->
-         <table id="audit" class="table table-striped table-bordered table-hover table-condensed" width="100%"></table>
+         <table id="opsTable" class="table table-striped table-bordered table-hover table-condensed" width="100%"></table>
         </div>
       </div>
     </div>

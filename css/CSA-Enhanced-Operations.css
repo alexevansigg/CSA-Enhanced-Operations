@@ -1,23 +1,31 @@
-#audit td{
-  vertical-align: middle;
-}
-#audit td.csaIcons, #audit td.csaIcons img, #audit tr.child img{
-  width:45px;
-  max-width:45px;!important
-}
-#audit_wrapper .input-group, .dataTables_length label{ 
-  margin-right:10px;
-}
-#audit_wrapper div.rightToolbar, div.colVis{
-  margin-left:10px;
+#btn-toolbar{
+  display:none;
 }
 
-ul.ColVis_collection {
-  width:auto;
-  height:400px;
-  overflow-y:scroll;
-  background-color: white;
+/* Force all Headers to text-align center*/
+table.dataTable.table-condensed > thead > tr > th{
+  text-align:center;
 }
+#opsTable td{
+  vertical-align: middle;
+}
+td.options{
+  width:170px;
+}
+#opsTable tbody td.icon_url, #opsTable td.icon_url img, #opsTable tr.icon_url img{
+  width:55px;
+  max-width:55px;!important
+}
+#opsTable_wrapper .input-group, .dataTables_length label{ 
+  margin-right:10px;
+}
+#opsTable_wrapper div.rightToolbar{
+  margin-left:10px;
+}
+.dt-button.buttons-columnVisibility{
+  cursor: pointer
+}
+
 .toggleMargin{
   margin-left:5px;
 }
@@ -32,6 +40,7 @@ div.dataTables_info {
 }
 .tooltip > .tooltip-inner {
   background-color: #fff; 
+  opacity:1;
   color: #000; 
   border: 1px solid #CCCCCC; 
 }

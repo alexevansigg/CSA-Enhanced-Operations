@@ -15,23 +15,16 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
 2. Extract the Plugin contents into the custom-content folder, observe the correct folder structure in the custom-content folder as below:
 
  File Contents / Folder Structure
+
  + CSA-Enhanced-Operations/assets/css/bootstrap-toggle.css
  + CSA-Enhanced-Operations/assets/css/bootstrap-toggle.min.css
  + CSA-Enhanced-Operations/assets/css/bootstrap.min.css
- + CSA-Enhanced-Operations/assets/css/datatables.bootstrap.css
- + CSA-Enhanced-Operations/assets/css/datatables.colVis.css
- + CSA-Enhanced-Operations/assets/css/dataTables.responsive.css
- + CSA-Enhanced-Operations/assets/css/dataTables.fixedHeader.css
- + CSA-Enhanced-Operations/assets/css/dataTables.responsive.css
+ + CSA-Enhanced-Operations/assets/css/dataTables.combined.css
  + CSA-Enhanced-Operations/assets/fonts/glyphicons.*
  + CSA-Enhanced-Operations/assets/js/bootstrap-toggle.js
  + CSA-Enhanced-Operations/assets/js/bootstrap-toggle.min.js
  + CSA-Enhanced-Operations/assets/js/bootstrap.min.js
- + CSA-Enhanced-Operations/assets/js/dataTables.bootstrap.js
- + CSA-Enhanced-Operations/assets/js/bootstrap-colVis.js
- + CSA-Enhanced-Operations/assets/js/dataTables.fixedHeader.min.js
- + CSA-Enhanced-Operations/assets/js/dataTables.responsive.js
- + CSA-Enhanced-Operations/assets/js/jquery.dataTables.min.js
+ + CSA-Enhanced-Operations/assets/js/dataTables.combined.js
  + CSA-Enhanced-Operations/assets/js/jquery.js
  + CSA-Enhanced-Operations/assets/js/jquery.min.js
  + CSA-Enhanced-Operations/css/CSA-Enhanced-Operations.css
@@ -80,27 +73,22 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
 
 6. Configure the settings in csa.war/custom-content/CSA-Enhanced-Operations/setup.json
 
-	Name | Description
+	Name | Description  | Default
 	------------- | -------------
-	MPP_HOST 					| The url of a MPP instance, Required for Consumer Admin Links  e.g https://localhost:8089/
-	DATA_URL 					| The path to the URL for retrieving the Subscriptions default. getSubs.jsp
-	ENABLE_CONSUMER_ADMIN_LINKS | Set as false disable direct links to Manage Subscriptions as Consumer admin
-	ENABLE_CANCEL_LINKS 		| Set as false to disable cancel subscription functionality
-	ENABLE_RESUME_LINKS			| Set as false to disable resuming paused subscription functionality
-	ENABLE_DELETE_LINKS			| Set as false to disable deleting offline subscription functionality
-	REQUIRE_CONFIRMATION		| Set as false to determine the default behaviour regarding confirmation prompts
-	SHOW_RETIRED				| Set as false to only show active artifacts (Can be overriden on Load)
-	DEFAULT_DISPLAY_LENGTH		| How many rows should be displayed (Default 25, Possible values 10,25,50 or ALL)
-	USE_FIXED_HEADER			| Set as false to disable the fixed header behaviour
-	CONFIG_CACHE				| Integer representing the number of days end user configuration remain in browser cache (Default 5)
-	SEARCH_TERM					| The default value set in the Datatables search field (Default Empty String)
-	VISIBLE						| An object array of column visibility which is shown in the sortable table, true = show in table, false = show only in detail (drilldown).
+	MPP_HOST 					| The url of a MPP instance, Required for Consumer Admin Links  | e.g https://localhost:8089/
+	DATA_URL 					| The path to the URL for retrieving the Subscriptions          | pages/getSubs.jsp
+	ENABLE_CONSUMER_ADMIN_LINKS | Set as false to disable direct links to Manage Subscriptions as Consumer Admin | true
+	ENABLE_CANCEL_LINKS 		| Set as false to disable Cancel subscription functionality  | true
+	ENABLE_RESUME_LINKS			| Set as false to disable resuming paused subscription functionality | true
+	ENABLE_DELETE_LINKS			| Set as false to disable deleting offline subscription functionality | true
+	REQUIRE_CONFIRMATION		| Set as false to determine the default behaviour regarding confirmation prompts | true
+	SHOW_RETIRED				| Choose weather to include retired artifacts by default | false
+	USE_FIXED_HEADER			| Set as false to disable the fixed header behaviour | true
+  CACHE_NAME            | The name of the http cookie used for storing user preferences | CSA-E-O-Conf
+	CONFIG_CACHE				| Integer representing the number of days end user configuration remain in browser cache | 5
+  DEFAULT_DISPLAY_LENGTH    | Set the Default number of rows should be displayed, possible values 10,25,50 or ALL | 25
+	SEARCH_TERM					| The default value set in the Datatables search field | "<Empty String>"
+	COLUMNS						| An object array of columns show in the datatable, the order here is the default order the columns show in, the titles represent the column headers, the data values should not be changed, add/remove the call "none" to move the column into the child row (drill down). | 
 
+}
 
----
-#### Known Issues
-
-1. If not signed into MPP organisation then Consumer Admin links may redirect to incorrect login screen (needs some attention)
-2. After session timeout Refresh request on Datatable throws json error instead of redirecting to login.
-3. No visual feedback on refresh action (unless the data response has changed)
-4. FixedHeader sometimes doesn't align to column widths
