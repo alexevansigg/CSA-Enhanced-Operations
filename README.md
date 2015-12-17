@@ -74,7 +74,7 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
 6. Configure the settings in csa.war/custom-content/CSA-Enhanced-Operations/setup.json
 
 	Name | Description  | Default
-	------------- | -------------
+	------------- | ------------- |
 	MPP_HOST 					| The url of a MPP instance, Required for Consumer Admin Links  | e.g https://localhost:8089/
 	DATA_URL 					| The path to the URL for retrieving the Subscriptions          | pages/getSubs.jsp
 	ENABLE_CONSUMER_ADMIN_LINKS | Set as false to disable direct links to Manage Subscriptions as Consumer Admin | true
