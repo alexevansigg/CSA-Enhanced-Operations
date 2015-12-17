@@ -175,7 +175,10 @@ function getColumnIndexesWithClass( columns, className ) {
             { text:'<span class="glyphicon glyphicon-refresh"></span>',
                titleAttr: 'Reload Data',
               action: function ( e, dt, node, config ) {
-                 dt.ajax.reload();
+                $(".glyphicon-refresh").addClass("gly-spin");
+                 dt.ajax.reload( function(){
+                  $(".glyphicon-refresh").removeClass("gly-spin");
+                 });
               }
             },
             { text: '<span class="glyphicon glyphicon-saved"></span>',
@@ -481,7 +484,11 @@ function getColumnIndexesWithClass( columns, className ) {
           config.SHOW_RETIRED = ($(this).prop('checked'));
           /* Catch this new Config Setting */
           createCookie(setup.CACHE_NAME, JSON.stringify(config), setup.CONFIG_CACHE);
-          opsTable.ajax.url(config.DATA_URL + config.URL_PARAMS).load();
+          $(".glyphicon-refresh").addClass("gly-spin");
+          opsTable.ajax.url(config.DATA_URL + config.URL_PARAMS)
+            .load(function(){
+                  $(".glyphicon-refresh").removeClass("gly-spin");
+            });
       })
 
       /* On Click "Use Confirm" reset the confirm flag */
