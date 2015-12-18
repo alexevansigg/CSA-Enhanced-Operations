@@ -28,12 +28,7 @@
   /* Copy the initial config to the setup param */
   config = JSON.parse(cookieSetup);
 
-  /* Clone the column data to the Column classes */
-  for(var i in config.COLUMNS) {
-    var colClass= config.COLUMNS[i].class;
-    var colData = config.COLUMNS[i].data;
-    config.COLUMNS[i].class = (typeof(colClass) != 'undefined') ? colClass + " " + colData : colData;
-  } 
+
 
   /* Read the Default Setup Params */
   config.REQUIRE_CONFIRMATION = (config.REQUIRE_CONFIRMATION) ? "checked" : "";
