@@ -10,7 +10,7 @@ table.dataTable.table-condensed > thead > tr > th{
   vertical-align: middle;
 }
 td.options{
-  width:170px;
+ width: 200px;
 }
 #opsTable tbody td.icon_url, #opsTable td.icon_url img, #opsTable tr.icon_url img{
   width:55px;

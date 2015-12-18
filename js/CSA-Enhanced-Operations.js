@@ -165,6 +165,7 @@ function getColumnIndexesWithClass( columns, className ) {
             },
             { text: '<span class="glyphicon glyphicon-send"></span>',
               titleAttr: 'Export as CSV',
+              title:'Subscriptions',
               extend: 'csvHtml5'
             },
             { text:'<span class="glyphicon glyphicon-refresh"></span>',
