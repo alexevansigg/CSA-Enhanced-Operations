@@ -33,6 +33,7 @@
   /* Read the Default Setup Params */
   config.REQUIRE_CONFIRMATION = (config.REQUIRE_CONFIRMATION) ? "checked" : "";
   config.SHOW_RETIRED = (config.SHOW_RETIRED) ? "checked" : "";
+  config.ADVANCED_SEARCH = (config.ADVANCED_SEARCH) ? "checked" : "";
   config.URL_PARAMS = (config.SHOW_RETIRED) ? "?retired=true" : "";
 
   // Some Handlers for Cookies
@@ -96,7 +97,6 @@ function getColumnIndexesWithClass( columns, className ) {
     $.each( columns, function( index, columnInfo ) {
         var re = '/\b'+columnInfo.class+'\b/';
         if ( re.match(  className) ) {
-       
           indexes.push( index );
         }
 
@@ -157,7 +157,7 @@ function getColumnIndexesWithClass( columns, className ) {
           buttons: [
             { text: '<span class="glyphicon glyphicon-eye-open"></span>',
               titleAttr: 'Set Column Visibility',
-              extend: 'colvis'   
+              extend: 'colvis'
             },
             { text: '<span class="glyphicon glyphicon-copy"></span>',
               titleAttr: 'Copy to Clipboard',
@@ -320,8 +320,38 @@ function getColumnIndexesWithClass( columns, className ) {
                       return (data == "Active") ? '<span class="label label-success">Not Retired</span>' : '<span class="label label-danger">' + data + '</span>';
                   }
               }
-          ]
+          ],
       });
+
+$('#opsTable').on( 'column-visibility.dt', addSearchBar);
+   function addSearchBar(){
+    
+      $("#opsTable thead tr.singleSearch").remove();
+      $('#opsTable thead').append("<tr class='singleSearch'></tr>");
+
+      opsTable.columns().every(function(){
+      /*Add the Search only to the visible columns */
+        if(this.visible() && (!$(this.header()).hasClass("none"))){
+            console.log("Search:",this.search());
+            var header = $(this.header());
+            var title = this.search() || header.text();
+            header.parent().next()
+            .append('<th><input type="text" data-column-index="'+this.index()+'" placeholder="Search '+header.text() +'" value="' + this.search() + '" class="form-control input-sm" /></th>' );
+        }
+      });
+    };
+      
+      /* Delegated Event listener to capture change on Advancded Search */
+      $('#opsTable').on( 'keyup change', "tr.singleSearch input", function () {
+        var index = $(this).data("column-index");
+        if ( opsTable.columns(index).search() !== $(this).value ) {
+          opsTable.columns(index)
+          .search( this.value )
+          .draw();
+          $(this).focus();
+        }
+      });
+      
 
       /* Fixed Header disabled as not working nicely with responsive table */
       if (config.USE_FIXED_HEADER) {
@@ -334,7 +364,8 @@ function getColumnIndexesWithClass( columns, className ) {
       /* Add the Show/Hide Retired buttons */
       $("div.toolbar").addClass("pull-left")
           .append('<input type="checkbox" ' + config.SHOW_RETIRED + ' data-toggle="toggle" data-size="small" id="retired">')
-          .append('<input type="checkbox" ' + config.REQUIRE_CONFIRMATION + ' data-toggle="toggle"  data-size="small"  id="reqConfirm" >');
+          .append('<input type="checkbox" ' + config.REQUIRE_CONFIRMATION + ' data-toggle="toggle"  data-size="small"  id="reqConfirm" >')
+          .append('<input type="checkbox" ' + config.ADVANCED_SEARCH + ' data-toggle="toggle"  data-size="small"  id="advSearch" >');
 
       /* Set Bootstrap Toggle on Retired Checkbox */
       $('#retired').bootstrapToggle({
@@ -350,10 +381,18 @@ function getColumnIndexesWithClass( columns, className ) {
           style: 'toggleMargin'
       });
 
+
+      /* Set Bootstrap Toggle on Confirmation Checkbox */
+      $('#advSearch').bootstrapToggle({
+          on: '<i class="glyphicon glyphicon glyphicon-zoom-in"></i> Advanced',
+          off: '<i class="glyphicon glyphicon glyphicon-zoom-out"></i> Simple',
+          style: 'toggleMargin'
+      });
+
       /* Make friendly tooltip on Action Buttons */
       $('#opsTable_wrapper').tooltip({
-          "container": "body",
-          "selector": "div.dt-buttons a,[data-toggle='tooltip'],[rel='tooltip']"
+          container: "body",
+          selector: "div.dt-buttons a,[data-toggle='tooltip'],[rel='tooltip']"
       });
 
       /* Replace the default Search label with a placeholder */
@@ -491,6 +530,17 @@ function getColumnIndexesWithClass( columns, className ) {
       $('#reqConfirm').change(function() {
           /* Cache this new Config Setting */
           config.REQUIRE_CONFIRMATION = $(this).prop('checked');
+          createCookie(setup.CACHE_NAME, JSON.stringify(config), setup.CONFIG_CACHE);
+      });
+      if (config.ADVANCED_SEARCH) addSearchBar();
+      /* if the Advanced search is turned on the cheange the view and update the cookie */
+      $('#advSearch').change(function() {
+          if ($(this).prop("checked")){
+            addSearchBar();
+          } else{
+             $("tr.singleSearch").remove();
+          }
+          config.ADVANCED_SEARCH = $(this).prop('checked');
           createCookie(setup.CACHE_NAME, JSON.stringify(config), setup.CONFIG_CACHE);
       });
 

@@ -12,6 +12,7 @@
     "CACHE_NAME":"CSA-E-O-Conf",
 	"DEFAULT_DISPLAY_LENGTH":25,
 	"SEARCH_TERM":"",
+    "ADVANCED_SEARCH":true,
     "COLUMNS":[
         {"title": "Subscription Name",     "data": "sub_name" }, 
         {"title": "Icon",                  "data": "icon_url" },

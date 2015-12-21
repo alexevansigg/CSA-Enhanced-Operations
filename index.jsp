@@ -21,7 +21,7 @@
     <link rel="icon" href="/csa/static/img/favicon.ico" sizes="32x32 48x48" type="image/vnd.microsoft.icon"><!-- Default CSA Favicon -->
     
     <link rel="stylesheet" href="assets/css/bootstrap.min.css"><!-- bootstrap borrowed from CSA -->
-    <link rel="stylesheet" href="assets/css/dataTables.combined.css"> <!-- datatables responsive plugin -->
+    <link rel="stylesheet" href="assets/css/dataTables.combined.min.css"> <!-- datatables responsive plugin -->
    
     <link rel="stylesheet" href="assets/css/bootstrap-toggle.min.css">
 
@@ -51,7 +51,7 @@
     </script>
     <script src="assets/js/jquery.min.js"></script> <!-- jQuery borrowed from CSA -->
     <script src="assets/js/bootstrap.min.js"></script><!-- bootstrap borrowed from CSA -->
-    <script src="assets/js/dataTables.combined.js"></script><!-- dataTables from datatables.net -->
+    <script src="assets/js/dataTables.combined.min.js"></script><!-- dataTables from datatables.net -->
     <script src="assets/js/bootstrap-toggle.min.js"></script>
    
    
