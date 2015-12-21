@@ -21,6 +21,9 @@ table.dataTable.table-condensed > thead > tr > th{
 td.options{
  width: 200px;
 }
+#opsTable thead th.icon_url{
+  width:58px;
+}
 #opsTable tbody td.icon_url, #opsTable td.icon_url img, #opsTable tr.icon_url img{
   width:55px;
   max-width:55px!important;
@@ -131,12 +134,6 @@ div.dataTables_info {
     transform: rotate(359deg);
   }
 }
-
-
-
-
-
-
 
 
 

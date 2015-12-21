@@ -101,7 +101,6 @@ function getColumnIndexesWithClass( columns, className ) {
         }
 
     } );
- 
     return indexes;
 }
 
@@ -132,7 +131,19 @@ function getColumnIndexesWithClass( columns, className ) {
     return true;
   }
 }
-
+ function addSearchBar(columns){
+      $("#opsTable thead tr.singleSearch").remove();
+      $('#opsTable thead').append("<tr class='singleSearch'></tr>");
+      opsTable.columns().every(function(){
+        var myheader = $(this.header());
+        if(this.visible() && (!myheader.hasClass("none")) && myheader.is(":visible")){
+          var title = this.search() || myheader.text();
+          var newClass = myheader.attr("class").replace("sorting","").replace("none","");
+          myheader.parent().next()
+          .append('<th class="' + newClass + '"><input type="text" data-column-index="'+this.index()+'" placeholder="Search '+myheader.text() +'" value="' + this.search() + '" class="form-control input-sm" /></th>' );
+        }
+      });
+    };
   $(document).ready(function() {
      
       
@@ -141,10 +152,13 @@ function getColumnIndexesWithClass( columns, className ) {
           return "<a class='btn btn-default  btn-sm' type='button' data-toggle='tooltip' data-placement='top' title='Open Subscription' href='/csa/operations/index.jsp#subscription/" + subId + "/overview' target='new'><span class='glyphicon glyphicon-share-alt' aria-hidden='true'></span></a>"
       }
       opsTable = $('#opsTable').DataTable({
-          responsive: true,
-          stateSave:  true,
-          colReorder:  true,
-          autoWidth: false,
+          responsive:   true,
+          stateSave:    true,
+          colReorder:   true,
+          autoWidth:    false,
+          deferedRender: true,
+          //select:       true,
+          fixedHeader: config.USE_FIXED_HEADER, //config.USE_FIXED_HEADER
           lengthMenu: [
               [10, 25, 50, -1],
               ["10", "25", "50", "All"]
@@ -221,6 +235,8 @@ function getColumnIndexesWithClass( columns, className ) {
           columnDefs: [
               // This Adds dynamic links to the the Options column.
               {
+                  orderable: false,
+                 
                   "targets": getColumnIndexesWithClass(config.COLUMNS, "options"),
                   "data": "options",
                   "render": function(data, type, full, meta) {
@@ -322,23 +338,12 @@ function getColumnIndexesWithClass( columns, className ) {
               }
           ],
       });
-opsTable.on( 'responsive-resize',  addSearchBar); 
+
 $('#opsTable').on( 'column-visibility.dt', addSearchBar);
    
-   function addSearchBar(){
-      $("#opsTable thead tr.singleSearch").remove();
-      $('#opsTable thead').append("<tr class='singleSearch'></tr>");
+opsTable.on('responsive-resize',addSearchBar);
 
-      opsTable.columns().every(function(){
-      /*Add the Search only to the visible columns */
-        if(this.visible() && (!$(this.header()).hasClass("none")) && ($(this).is(":visible"))){
-            var header = $(this.header());
-            var title = this.search() || header.text();
-            header.parent().next()
-            .append('<th><input type="text" data-column-index="'+this.index()+'" placeholder="Search '+header.text() +'" value="' + this.search() + '" class="form-control input-sm" /></th>' );
-        }
-      });
-    };
+  
       
       /* Delegated Event listener to capture change on Advancded Search */
       $('#opsTable').on( 'keyup change', "tr.singleSearch input", function () {
@@ -351,11 +356,6 @@ $('#opsTable').on( 'column-visibility.dt', addSearchBar);
         }
       });
       
-
-      /* Fixed Header disabled as not working nicely with responsive table */
-      if (config.USE_FIXED_HEADER) {
-          new $.fn.dataTable.FixedHeader(opsTable);
-      }
 
       $("div.dt-buttons").addClass("pull-right");
       $("div.dt-buttons a").data("placement","bottom");

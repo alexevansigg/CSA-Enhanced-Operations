@@ -15,7 +15,7 @@
     "ADVANCED_SEARCH":true,
     "COLUMNS":[
         {"title": "Subscription Name",     "data": "sub_name" }, 
-        {"title": "Icon",                  "data": "icon_url" },
+        {"title": "Icon",                  "data": "icon_url",          "class":"text-center" },
         {"title": "Instance Name",         "data": "inst_name"},
         {"title": "Owner Group",           "data": "owner",             "class":"text-center"},
         {"title": "Start Date",            "data": "start_date"}, 
