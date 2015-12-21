@@ -252,7 +252,7 @@ function getColumnIndexesWithClass( columns, className ) {
                           return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + makeSubLink(full.DT_RowId) + openInst + modifySub + viewTop + resumeSub + cancelSub + "</div></div>";
                       }
                       /* Active Subs get all options except Delete */
-                      else if (full.inst_state == "Active" || full.inst_state == "Cancel Failed" || full.inst_state == "Public Action Failed") {
+                      else if (full.inst_state == "Active" || full.inst_state == "Cancel Failed" || full.inst_state == "Public Action Failed" || full.inst_state == "Modify Failed") {
                           return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + makeSubLink(full.DT_RowId) + openInst + modifySub + viewTop + cancelSub + "</div></div>";
                       }
                       /* If its not active then we only show the delete subscription button if the Instance is Canceled and we don't show the Cancel Button*/
@@ -322,12 +322,10 @@ function getColumnIndexesWithClass( columns, className ) {
               }
           ],
       });
-opsTable.on( 'responsive-resize',  addSearchBar);
- 
-  
+opsTable.on( 'responsive-resize',  addSearchBar); 
 $('#opsTable').on( 'column-visibility.dt', addSearchBar);
+   
    function addSearchBar(){
-    
       $("#opsTable thead tr.singleSearch").remove();
       $('#opsTable thead').append("<tr class='singleSearch'></tr>");
 
@@ -440,26 +438,35 @@ $('#opsTable').on( 'column-visibility.dt', addSearchBar);
           myRow = $(this).closest("tr");
           rowData = opsTable.row(myRow).data();
           if ($('#reqConfirm').prop('checked')) {
-              var message = "<strong>Are you sure</strong> you want to Cancel the Subscription<span class='label label-warning'>" + rowData["subscription"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["user"] + "</span> ?";
+              var message = "<strong>Are you sure</strong> you want to Cancel the Subscription<span class='label label-warning'>" + rowData["sub_name"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["user"] + "</span> ?";
               $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'>" + message + "</div>")
                   .next().find("button.confirmAction").data("action-type", "cancel");
               $("#confirmModal").modal();
           } else {
-              var url = "/csa/api/service/subscription/" + rowData["DT_RowId"] + "/cancel";
-              var token = readCookie("x-csrf-token");
-              $.ajax({
-                  type: "POST",
-                  "url": url,
-                  headers: {
-                      "x-csrf-token": token
-                  },
-                  success: function(response) {
-                      $("#responseModal").find("div.modal-body").html("Subscription Cancelled").end().modal();
-                  },
-                  failure: function(response) {
-                      $("#responseModal").find("div.modal-body").html("Something went wrong").end().modal();
-                  }
-              });
+            //Use Legacy API for cancel Failed because ConsumptionAPI dont like cancelling failed stuff.
+              if(rowData["status"] == "Cancel Failed"){
+                var url = "pages/action.jsp?action=Cancel&subId=" + rowData["DT_RowId"] + "&catId=" + rowData["cat_id"];
+                $.get(url, function(response) {
+                 $("#responseModal").find("div.modal-body").html(response).end().modal();
+                });
+          
+              } else{
+                var url = "/csa/api/service/subscription/" + rowData["DT_RowId"] + "/cancel";
+                var token = readCookie("x-csrf-token");
+                $.ajax({
+                    type: "POST",
+                    "url": url,
+                    headers: {
+                        "x-csrf-token": token
+                    },
+                    success: function(response) {
+                        $("#responseModal").find("div.modal-body").html("Subscription Cancelled").end().modal();
+                    },
+                    failure: function(response) {
+                        $("#responseModal").find("div.modal-body").html("Something went wrong").end().modal();
+                    }
+                });
+              }   
           }
       });
 
@@ -490,17 +497,20 @@ $('#opsTable').on( 'column-visibility.dt', addSearchBar);
       */
       $("table").on("click", "button.deleteSub", function() {
           myRow = $(this).closest("tr");
+           var icon = $(this).find("span");
           rowData = opsTable.row(myRow).data();
           if ($('#reqConfirm').prop('checked')) {
-              var message = "<strong>Are you sure</strong> that you wish to Delete the Subscription<span class='label label-warning'>" + rowData["subscription"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["user"] + "</span> ?";
+              var message = "<strong>Are you sure</strong> that you wish to Delete the Subscription<span class='label label-warning'>" + rowData["sub_name"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["user"] + "</span> ?";
 
               $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'>" + message + "</div>")
                   .next().find("button.confirmAction").data("action-type", "delete");
               $("#confirmModal").modal();
           } else {
               var url = "pages/action.jsp?action=delete&subId=" + rowData["DT_RowId"] + "&catId=" + rowData["cat_id"];
+              icon.addClass("gly-spin");
               $.get(url, function(response) {
                   $("#responseModal").find("div.modal-body").html(response).end().modal();
+                   icon.removeClass("gly-spin");
               });
           }
       });
@@ -510,7 +520,7 @@ $('#opsTable').on( 'column-visibility.dt', addSearchBar);
           var myAction = $(this).data("action-type");
           var url = "pages/action.jsp?action=" + myAction + "&subId=" + rowData["DT_RowId"] + "&catId=" + rowData["cat_id"];
           $.get(url, function(response) {
-              $("#responseModal").find("div.modal-body").html(response).end().modal();
+            $("#responseModal").find("div.modal-body").html(response).end().modal();
           });
       });
 
