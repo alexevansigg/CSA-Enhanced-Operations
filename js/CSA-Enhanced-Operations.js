@@ -322,7 +322,9 @@ function getColumnIndexesWithClass( columns, className ) {
               }
           ],
       });
-
+opsTable.on( 'responsive-resize',  addSearchBar);
+ 
+  
 $('#opsTable').on( 'column-visibility.dt', addSearchBar);
    function addSearchBar(){
     
@@ -331,8 +333,7 @@ $('#opsTable').on( 'column-visibility.dt', addSearchBar);
 
       opsTable.columns().every(function(){
       /*Add the Search only to the visible columns */
-        if(this.visible() && (!$(this.header()).hasClass("none"))){
-            console.log("Search:",this.search());
+        if(this.visible() && (!$(this.header()).hasClass("none")) && ($(this).is(":visible"))){
             var header = $(this.header());
             var title = this.search() || header.text();
             header.parent().next()
