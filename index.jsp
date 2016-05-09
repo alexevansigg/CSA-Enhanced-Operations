@@ -3,7 +3,7 @@
   - Date: 23/10/2014
   - Copyright Notice: Copyright 2015 Hewlett-Packard 
   - @(#)
-  - Description: audit.jsp is a custom Servelet designed to make managing CSA subscritpion easier.
+  - Description: index.jsp is part of the CSA Enhanced Operations custom Servelet designed to make managing CSA subscritpion easier.
   - It makes extensive use of the Datatables library more information can be found at http://datatables.net .
   --%>
 <%@ page import="java.util.*" %>
@@ -20,7 +20,7 @@
   <head>
     <link rel="icon" href="/csa/static/img/favicon.ico" sizes="32x32 48x48" type="image/vnd.microsoft.icon"><!-- Default CSA Favicon -->
     
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css"><!-- bootstrap borrowed from CSA -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css"><!-- bootstrap 3.3.6 -->
     <link rel="stylesheet" href="assets/css/dataTables.combined.min.css"> <!-- datatables responsive plugin -->
    
     <link rel="stylesheet" href="assets/css/bootstrap-toggle.min.css">
