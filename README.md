@@ -94,3 +94,16 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
 	COLUMNS						| An object array of columns show in the datatable, the order here is the default order the columns show in, the titles represent the column headers, the data values should not be changed, add/remove the call "none" to move the column into the child row (drill down). | 
 
 
+7. Update user partial path depending on csa version. This is on line 16 in the index.jsp
+
+Original Code
+
+```javascript
+<%@include file="/components/pages/partials/user.jsp" %>
+ ```
+
+ If using CSA 4.5 or greater replace with:
+
+ ```javascript
+<%@include file="/html-lib/pages/partials/user.jsp" %>
+ ```

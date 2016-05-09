@@ -12,7 +12,7 @@
     response.setHeader("Pragma", "no-cache"); //HTTP 1.0
     response.setDateHeader("Expires", 0);
 %>
-<!-- Renive this line if the page doesnt exist in your version of csa -->
+
 <%@include file="/components/pages/partials/user.jsp" %>
 
 
