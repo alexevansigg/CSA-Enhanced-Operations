@@ -37,8 +37,10 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
  + CSA-Enhanced-Operations/README.md
  + CSA-Enhanced-Operations/setup.json
 
-3. Add the following entry to the csa.war/dashboard/config.json
-	(inside main.tiles array or in sub panel see **Configuration guide** if unsure how to manipulate this file)
+3. Add the corresponsding entry to the csa.war/dashboard/config.json depending on the installed csa version.
+  (inside main.tiles array or in sub panel see **Configuration guide** if unsure how to manipulate this file)
+  
+  **CSA 4.2**
   ```JSON
   	{
   		"id": "CSA-Enhanced-Operations",
@@ -52,6 +54,21 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
   		"roles": ["CSA_ADMIN"]
   	}
   ```
+  **CSA 4.6**
+  ```JSON 
+  	{
+  		"id": "CSA-Enhanced-Operations",
+  		"name": "CSA-Enhanced-Operations",
+  		"description": "CSA-Enhanced-Operations_description",
+  		"enabled": true,
+  		"style": "custom-tile-header",
+  		"type": "iframe",
+  		"url": "/csa/custom-content/CSA-Enhanced-Operations/",
+  		"helptopic": "console_help",
+  		"roles": ["CSA_ADMIN"]
+  	}
+  ```
+
 4. Open the file csa.war/dashboard/messages/common/messages.properties and location section entitled:
   ```
   # Page titles and descriptions, used for the dashboard tiles and for navigation views
@@ -94,16 +111,14 @@ This plugin allows a *Super Admin* to manage Subscriptions across multiple users
 	COLUMNS						| An object array of columns show in the datatable, the order here is the default order the columns show in, the titles represent the column headers, the data values should not be changed, add/remove the call "none" to move the column into the child row (drill down). | 
 
 
-7. Update user partial path depending on csa version. This is on line 16 in the index.jsp
+7. Update user partial path located on line 16 of the index.jsp depending on csa version. 
 
-Original Code
+  **CSA 4.2**
+  ```javascript
+  <%@include file="/components/pages/partials/user.jsp" %>
+  ```
 
-```javascript
-<%@include file="/components/pages/partials/user.jsp" %>
- ```
-
- If using CSA 4.5 or greater replace with:
-
- ```javascript
-<%@include file="/html-lib/pages/partials/user.jsp" %>
- ```
+   **CSA 4.5+**
+  ```javascript
+  <%@include file="/html-lib/pages/partials/user.jsp" %>
+  ```
