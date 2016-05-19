@@ -1,40 +1,40 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>CSA Enhanced Operations by alexevansigg</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
 
-    <link rel="stylesheet" href="stylesheets/styles.css">
-    <link rel="stylesheet" href="stylesheets/github-light.css">
-    <meta name="viewport" content="width=device-width">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
+
+    <title>CSA Enhanced Operations by alexevansigg</title>
   </head>
+
   <body>
-    <div class="wrapper">
-      <header>
+    <header>
+      <div class="inner">
         <h1>CSA Enhanced Operations</h1>
-        <p>An Extension to CSA 4.x for Super Users</p>
+        <h2>An Extension to CSA 4.x for Super Users</h2>
+        <a href="https://github.com/alexevansigg/CSA-Enhanced-Operations" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
 
-        <p class="view"><a href="https://github.com/alexevansigg/CSA-Enhanced-Operations">View the Project on GitHub <small>alexevansigg/CSA-Enhanced-Operations</small></a></p>
-
-
-        <ul>
-          <li><a href="https://github.com/alexevansigg/CSA-Enhanced-Operations/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/alexevansigg/CSA-Enhanced-Operations/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/alexevansigg/CSA-Enhanced-Operations">View On <strong>GitHub</strong></a></li>
-        </ul>
-      </header>
-      <section>
-        <h1>
-<a id="csa-operations-enhanced" class="anchor" href="#csa-operations-enhanced" aria-hidden="true"><span class="octicon octicon-link"></span></a>CSA Operations Enhanced</h1>
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="csa-operations-enhanced" class="anchor" href="#csa-operations-enhanced" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CSA Operations Enhanced</h1>
 
 <hr>
 
 <h4>
-<a id="version-005" class="anchor" href="#version-005" aria-hidden="true"><span class="octicon octicon-link"></span></a>Version 0.05</h4>
+<a id="version-005" class="anchor" href="#version-005" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Version 0.05</h4>
 
 <hr>
 
@@ -45,7 +45,76 @@
 <hr>
 
 <h4>
-<a id="installation-instructions" class="anchor" href="#installation-instructions" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation Instructions</h4>
+<a id="csa-compatability-matrix" class="anchor" href="#csa-compatability-matrix" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>CSA Compatability Matrix</h4>
+
+<hr>
+
+<table>
+<thead>
+<tr>
+<th>CSA Version</th>
+<th>Database</th>
+<th>CEO Support</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4.2x</td>
+<td>MSSQL</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>4.2x</td>
+<td>ORACLE</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>4.2x</td>
+<td>POSTGRES</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>4.5x</td>
+<td>MSSQL</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>4.5x</td>
+<td>ORACLE</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>4.5x</td>
+<td>POSTGRES</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>4.6</td>
+<td>MSSQL</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>4.6</td>
+<td>ORACLE</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>4.6</td>
+<td>POSTGRES</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>4.7x</td>
+<td>?</td>
+<td>?</td>
+</tr>
+</tbody>
+</table>
+
+<hr>
+
+<h4>
+<a id="installation-instructions" class="anchor" href="#installation-instructions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation Instructions</h4>
 
 <hr>
 
@@ -82,8 +151,10 @@
 </ul>
 </li>
 <li>
-<p>Add the following entry to the csa.war/dashboard/config.json
+<p>Add the corresponsding entry to the csa.war/dashboard/config.json depending on the installed csa version.
 (inside main.tiles array or in sub panel see <strong>Configuration guide</strong> if unsure how to manipulate this file)</p>
+
+<p><strong>CSA 4.2</strong></p>
 
 <div class="highlight highlight-source-json"><pre>  {
       <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>CSA-Enhanced-Operations<span class="pl-pds">"</span></span>,
@@ -93,6 +164,20 @@
       <span class="pl-s"><span class="pl-pds">"</span>style<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>custom-tile-header<span class="pl-pds">"</span></span>,
       <span class="pl-s"><span class="pl-pds">"</span>target<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>iframe<span class="pl-pds">"</span></span>,
       <span class="pl-s"><span class="pl-pds">"</span>data<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>/csa/custom-content/CSA-Enhanced-Operations/<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>helptopic<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>console_help<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>roles<span class="pl-pds">"</span></span>: [<span class="pl-s"><span class="pl-pds">"</span>CSA_ADMIN<span class="pl-pds">"</span></span>]
+  }</pre></div>
+
+<p><strong>CSA 4.6</strong></p>
+
+<div class="highlight highlight-source-json"><pre>  {
+      <span class="pl-s"><span class="pl-pds">"</span>id<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>CSA-Enhanced-Operations<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>name<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>CSA-Enhanced-Operations<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>description<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>CSA-Enhanced-Operations_description<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>enabled<span class="pl-pds">"</span></span>: <span class="pl-c1">true</span>,
+      <span class="pl-s"><span class="pl-pds">"</span>style<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>custom-tile-header<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>type<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>iframe<span class="pl-pds">"</span></span>,
+      <span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>/csa/custom-content/CSA-Enhanced-Operations/<span class="pl-pds">"</span></span>,
       <span class="pl-s"><span class="pl-pds">"</span>helptopic<span class="pl-pds">"</span></span>: <span class="pl-s"><span class="pl-pds">"</span>console_help<span class="pl-pds">"</span></span>,
       <span class="pl-s"><span class="pl-pds">"</span>roles<span class="pl-pds">"</span></span>: [<span class="pl-s"><span class="pl-pds">"</span>CSA_ADMIN<span class="pl-pds">"</span></span>]
   }</pre></div>
@@ -207,14 +292,37 @@
 </tbody>
 </table>
 </li>
+<li>
+<p>Update user partial path located on line 16 of the index.jsp depending on csa version. </p>
+
+<p><strong>CSA 4.2</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">&lt;</span><span class="pl-k">%</span>@include file<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>/components/pages/partials/user.jsp<span class="pl-pds">"</span></span> <span class="pl-k">%</span><span class="pl-k">&gt;</span></pre></div>
+
+<p><strong>CSA 4.5+</strong></p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">&lt;</span><span class="pl-k">%</span>@include file<span class="pl-k">=</span><span class="pl-s"><span class="pl-pds">"</span>/html-lib/pages/partials/user.jsp<span class="pl-pds">"</span></span> <span class="pl-k">%</span><span class="pl-k">&gt;</span></pre></div>
+</li>
 </ol>
-      </section>
-      <footer>
-        <p>This project is maintained by <a href="https://github.com/alexevansigg">alexevansigg</a></p>
-        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
-      </footer>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/alexevansigg/CSA-Enhanced-Operations/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/alexevansigg/CSA-Enhanced-Operations/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/alexevansigg/CSA-Enhanced-Operations"></a> is maintained by <a href="https://github.com/alexevansigg">alexevansigg</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
     </div>
-    <script src="javascripts/scale.fix.js"></script>
-    
+
+  
   </body>
 </html>
