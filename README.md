@@ -8,6 +8,23 @@
 This plugin allows a *Super Admin* to manage Subscriptions across multiple users and organisations efficiently. [See Here](http://alexevansigg.github.io/CSA-Enhanced-Operations)
 
 ---
+#### CSA Compatability Matrix
+---
+
+|CSA Version|Database|CEO Support|
+|-------|---------|-------|
+| 4.2x | MSSQL | Yes |
+| 4.2x | ORACLE | Yes |
+| 4.2x | POSTGRES | Yes |
+| 4.5x | MSSQL | Yes
+| 4.5x | ORACLE | Yes |
+| 4.5x | POSTGRES | Yes |
+| 4.6 | MSSQL | Yes
+| 4.6 | ORACLE | Yes |
+| 4.6 | POSTGRES | Yes |
+| 4.7x | ? | ? |
+
+---
 #### Installation Instructions
 ---
 
