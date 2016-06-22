@@ -19,12 +19,9 @@
 <html>
   <head>
     <link rel="icon" href="/csa/static/img/favicon.ico" sizes="32x32 48x48" type="image/vnd.microsoft.icon"><!-- Default CSA Favicon -->
-    
     <link rel="stylesheet" href="assets/css/bootstrap.min.css"><!-- bootstrap 3.3.6 -->
     <link rel="stylesheet" href="assets/css/dataTables.combined.min.css"> <!-- datatables responsive plugin -->
-   
     <link rel="stylesheet" href="assets/css/bootstrap-toggle.min.css">
-
     <link rel="stylesheet" type="text/css" media="all" href="css/CSA-Enhanced-Operations.css"><!-- Core style sheet for Audit/Operations plugin -->
     
     <script>
@@ -53,24 +50,41 @@
     <script src="assets/js/bootstrap.min.js"></script><!-- bootstrap borrowed from CSA -->
     <script src="assets/js/dataTables.combined.min.js"></script><!-- dataTables from datatables.net -->
     <script src="assets/js/bootstrap-toggle.min.js"></script>
-   
-   
-    <script type="text/javascript" charset="utf8" src="js/CSA-Enhanced-Operations.js"></script><!-- Core script for Audit/Operations Plugin -->
+    <script src="js/CSA-Enhanced-Operations.js"></script><!-- Core script for Audit/Operations Plugin -->
 
 
   </head>
   
   <body class="text-center">
-    <div class="container-fluid" >
-      <div class="row">
-       <div class="col-md-12">
-        <!--Place holder for the datatable -->
-         <table id="opsTable" class="table table-striped table-bordered table-hover table-condensed" width="100%"></table>
-        </div>
-      </div>
-    </div>
+   
 
-    <!-- Modal for Action Confirmation -->
+     <div id="wrapper" class="toggled">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper" >
+            <h4>Notifications</h4>
+            <div class="notification-panel"></div>
+        </div>
+        <!-- /#sidebar-wrapper -->
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12">
+                <!--Place holder for the datatable -->
+                <table id="opsTable" class="table table-striped table-bordered table-hover table-condensed" ></table>
+              </div>
+            </div>
+          </div>
+
+
+        </div><!-- /#page-content-wrapper -->
+      </div><!-- /#wrapper -->
+
+   
+<footer></footer>
+ <!-- Modal for Action Confirmation -->
     <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -113,8 +127,8 @@
             <h4 class="modal-title" id="helpModalLabel">Audit / Operations (Experimental) Help</h4>
           </div>
           <div class="modal-body text-left">
-            <p> This tool is designed to aid with common auditing and operations tasks which in a more efficient fashion than tracing logs and using operations tabs.<p>
-            <p> By default all subscriptions across all consumer organisations. for each subscription there are the following capabilites</p>
+            <p> This tool is designed to aid with common csa operations tasks in a more efficient fashion than using the operations tabs.<p>
+            <p> By default all subscriptions across all consumer organisations are displayed. For each subscription there are the following capabilites</p>
             <ul>
               <li><b>Open Operations tab</b>- Clicking this will open the Entry for the given subscription under the operations tab</li>
               <li><b>Open Modify Subscription</b> - Clicking this will open the subscription modification page in the MPP (Requires Consumer Admin Login)</li>
@@ -129,11 +143,14 @@
             <ul>
               <li><b> Toggle Show retired subscriptions</b> - For these you can also link the the Operations tab page</li>
               <li><b> Toggle Confirmation</b> - This turns of the warning when you want the cancel/delete subscriptions quickly</li>
-              <li><b> Table Search</b> - Generic Search which filters on all fields included in the Datatable</li>
-              <li><b> Refresh Datatable</b> - Refresh table with dataset, maintainign search critera</li>
+              <li><b> Greedy Search</b> - Generic Search which filters on all fields included in the Datatable</li>
+              <li><b> Refresh Datatable</b> - Refresh table with new dataset, maintaining search/filter criterium and sorting</li>
               <li><b> Additional Meta</b> - Click the Down arrow next to the Subscription name to view additional Meta data</li>
+              <li><b> Export to CSV</b> - Export the filtered dataset to a excel readable csv file</li>
+              <li><b> Copy to Clipboard</b> - Copy the filtered dataset to the clipboard</li>
             </ul>
-     <div class="alert alert-warning" role="alert"><b>Note:</b> that this is an Experimental feature which is provided as an unsupported plugin to the CSA MAnagement Console</div>     
+            <div class="alert alert-warning" role="alert"><b>Note:</b> that this is an Experimental feature which is provided as an unsupported plugin to the CSA MAnagement Console
+            </div>     
           </div>
           <div class="modal-footer">
              <button type="button" class="btn btn-primary refresh" data-dismiss="modal">Close</button>
@@ -141,6 +158,5 @@
         </div>
       </div>
     </div><!-- End of help Model -->
-<footer></footer>
   </body>
 </html>

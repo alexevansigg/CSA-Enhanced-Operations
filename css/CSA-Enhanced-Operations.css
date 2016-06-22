@@ -22,11 +22,11 @@ td.options{
  width: 200px;
 }
 #opsTable thead th.icon_url{
-  width:58px;
+  width:48px;
 }
 #opsTable tbody td.icon_url, #opsTable td.icon_url img, #opsTable tr.icon_url img{
-  width:55px;
-  max-width:55px!important;
+  width:45px;
+  max-width:45px!important;
 }
 #opsTable_wrapper .input-group, .dataTables_length label{ 
   margin-right:10px;
@@ -176,3 +176,94 @@ table.dataTable.dtr-inline.collapsed > tbody > tr.parent > td:first-child:before
 table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child:before {
   content:"\e114";
 }
+
+
+
+.icon_counter_red {
+    background-color      : #f00;
+}
+
+.icon_counter_blue {
+    background-color      : #337ab7;
+}
+
+.icon_counter_green {
+    background-color      : #3c3;
+}
+
+.icon_counter {
+    color                 : #fff;
+    font-family           : "Arial";
+    font-size             : 14px;
+    font-weight           : 600;
+    
+    position              : absolute;
+
+    padding               : 0px 2px;
+    margin-top            : 6px;
+    margin-left           : -4px;
+    z-index               : 99;
+    -webkit-border-radius : 3px;
+    -moz-border-radius    : 3px;
+    border-radius         : 3px;
+
+    -webkit-box-shadow    : inset 0px 0px 2px 0px rgba(50, 50, 50, 0.75);
+    -moz-box-shadow       : inset 0px 0px 2px 0px rgba(50, 50, 50, 0.75);
+    box-shadow            : inset 0px 0px 2px 0px rgba(50, 50, 50, 0.75);
+}
+
+.nav {
+    padding: 5px;
+}
+
+/*!
+ * Start Bootstrap - Simple Sidebar (http://startbootstrap.com/)
+ * Copyright 2013-2016 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
+ */
+
+/* Toggle Styles */
+
+
+#wrapper {
+    padding-left: 350px;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#wrapper.toggled {
+   padding-left:0px;
+}
+#wrapper.toggled #sidebar-wrapper {
+    width: 0px;
+    margin-left: -370px;
+}
+#sidebar-wrapper {
+    z-index: 1000;
+    position: fixed;
+    padding: 10px;
+    background: #eee;
+    left: 350px;
+    width: 350px;
+    height: 100%;
+    margin-left: -350px;
+    margin-top:-4px;
+    overflow-y: auto;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+#page-content-wrapper {
+    width: 100%;
+    position: relative; 
+}
+
+#wrapper.toggled #page-content-wrapper {
+    position: relative;
+    margin-right: -0px;
+}
+
