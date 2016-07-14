@@ -7,6 +7,9 @@
 
 This plugin allows a *Super Admin* to manage Subscriptions across multiple users and organisations efficiently. [See Here](http://alexevansigg.github.io/CSA-Enhanced-Operations)
 
+![CSA Enhanced Operations interface](assets/img/capture.png "CSA Example Interface")
+
+
 The following features are exposed in this plugin with the aim of enhancing the CSA Operations experience
 
 - __Global (Greedy) field filter__ – Single Search field across all exposed columns.
