@@ -7,11 +7,28 @@
 
 This plugin allows a *Super Admin* to manage Subscriptions across multiple users and organisations efficiently. [See Here](http://alexevansigg.github.io/CSA-Enhanced-Operations)
 
+The following features are exposed in this plugin with the aim of enhancing the CSA Operations experience
+
+- __Global (Greedy) field filter__ – Single Search field across all exposed columns.
+- __Individual Field Search filters__ - (e.g when you need to filter on a specific columns only)
+- __Sorting__ on any field.
+- __Individual Cancel/Delete/Resume Subscriptions__ - without the annoying drill down into the subscriptions
+- __Modify Subscription Page Link__ - Requires Consumer Admin Session opened in MPP in advance.
+- __Service Instance Page Link__ - Requires Consumer Admin Session opened in MPP in advance.
+- Direct link to __Service Topology View__
+- Direct Link to *standard* __Operations tab Overview__
+- __Export__ Filtered Subscriptions to __Clipboard__ (tab separated) or as __Excel__
+- Optionally Expose _Design bespoke Properties__ from Service Component Model (e.g. IP Address of NIC components or Hostnames of Server Components)
+- __Display Retired Subscriptions__ - Subs that have been deleted from CSA and no longer visible in the *standard* operations console
+- A local cache of the individual user preferences for configuration of the tool.
+- Fullscreen mode - For utilising more screen space.
+
+
 ---
 #### CSA Compatability Matrix
 ---
 
-|CSA Version|Database|CEO Support|
+|CSA Version|Database|CEO Tested|
 |-------|---------|-------|
 | 4.2x | MSSQL | Yes |
 | 4.2x | ORACLE | Yes |
