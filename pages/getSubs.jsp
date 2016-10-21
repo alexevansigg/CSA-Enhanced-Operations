@@ -1,7 +1,6 @@
 <%-- 
   - Author(s): Alexander Evans (Hewlett-Packard)
   - Date: 23/10/2014
-  - Copyright Notice: Copyright 2014 Hewlett-Packard Schweiz
   - @(#)
   - Description: getSubs.jsp is a custom servlet which will query a list of subscriptions from CSA and format it into a json object
   - you can pass the parameter retired=false to omit the retired subscriptions from the json object (this can drastically reduce the 

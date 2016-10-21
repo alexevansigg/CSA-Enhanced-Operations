@@ -4,8 +4,8 @@
 <%@ page import="java.lang.RuntimeException"%>
 <%@ page import="java.io.*"%>
 <%@ page import="org.w3c.dom.*"%>
-<%@page import="java.io.InputStream" %>
-<%@page import="java.util.Properties" %>
+<%@ page import="java.io.InputStream" %>
+<%@ page import="java.util.Properties" %>
 <%@ page import="org.apache.commons.codec.binary.Base64"%>
 <%@ page import="org.apache.commons.lang.StringEscapeUtils"%>
 <%@ page import="org.apache.commons.httpclient.Header" %>
@@ -15,10 +15,6 @@
 <%@ page import="org.apache.commons.httpclient.methods.PostMethod"%>
 <%@page trimDirectiveWhitespaces="true" %>
 <%
-
-
-
-
 
 
 /* Initialize the variables*/

@@ -1,5 +1,5 @@
   /*  File: CSA-Enhanced-Operations.js
-        Authour: Alex Evans
+        Author: Alex Evans
         Description: Contains the datatables initialization and accompanying event listeners for the Enhanced Operations page.
     */
   /* Initialize the common variables */
