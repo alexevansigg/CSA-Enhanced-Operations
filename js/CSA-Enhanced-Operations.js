@@ -241,9 +241,6 @@
   opsUtil.init();
   
 
-
-
-
   $(document).ready(function() {
     opsTable = $('#opsTable').DataTable({
       responsive:   true,
@@ -411,6 +408,10 @@
                     /* Paused Subs can cancel and resume but Not delete */
                     else if (full.lifecycle_status == "Transition paused") {
                         return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.DT_RowId) + openInst + modifySub + viewTop + resumeSub + cancelSub + "</div></div>";
+                    }
+                    /* Paused Subs can cancel and resume but Not delete */
+                    else if (full.sub_status == "Terminated") {
+                        return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.DT_RowId) + openInst + viewTop + cancelSub + "</div></div>";
                     }
                     /* Active Subs get all options except Delete */
                     else if (full.inst_state == "Active" || full.inst_state == "Cancel Failed" || full.inst_state == "Public Action Failed" || full.inst_state == "Modify Failed") {

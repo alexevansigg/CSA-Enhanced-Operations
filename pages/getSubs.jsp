@@ -3,9 +3,9 @@
   - Date: 23/10/2014
   - Copyright Notice: Copyright 2014 Hewlett-Packard Schweiz
   - @(#)
-  - Description: getIPs.jsp is a custom servlet that simply pulls the List of IP Entries from the CloudDBConfig Database
-  And then Formats them into a JSON jsObject Array to be consumed by the IPAM interface in CSA. It feeds from the same 
-  JNDI connection sting as defined in the for the Dynamic Queries used in the Subscriber option modals.
+  - Description: getSubs.jsp is a custom servlet which will query a list of subscriptions from CSA and format it into a json object
+  - you can pass the parameter retired=false to omit the retired subscriptions from the json object (this can drastically reduce the 
+  - response size/time.
   --%>
 <%@ page import="com.hp.csa.web.util.CSAIntegrationHelper" %>
 <%@ page import="java.util.*" %>
@@ -42,7 +42,7 @@ pstmt = null;
 rs = null;
 
 /*
-Initialize the logger
+** Initialize the logger
 */
 Logger log = Logger.getLogger("options.jsp");
 log.setLevel(Level.INFO);
