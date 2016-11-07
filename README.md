@@ -159,3 +159,9 @@ The following features are exposed in this plugin with the aim of enhancing the 
   ```javascript
   <%@include file="/html-lib/pages/partials/user.jsp" %>
   ```
+
+8. As the plugin is installed to a custom directory in the csa webapp it's a good idea to add an intercept-url directive to the ```applicationContext-security.xml```. Adding such a rule will check the user accessing the url is allready authenticated with CSA, if its not an authenticated session it will redirect them to the login page. 
+The plugin itself is allready trying to check the users roles via the script defined in the previous step (user.jsp). But this expects an authenticated user. Adding the below mentioned directive will prevent exceptions being thrown and errors written in the csa.log.
+  ```xml
+  <intercept-url access="isAuthenticated()" pattern="/custom-content/**"/>
+  ```
