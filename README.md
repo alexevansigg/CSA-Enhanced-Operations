@@ -48,7 +48,7 @@ The following features are exposed in this plugin with the aim of enhancing the 
 #### Installation Instructions
 ---
 
-1. Create the folder custom-content (if it doesnt allready exist) in directory **<csahome>/jboss-as/standalone/csa.war**
+1. Create the folder custom-content (if it doesnt allready exist) in directory **<CSAHOME>/jboss-as/standalone/csa.war**
 2. Extract the Plugin contents into the custom-content folder, observe the correct folder structure in the custom-content folder as below:
 
  File Contents / Folder Structure
@@ -75,7 +75,7 @@ The following features are exposed in this plugin with the aim of enhancing the 
  + CSA-Enhanced-Operations/setup.json
 
 3. Add the corresponsding entry to the csa.war/dashboard/config.json depending on the installed csa version.
-  (inside main.tiles array or in sub panel see **Configuration guide** if unsure how to manipulate this file)
+  (inside main.tiles array or in sub panel see **CSA Configuration guide** if unsure how to manipulate this file)
   
   **CSA 4.2**
   ```JSON
@@ -106,7 +106,7 @@ The following features are exposed in this plugin with the aim of enhancing the 
   	}
   ```
 
-4. Open the file csa.war/dashboard/messages/common/messages.properties and location section entitled:
+4. Open the file **csa.war/dashboard/messages/common/messages.properties** and navigate to the section entitled:
   ```
   # Page titles and descriptions, used for the dashboard tiles and for navigation views
   ```
@@ -118,7 +118,7 @@ The following features are exposed in this plugin with the aim of enhancing the 
   	Manage Subscriptions across all organizations efficiently (Experimental)
   ```
 
-5. To fix the CSA styling on the dashboard you can add the following css snippet to the end of the file **csa.war/dashboard/css/base.css** to make the Tile Title fit better.
+5. To fix the CSA styling on the dashboard you can add the following css snippet to the end of the file **csa.war/dashboard/css/base.css**. This will prevent the text from overlaying when viewing the dashboard on smaller viewports.
 
   ```CSS
   	.tile h3 {
@@ -138,7 +138,7 @@ The following features are exposed in this plugin with the aim of enhancing the 
 	ENABLE_RESUME_LINKS			| Set as false to disable resuming paused subscription functionality | true
 	ENABLE_DELETE_LINKS			| Set as false to disable deleting offline subscription functionality | true
 	REQUIRE_CONFIRMATION		| Set as false to determine the default behaviour regarding confirmation prompts | true
-	SHOW_RETIRED				| Choose weather to include retired artifacts by default | false
+	SHOW_RETIRED				| Choose whether to include retired artifacts by default | false
 	USE_FIXED_HEADER			| Set as false to disable the fixed header behaviour | true
   CACHE_NAME            | The name of the http cookie used for storing user preferences | CSA-E-O-Conf
 	CONFIG_CACHE				| Integer representing the number of days end user configuration remain in browser cache | 5
