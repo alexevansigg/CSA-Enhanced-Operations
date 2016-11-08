@@ -13,9 +13,9 @@
 <%@ page import="org.apache.commons.httpclient.UsernamePasswordCredentials"%>
 <%@ page import="org.apache.commons.httpclient.auth.AuthScope"%>
 <%@ page import="org.apache.commons.httpclient.methods.PostMethod"%>
+<%@ page import="com.hp.csa.security.util.AESHelper" %>
 <%@page trimDirectiveWhitespaces="true" %>
 <%
-
 
 /* Initialize the variables*/
 String action;
@@ -23,6 +23,7 @@ String subId;
 String catId;
 String userId;
 String userpass;
+String adminPass;
 String url;
 String body;
 String myResponse;  // Will hold the response body from the cancel request
@@ -31,6 +32,10 @@ int status;         // Will hold the http response status from cancel request
 HttpClient client;
 Logger log;
 StringEscapeUtils esc;
+
+/* Initialize the Logger */
+log = Logger.getLogger("CSAEO_Action");
+log.setLevel(Level.INFO);
 
 /* Load the csa.properties file */
 ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
@@ -63,6 +68,10 @@ if (request.getParameterMap().containsKey("catId")){
 /* Set Fixed values and Build url & request Body */
 userId     = "6BC7CE65B5F74D08AA29C8FC40616451"; // The ooInboundUser ID
 
+
+AESHelper ae = new AESHelper();
+adminPass = ae.decrypt(props.getProperty("securityAdminPassword"));
+
 url = "";
 body="";
 
@@ -90,10 +99,8 @@ else if (action.equals("cancel")){
               + "</ServiceRequest>";
 }
 
-/* Initialize the Logger */
-log = Logger.getLogger("action.jsp");
-log.setLevel(Level.INFO);
-log.info(action + "  Subscription (Experimental) Called");
+
+
 
 /* Setup the HTTP Client */
 /* Todo: encrypt the transport password used here. see JBOSS AS7 encryption */
@@ -101,12 +108,12 @@ client = new HttpClient();
 client.getParams().setAuthenticationPreemptive(true);
 client.getState().setCredentials(
   new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT),
-  new UsernamePasswordCredentials("admin","cloud")
+  new UsernamePasswordCredentials("admin",adminPass)
 );
 
 /* This just initializes the HTTP Post object. */
 PostMethod post = new PostMethod(url);
-
+log.info(action + "  Subscription (Experimental) Invoked");
 try {
   post.setDoAuthentication( true );
   post.setRequestHeader("Content-type", "application/xml; charset=UTF-8");
