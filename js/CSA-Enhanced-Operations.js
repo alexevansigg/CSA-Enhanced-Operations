@@ -559,7 +559,7 @@
           if ($('#reqConfirm').prop('checked')) {
             var message = "<strong>Are you sure</strong> you want to Resume the Subscription<span class='label label-warning'>" + rowData["sub_name"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["user"] + "</span> ?";
             $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'>" + message + "</div>")
-                .next().find("button.confirmAction").data("action-type", "cancel");
+                .next().find("button.confirmAction").data("action-type", "resume");
             $("#confirmModal").modal();
         } else {
         var myResponse = opsUtil.resumeSubscription(rowData["DT_RowId"]);
@@ -623,12 +623,8 @@
       /* Generic Confirm button, calls the correct action based on the context. */
       $("body").on("click", "button.confirmAction", function() {
           var myAction = $(this).data("action-type");
-          if (myAction == "cancel"){
-            opsUtil.cancelSubscription(rowData["DT_RowId"]);
-          } 
-          else{
-            opsUtil.deleteSubscription(rowData["DT_RowId"]);
-          }
+          /* Execute the method based on the action requested */
+          
       });
 
       /* On Click "Show Retired" reload the datatable with the new source data */
