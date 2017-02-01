@@ -624,6 +624,7 @@
       $("body").on("click", "button.confirmAction", function() {
           var myAction = $(this).data("action-type");
           /* Execute the method based on the action requested */
+          opsUtil[myAction + "Subscription"](rowData["DT_RowId"]);
           
       });
 
