@@ -1,6 +1,6 @@
 <%-- 
   - Author(s): Alexander Evans (Hewlett-Packard)
-  - Date: 23/10/2014
+  - Date: 21/10/2016
   - @(#)
   - Description: getSubs.jsp is a custom servlet which will query a list of subscriptions from CSA and format it into a json object
   - you can pass the parameter retired=false to omit the retired subscriptions from the json object (this can drastically reduce the 
@@ -14,14 +14,19 @@
 <%@ page import="net.minidev.json.JSONValue" %>
 <%@ page import="org.apache.log4j.Logger"%>
 <%@ page import="org.apache.log4j.Level"%>
+<%@ page import="java.io.FileInputStream "%>
+<%@ page import="java.io.File "%>
 
 <%
 java.sql.Connection con;
 java.sql.ResultSet rs;
 java.sql.PreparedStatement pstmt;
+java.sql.ResultSetMetaData rsmd;
+
 DataSource ds;
 String jndi;
 String netw;
+String columnName;
 String retiredClause = "Retired";
 
 JSONObject jsObj;
@@ -54,57 +59,34 @@ try{
 }catch(Exception cnfex){              
   log.error(cnfex.getMessage());
 }
-
+String sqlFile = "getSubs.sql";
+String sql;
 try{
-   
-   String sql = "SELECT"
-   +" sub_view.subscription_id,"
-   +" sub_view.subscription_name,"
-   +" inst.uuid as instance_id,"
-   +" art.display_name as instance_name,"
-   +" sub_view.subscription_start_date,"
-   +" sub_view.subscription_end_date,"
-   +" sub_view.subcription_owner_group,"
-   +" sub_view.subscription_status,"
-   +" sub_view.requested_by_user,"
-   +" sub_view.requested_by_user_email,"
-   +" sub_view.catalog_id,"
-   +" subpers.user_name,"
-   +" sub_view.organization_name,"
-   +" sub_view.service_offering_name,"
-   +" cat.display_name as artifact_state,"
-   +" cat2.display_name as instance_state,"
-   +" cat3.display_name as lifecycle_status,"
-   +" art2.icon_url,"
-   +" service_offering_name,"
-   +" sub_view.organization_name,"
-   +" sub_view.organization_id"
-   +" FROM rpt_user_subscription_v sub_view"
-   +" INNER JOIN csa_service_instance inst ON inst.subscription_id = sub_view.subscription_id"
-   +" INNER JOIN csa_artifact art ON inst.UUID = art.UUID"
-   +" INNER JOIN csa_artifact art2 ON sub_view.subscription_id = art2.UUID"
-   +" LEFT JOIN csa_lifecycle_ex_record le on inst.UUID = le.service_instance_id"
-   +" AND le.reverse='0' AND le.callback_pending='1' "
-   + "AND le.callback_bean IN ('orderOfferingInitializationCallBack','orderOfferingReservationCallBack','orderOfferingDeploymentCallBack')" 
-   +" INNER JOIN csa_category cat ON art.state_id = cat.uuid"
-   +" INNER JOIN csa_category cat2 ON inst.service_instance_state_id = cat2.uuid"
-   +" LEFT JOIN csa_category cat3 on le.execution_status_id = cat3.uuid"
-   +" LEFT JOIN csa_category cat4 on le.execution_state_id = cat4.uuid"
-   +" INNER JOIN csa_person subpers ON sub_view.requested_by_user_id = subpers.uuid"
-   +" WHERE cat.display_name != ?"
-   +" ORDER BY subscription_start_date, le.updated_on DESC";
-   
 
+  File jsp = new File(request.getSession().getServletContext().getRealPath(request.getServletPath()));
+  File dir = jsp.getParentFile();
+  File file = new File(dir + "/sql/" + sqlFile);
+  FileInputStream fis = new FileInputStream(file);
+  byte[] data = new byte[(int) file.length()];
+  fis.read(data);
+  fis.close();
+  sql = new String(data, "UTF-8");
    
-   StringBuilder sb = new StringBuilder();
+   
    pstmt = con.prepareStatement(sql);
    // Set the Retired claus to excluded retired entries
    pstmt.setString(1, retiredClause);
    rs = pstmt.executeQuery();
+
+   // Get the Column headers
+   rsmd = rs.getMetaData();
+   int columnCount = rsmd.getColumnCount();
+
    jsArr = new JSONArray();
     while( rs.next() ){ 
-    
+
       jsObj = new JSONObject();
+      /*
       jsObj.put("DT_RowId", rs.getString("subscription_id"));
       jsObj.put("sub_name", rs.getString("subscription_name"));
       jsObj.put("inst_name", rs.getString("instance_name"));
@@ -124,10 +106,20 @@ try{
       jsObj.put("offering_name",rs.getString("service_offering_name"));
       jsObj.put("org_id",rs.getString("organization_id"));
       jsObj.put("org_name",rs.getString("organization_name"));
+
+      */
+
+      /* Iterate over each column and add it to the json Object */
+      for (int i = 1; i <= columnCount; i++ ) {
+        /* capitalize the column names to standardize with different RDBMS systems */
+        columnName = rsmd.getColumnName(i).toUpperCase();
+        jsObj.put(columnName, rs.getString(columnName));
+      }
+
+      /* Add the JSON object which represents a single row to the JSON Array */
       jsArr.add(jsObj);
 
     }
-  
     jsRes = new JSONObject();
     jsRes.put("data", jsArr);
     out.println(JSONValue.toJSONString(jsRes));

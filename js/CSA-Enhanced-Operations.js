@@ -1,11 +1,15 @@
-  /*  File: CSA-Enhanced-Operations.js
-        Author: Alex Evans
-        Description: Contains the datatables initialization and accompanying event listeners for the Enhanced Operations page.
-    */
-  /* Initialize the common variables */
-  var currentVersion, myRow, rowData, columns, dataUrl, openSub, openInst, modifySub, viewTop, cancelSub, deleteSub, config, cookieSetup, cv;
-  currentVersion = 0.7;
-  setup.msgArray = [];
+/*  File: CSA-Enhanced-Operations.js
+ *  Author: Alex Evans
+ *  Description: Contains the datatables initialization and accompanying event listeners for the Enhanced Operations page.
+ * 
+ * Todo: CSA 4.7 requires X-XSRF-TOKEN instead of x-csrf-token need to check how to support both
+ * Todo: Check CATALOG_ID in 
+ */
+
+/* Initialize the common variables */
+var currentVersion, myRow, rowData, columns, dataUrl, openSub, openInst, modifySub, viewTop, cancelSub, deleteSub, config, cookieSetup, cv;
+currentVersion = 0.8;
+setup.msgArray = [];
 
   var opsUtil = {
     init: function(){
@@ -72,9 +76,9 @@
       return null;
     },
     /* Builds a direct Link to a Subscription Page in Operations Tab */
-    makeSubLink: function(subId) {
+    makeSubLink: function(subscriptionID) {
       return "<a class='btn btn-default  btn-sm' type='button' data-toggle='tooltip' data-placement='top' title='Open Subscription' href='/csa/operations/index.jsp#subscription/" 
-      + subId + "/overview' target='new'><span class='glyphicon glyphicon-share-alt' aria-hidden='true'></span></a>";
+      + subscriptionID + "/overview' target='new'><span class='glyphicon glyphicon-share-alt' aria-hidden='true'></span></a>";
     },
     rebuildCache: function(){
       this.createCookie(setup.CACHE_NAME, JSON.stringify(config), setup.CONFIG_CACHE);
@@ -120,7 +124,7 @@
     /* Cancels a subscription using the Consumption API or falling back to legacy API for cancelled Failed subs*/
     cancelSubscription: function(subscriptionID){
       //Use Legacy API for cancel Failed because ConsumptionAPI dont like cancelling failed stuff.
-      if(opsTable.row("#"+subscriptionID).data()["inst_state"] == "Cancel Failed"){
+      if(opsTable.row("#"+subscriptionID).data()["INSTANCE_STATE"] == "Cancel Failed"){
         this.legacyCancelSubscription(subscriptionID);
       } else{
         $.ajax({
@@ -147,8 +151,8 @@
     }, 
     /* Cancels a subscription using hte legacy api method */
     legacyCancelSubscription: function(subscriptionID){
-      var cat_id= opsTable.row("#"+subscriptionID).data()["cat_id"];
-      var url = "pages/action.jsp?action=Cancel&subId=" + subscriptionID + "&catId=" + cat_id;
+      var CATALOG_ID= opsTable.row("#"+subscriptionID).data()["CATALOG_ID"];
+      var url = "pages/action.jsp?action=Cancel&subId=" + subscriptionID + "&catId=" + CATALOG_ID;
       $.get(url, function(response) {
         var newDate = new Date().toLocaleString();
         var notice = ["success",newDate, "<strong>" + subscriptionID + "</strong>" + response];
@@ -159,8 +163,8 @@
     }, 
     /* Deletes a subscription using the legacy api method */
     deleteSubscription: function(subscriptionID){
-      var cat_id= opsTable.row("#"+subscriptionID).data()["cat_id"];
-      var url = "pages/action.jsp?action=delete&subId=" + subscriptionID + "&catId=" + cat_id;
+      var CATALOG_ID= opsTable.row("#"+subscriptionID).data()["CATALOG_ID"];
+      var url = "pages/action.jsp?action=delete&subId=" + subscriptionID + "&catId=" + CATALOG_ID;
       $.get(url, function(response) {
         var newDate = new Date().toLocaleString();
         var notice = ["success",newDate, "<strong>" + subscriptionID + "</strong>" + response];
@@ -174,19 +178,19 @@
       var selectedRows = opsTable.rows( { selected: true } ).data().toArray();
       /* Check the Subscriptions are owned by a single User */
       var multiUser = selectedRows.some(function(item, idx){ 
-        return item.user != selectedRows[0].user 
+        return item.USERNAME != selectedRows[0].USERNAME 
       }); 
       /* Check valid Status for Cancel */
       var inValidSubstatus = selectedRows.some(function(item, idx){
-          return (["Active","In Progress"].indexOf(item.inst_state) == -1) || item.inst_state == "In Progress" && item.lifecycle_status != "Transition paused" 
+          return (["Active","In Progress"].indexOf(item.INSTANCE_STATE) == -1) || item.INSTANCE_STATE == "In Progress" && item.LIFECYCLE_STATUS != "Transition paused" 
       });
       /* Check Valid Status for Delete */
       var inValidDeleteSubstatus = selectedRows.some(function(item, idx){
-        return item.inst_state != "Canceled"
+        return item.INSTANCE_STATE != "Canceled"
       });
        /* Check Valid Status for Resume */
       var inValidResumestatus = selectedRows.some(function(item, idx){
-        return item.lifecycle_status != "Transition paused"
+        return item.LIFECYCLE_STATUS != "Transition paused"
       });
       /* Toggle Cancel Button */
       if (!multiUser && !inValidSubstatus && (selectedRows.length > 0)) {
@@ -235,6 +239,16 @@
           }
       } );
       return indexes;
+    },
+    /* Search using a specific column index */
+    columnSearch: function(col){
+        var index = $(this).data("column-index");
+        if ( opsTable.columns(index).search() !==  this.value ) {
+          opsTable.columns(index)
+          .search(this.value)
+          .draw();
+          $(this).focus();
+      }
     }
   }; 
 
@@ -246,6 +260,7 @@
       responsive:   true,
       stateSave:    true,
       colReorder:   true,
+      rowId: "SUBSCRIPTION_ID",
       autoWidth:    false,
       deferedRender: true,
       select: {
@@ -384,13 +399,13 @@
                 "render": function(data, type, full, meta) {
 
                     /* Builds a direct Link to a Service Instance Page in MPP (Requires Consumer Admin Impersonation) */
-                    openInst = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm openInst' type='button' data-toggle='tooltip' data-placement='top' title='Open Instance (MPP)' href='" + config.MPP_HOST + "myservice/" + full.inst_id + "/catalog/" + full.cat_id + "?fromSub=" + full.DT_RowId + "&onBehalf=" + full.user + "' target='new'><span class='glyphicon glyphicon-share-alt' aria-hidden='true'></span></a>" : "";
+                    openInst = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm openInst' type='button' data-toggle='tooltip' data-placement='top' title='Open Instance (MPP)' href='" + config.MPP_HOST + "myservice/" + full.INSTANCE_ID + "/catalog/" + full.CATALOG_ID + "?fromSub=" + full.DT_RowId + "&onBehalf=" + full.USERNAME + "' target='new'><span class='glyphicon glyphicon-share-alt' aria-hidden='true'></span></a>" : "";
 
                     /* Builds a direct Link to a Subscription Modification Page in MPP (Requires Consumer Admin Impersonation)  */
-                    modifySub = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm' type='button' data-toggle='tooltip' data-placement='top' title='Modify Subscription (MPP)' href='" + config.MPP_HOST + "subscription/" + full.DT_RowId + "/modify?onBehalf=" + full.user + "' target='new'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></a>" : "";
+                    modifySub = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm' type='button' data-toggle='tooltip' data-placement='top' title='Modify Subscription (MPP)' href='" + config.MPP_HOST + "subscription/" + full.DT_RowId + "/modify?onBehalf=" + full.USERNAME + "' target='new'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></a>" : "";
 
                     /* Builds a direct Link to Service Topology View in MPP (Requires Consumer Admin Impersonation) */
-                    viewTop = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm viewTop' type='button' data-toggle='tooltip' data-placement='top' title='View Topology (MPP)' href='" + config.MPP_HOST + "topology/?id=" + full.inst_id + "' target='new'><span class='glyphicon glyphicon-th-large' aria-hidden='true'></span></a>" : "";
+                    viewTop = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm viewTop' type='button' data-toggle='tooltip' data-placement='top' title='View Topology (MPP)' href='" + config.MPP_HOST + "topology/?id=" + full.INSTANCE_ID + "' target='new'><span class='glyphicon glyphicon-th-large' aria-hidden='true'></span></a>" : "";
 
                     /* Makes Link to Cancel Subscription using CSA Legacy Rest API */
                     cancelSub = (config.ENABLE_CANCEL_LINKS) ? "<button class='btn btn-sm btn-danger cancelSub' type='button' data-toggle='tooltip' data-placement='top' title='Cancel Subscription'><span class='glyphicon glyphicon-remove-sign' aria-hidden='true'></span></button>" : "";
@@ -402,36 +417,36 @@
                     resumeSub = (config.ENABLE_RESUME_LINKS) ? "<button class='btn btn-sm btn-warning resumeSub' type='button' data-toggle='tooltip' data-placement='top' title='Resume Subscription'><span class='glyphicon glyphicon-repeat' aria-hidden='true'></span></button>" : "";
 
                     /* Dont Return Any Options for Retired Subscriptions */
-                    if (full.artifact_state == "Retired") {
+                    if (full.ARTIFACT_STATE == "Retired") {
                         return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.DT_RowId) + "</div></div>";
                     }
                     /* Paused Subs can cancel and resume but Not delete */
-                    else if (full.lifecycle_status == "Transition paused") {
+                    else if (full.LIFECYCLE_STATUS == "Transition paused") {
                         return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.DT_RowId) + openInst + modifySub + viewTop + resumeSub + cancelSub + "</div></div>";
                     }
                     /* Paused Subs can cancel and resume but Not delete */
-                    else if (full.sub_status == "Terminated") {
+                    else if (full.SUBSCRIPTION_STATUS == "Terminated") {
                         return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.DT_RowId) + openInst + viewTop + cancelSub + "</div></div>";
                     }
                     /* Active Subs get all options except Delete */
-                    else if (full.inst_state == "Active" || full.inst_state == "Cancel Failed" || full.inst_state == "Public Action Failed" || full.inst_state == "Modify Failed") {
+                    else if (full.INSTANCE_STATE == "Active" || full.INSTANCE_STATE == "Cancel Failed" || full.INSTANCE_STATE == "Public Action Failed" || full.INSTANCE_STATE == "Modify Failed") {
                         return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.DT_RowId) + openInst + modifySub + viewTop + cancelSub + "</div></div>";
                     }
                     /* If its not active then we only show the delete subscription button if the Instance is Canceled and we don't show the Cancel Button*/
                     else {
-                        return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.DT_RowId) + openInst + modifySub + viewTop + (full.inst_state == "Canceled" ? deleteSub : "") + "</div></div>";
+                        return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.DT_RowId) + openInst + modifySub + viewTop + (full.INSTANCE_STATE == "Canceled" ? deleteSub : "") + "</div></div>";
                     }
                 }
             }, {
                 /* Render Icon Imange or N/A */
-                "targets": opsUtil.getColumnIndexesWithClass(config.COLUMNS, "icon_url"),
+                "targets": opsUtil.getColumnIndexesWithClass(config.COLUMNS, "ICON_URL"),
                 "type": "string",
                 "render": function(data, type, full, meta) {
                     return (data == null) ? '<span class="label label-info">N/A</span>' : '<img alt="instance icon" class="img-thumbnail" src="' + data + '" aria-hidden="true" />';
                 }
             }, {
                 /* Render only a friendly version of the Group Name not the full DN */
-                "targets": opsUtil.getColumnIndexesWithClass( config.COLUMNS, "owner" ),
+                "targets": opsUtil.getColumnIndexesWithClass( config.COLUMNS, "SUBCRIPTION_OWNER_GROUP" ),
                 "render": function(data, type, full, meta) {
                     if (data == null) {
                         return '<span class="label label-info">N/A</span>';
@@ -442,13 +457,13 @@
                 }
             }, {
                 /* Render N/A if no End Date exists */
-                "targets": opsUtil.getColumnIndexesWithClass( config.COLUMNS, "end_date" ),
+                "targets": opsUtil.getColumnIndexesWithClass( config.COLUMNS, "SUBSCRIPTION_END_DATE" ),
                 "render": function(data, type, full, meta) {
                     return (data == null) ? '<span class="label label-info">N/A</span>' : data;
                 }
             }, {
                 /* Render Label Color based on Subscription Status*/
-                "targets": opsUtil.getColumnIndexesWithClass( config.COLUMNS, "sub_status" ),
+                "targets": opsUtil.getColumnIndexesWithClass( config.COLUMNS, "SUBSCRIPTION_STATUS" ),
                 "render": function(data, type, full, meta) {
                     if (data == "Cancelled") {
                         return '<span class="label label-danger">' + data + '</span>';
@@ -460,7 +475,7 @@
                 }
             }, {
                 /* Render Label Color based on Instance State*/
-                "targets": opsUtil.getColumnIndexesWithClass( config.COLUMNS, "inst_state" ),
+                "targets": opsUtil.getColumnIndexesWithClass( config.COLUMNS, "INSTANCE_STATE" ),
                 "render": function(data, type, full, meta) {
                     if (data == "Cancel Failed" || data == "Failed") {
                         return '<span class="label label-danger">' + data + '</span>';
@@ -469,7 +484,7 @@
                     } // Rename Active to Online
                     else if (data == "Canceled") {
                         return '<span class="label label-default">Offline</span>';
-                    } else if (full.lifecycle_status == "Transition paused") {
+                    } else if (full.LIFECYCLE_STATUS == "Transition paused") {
                         return '<span class="label label-warning">' + data + ' - Paused</span>';
                     } else {
                         return '<span class="label label-warning">' + data + '</span>';
@@ -477,7 +492,7 @@
                 }
             }, {
                 /* Render Not retired if Active */
-                "targets": opsUtil.getColumnIndexesWithClass( config.COLUMNS, "artifact_state" ),
+                "targets": opsUtil.getColumnIndexesWithClass( config.COLUMNS, "ARTIFACT_STATE" ),
                 "render": function(data, type, full, meta) {
                     return (data == "Active") ? '<span class="label label-success">Not Retired</span>' : '<span class="label label-danger">' + data + '</span>';
                 }
@@ -486,22 +501,17 @@
     });
 
     opsTable
-      .on( 'column-visibility.dt', opsUtil.toggleAdvancedSearchBar)
-      .on( 'responsive-resize', opsUtil.toggleAdvancedSearchBar)
-       /* Delegated event listener to capture selection of a new row */
-      .on( 'select', opsUtil.validateButtons) 
-      .on( 'deselect', opsUtil.validateButtons)
-      /* Delegated Event listener to capture change on Advancded Search */
-      .on( 'keyup change', "tr.singleSearch input", function () {
-        var index = $(this).data("column-index");
-        if ( opsTable.columns(index).search() !== $(this).value ) {
-          opsTable.columns(index)
-          .search( this.value )
-          .draw();
-          $(this).focus();
-        }
-      });
-   
+    .on( 'column-visibility.dt', opsUtil.toggleAdvancedSearchBar)
+    .on( 'responsive-resize', opsUtil.toggleAdvancedSearchBar)
+     /* Delegated event listener to capture selection of a new row */
+    .on( 'select', opsUtil.validateButtons) 
+    .on( 'deselect', opsUtil.validateButtons)
+    
+    /* Delegated Event listener to capture change on Advancded Search */
+    .on( 'keyup', "tr.singleSearch input", opsUtil.columnSearch)
+ 
+    .on( 'column-reorder', opsUtil.toggleAdvancedSearchBar);
+
     $("div.dt-buttons").addClass("pull-right");
     $("div.dt-buttons a").data("placement","bottom");
 
@@ -557,7 +567,7 @@
           myRow = $(this).closest("tr");
           rowData = opsTable.row(myRow).data();
           if ($('#reqConfirm').prop('checked')) {
-            var message = "<strong>Are you sure</strong> you want to Resume the Subscription<span class='label label-warning'>" + rowData["sub_name"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["user"] + "</span> ?";
+            var message = "<strong>Are you sure</strong> you want to Resume the Subscription<span class='label label-warning'>" + rowData["SUBSCRIPTION_NAME"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["USERNAME"] + "</span> ?";
             $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'>" + message + "</div>")
                 .next().find("button.confirmAction").data("action-type", "resume");
             $("#confirmModal").modal();
@@ -571,7 +581,7 @@
           myRow = $(this).closest("tr");
           rowData = opsTable.row(myRow).data();
           if ($('#reqConfirm').prop('checked')) {
-              var message = "<strong>Are you sure</strong> you want to Cancel the Subscription<span class='label label-warning'>" + rowData["sub_name"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["user"] + "</span> ?";
+              var message = "<strong>Are you sure</strong> you want to Cancel the Subscription<span class='label label-warning'>" + rowData["SUBSCRIPTION_NAME"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["USERNAME"] + "</span> ?";
               $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'>" + message + "</div>")
                   .next().find("button.confirmAction").data("action-type", "cancel");
               $("#confirmModal").modal();
@@ -586,14 +596,14 @@
          myRow = $(this).closest("tr");
          rowData = opsTable.row(myRow).data();
          if ($('#reqConfirm').prop('checked')) {
-           $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'><strong>Are you sure</strong> you wish to Delete the Subscription<span class='label label-warning'>" + rowData["subscription"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["user"] +"</span> ?</div>")
+           $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'><strong>Are you sure</strong> you wish to Delete the Subscription<span class='label label-warning'>" + rowData["subscription"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["USERNAME"] +"</span> ?</div>")
            .next().find("button.confirmAction").data("action-type","delete");
            $("#confirmModal").modal();
          }else{
            var url = "/csa/api/mpp/mpp-subscription/" + rowData["DT_RowId"];
            var token = readCookie("x-csrf-token");
           
-         $.ajax({type:"DELETE","url":url, headers:{"x-csrf-token":token},"data":{"subscriptionid":rowData["DT_RowId"],"X-Auth-Token":XauthToken, "onBehalf":rowData["user"]}, success:function(response){
+         $.ajax({type:"DELETE","url":url, headers:{"x-csrf-token":token},"data":{"subscriptionid":rowData["DT_RowId"],"X-Auth-Token":XauthToken, "onBehalf":rowData["USERNAME"]}, success:function(response){
             $("#responseModal").find("div.modal-body").html("Subscription Cancelled").end().modal();
            }, failure:function(response){
             $("#responseModal").find("div.modal-body").html("Something went wrong").end().modal();  
@@ -611,7 +621,7 @@
           rowData = opsTable.row(myRow).data();
           if ($('#reqConfirm').prop('checked')) {
               var message = "<strong>Are you sure</strong> that you wish to <strong>delete</strong> the Subscription <span class='label label-warning'>" 
-              + rowData["sub_name"] + "</span> belonging to User <span class='label label-warning'>" + rowData["user"] + "</span> ?";
+              + rowData["SUBSCRIPTION_NAME"] + "</span> belonging to USERNAME <span class='label label-warning'>" + rowData["USERNAME"] + "</span> ?";
               $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'>" + message + "</div>")
                   .next().find("button.confirmAction").data("action-type", "delete");
               $("#confirmModal").modal();
