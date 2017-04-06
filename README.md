@@ -2,7 +2,7 @@
 #  CSA Operations Enhanced
 
 ---
-####  Current Version 0.07
+####  Current Version 0.08
 ----
 
 This plugin allows a *Super Admin* to manage Subscriptions across multiple users and organisations efficiently. [See Here](http://alexevansigg.github.io/CSA-Enhanced-Operations)
@@ -42,7 +42,8 @@ The following features are exposed in this plugin with the aim of enhancing the 
 | 4.6 | MSSQL | Yes
 | 4.6 | ORACLE | Yes |
 | 4.6 | POSTGRES | Yes |
-| 4.7x | ? | ? |
+| 4.7x | POSTGRES | Yes |
+| 4.7x | ORACLE | Yes |
 
 ---
 #### Installation Instructions
