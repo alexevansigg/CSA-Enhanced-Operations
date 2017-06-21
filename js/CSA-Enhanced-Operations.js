@@ -586,7 +586,7 @@ setup.msgArray = [];
                   .next().find("button.confirmAction").data("action-type", "cancel");
               $("#confirmModal").modal();
           } else {
-            opsUtil.cancelSubscription(rowData["SUBCRIPTION_ID"]);
+            opsUtil.cancelSubscription(rowData["SUBSCRIPTION_ID"]);
           }
       });
 
