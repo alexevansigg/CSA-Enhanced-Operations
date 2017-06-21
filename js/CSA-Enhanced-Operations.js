@@ -298,7 +298,7 @@ setup.msgArray = [];
           action: function ( e, dt, node, config ) {
             //Todo: Call function to Resume Selected Subscription
             var selected = opsTable.rows( { selected: true } ).data().toArray();
-            var selectedIDs = selected.map(function(a) {return a.DT_RowId;});
+            var selectedIDs = selected.map(function(a) {return a.SUBSCRIPTION_ID;});
             var myResponse;
             for (var i in selectedIDs) {
               opsUtil.resumeSubscription(selectedIDs[i]);
@@ -310,7 +310,7 @@ setup.msgArray = [];
           titleAttr: 'Cancel Selected Subscriptions',
           action: function ( e, dt, node, config ) {
             var selected = opsTable.rows( { selected: true } ).data().toArray();
-            var selectedIDs = selected.map(function(a) {return a.DT_RowId;});
+            var selectedIDs = selected.map(function(a) {return a.SUBSCRIPTION_ID;});
             for (var i in selectedIDs) {
               opsUtil.cancelSubscription(selectedIDs[i]);
             }
@@ -322,7 +322,7 @@ setup.msgArray = [];
           action: function ( e, dt, node, config ) {
             //Todo: Call function to Delete Selected Subscription
             var selected = opsTable.rows( { selected: true } ).data().toArray();
-            var selectedIDs = selected.map(function(a) {return a.DT_RowId;});
+            var selectedIDs = selected.map(function(a) {return a.SUBSCRIPTION_ID;});
             for (var i in selectedIDs) {
               opsUtil.deleteSubscription(selectedIDs[i]);
             }
@@ -399,10 +399,10 @@ setup.msgArray = [];
                 "render": function(data, type, full, meta) {
 
                     /* Builds a direct Link to a Service Instance Page in MPP (Requires Consumer Admin Impersonation) */
-                    openInst = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm openInst' type='button' data-toggle='tooltip' data-placement='top' title='Open Instance (MPP)' href='" + config.MPP_HOST + "myservice/" + full.INSTANCE_ID + "/catalog/" + full.CATALOG_ID + "?fromSub=" + full.DT_RowId + "&onBehalf=" + full.USERNAME + "' target='new'><span class='glyphicon glyphicon-share-alt' aria-hidden='true'></span></a>" : "";
+                    openInst = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm openInst' type='button' data-toggle='tooltip' data-placement='top' title='Open Instance (MPP)' href='" + config.MPP_HOST + "myservice/" + full.INSTANCE_ID + "/catalog/" + full.CATALOG_ID + "?fromSub=" + full.SUBSCRIPTION_ID + "&onBehalf=" + full.USERNAME + "' target='new'><span class='glyphicon glyphicon-share-alt' aria-hidden='true'></span></a>" : "";
 
                     /* Builds a direct Link to a Subscription Modification Page in MPP (Requires Consumer Admin Impersonation)  */
-                    modifySub = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm' type='button' data-toggle='tooltip' data-placement='top' title='Modify Subscription (MPP)' href='" + config.MPP_HOST + "subscription/" + full.DT_RowId + "/modify?onBehalf=" + full.USERNAME + "' target='new'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></a>" : "";
+                    modifySub = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm' type='button' data-toggle='tooltip' data-placement='top' title='Modify Subscription (MPP)' href='" + config.MPP_HOST + "subscription/" + full.SUBSCRIPTION_ID + "/modify?onBehalf=" + full.USERNAME + "' target='new'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></a>" : "";
 
                     /* Builds a direct Link to Service Topology View in MPP (Requires Consumer Admin Impersonation) */
                     viewTop = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm viewTop' type='button' data-toggle='tooltip' data-placement='top' title='View Topology (MPP)' href='" + config.MPP_HOST + "topology/?id=" + full.INSTANCE_ID + "' target='new'><span class='glyphicon glyphicon-th-large' aria-hidden='true'></span></a>" : "";
@@ -418,23 +418,23 @@ setup.msgArray = [];
 
                     /* Dont Return Any Options for Retired Subscriptions */
                     if (full.ARTIFACT_STATE == "Retired") {
-                        return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.DT_RowId) + "</div></div>";
+                        return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.SUBSCRIPTION_ID) + "</div></div>";
                     }
                     /* Paused Subs can cancel and resume but Not delete */
                     else if (full.LIFECYCLE_STATUS == "Transition paused") {
-                        return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.DT_RowId) + openInst + modifySub + viewTop + resumeSub + cancelSub + "</div></div>";
+                        return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.SUBSCRIPTION_ID) + openInst + modifySub + viewTop + resumeSub + cancelSub + "</div></div>";
                     }
                     /* Paused Subs can cancel and resume but Not delete */
                     else if (full.SUBSCRIPTION_STATUS == "Terminated") {
-                        return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.DT_RowId) + openInst + viewTop + cancelSub + "</div></div>";
+                        return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.SUBSCRIPTION_ID) + openInst + viewTop + cancelSub + "</div></div>";
                     }
                     /* Active Subs get all options except Delete */
                     else if (full.INSTANCE_STATE == "Active" || full.INSTANCE_STATE == "Cancel Failed" || full.INSTANCE_STATE == "Public Action Failed" || full.INSTANCE_STATE == "Modify Failed") {
-                        return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.DT_RowId) + openInst + modifySub + viewTop + cancelSub + "</div></div>";
+                        return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.SUBSCRIPTION_ID) + openInst + modifySub + viewTop + cancelSub + "</div></div>";
                     }
                     /* If its not active then we only show the delete subscription button if the Instance is Canceled and we don't show the Cancel Button*/
                     else {
-                        return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.DT_RowId) + openInst + modifySub + viewTop + (full.INSTANCE_STATE == "Canceled" ? deleteSub : "") + "</div></div>";
+                        return "<div class='btn-toolbar' role='toolbar'><div class='btn-group' role='group'>" + opsUtil.makeSubLink(full.SUBSCRIPTION_ID) + openInst + modifySub + viewTop + (full.INSTANCE_STATE == "Canceled" ? deleteSub : "") + "</div></div>";
                     }
                 }
             }, {
@@ -572,7 +572,7 @@ setup.msgArray = [];
                 .next().find("button.confirmAction").data("action-type", "resume");
             $("#confirmModal").modal();
         } else {
-        var myResponse = opsUtil.resumeSubscription(rowData["DT_RowId"]);
+        var myResponse = opsUtil.resumeSubscription(rowData["SUBSCRIPTION_ID"]);
         }
       });
 
@@ -586,7 +586,7 @@ setup.msgArray = [];
                   .next().find("button.confirmAction").data("action-type", "cancel");
               $("#confirmModal").modal();
           } else {
-            opsUtil.cancelSubscription(rowData["DT_RowId"]);
+            opsUtil.cancelSubscription(rowData["SUBCRIPTION_ID"]);
           }
       });
 
@@ -600,10 +600,10 @@ setup.msgArray = [];
            .next().find("button.confirmAction").data("action-type","delete");
            $("#confirmModal").modal();
          }else{
-           var url = "/csa/api/mpp/mpp-subscription/" + rowData["DT_RowId"];
+           var url = "/csa/api/mpp/mpp-subscription/" + rowData["SUBSCRIPTION_ID"];
            var token = readCookie("x-csrf-token");
           
-         $.ajax({type:"DELETE","url":url, headers:{"x-csrf-token":token},"data":{"subscriptionid":rowData["DT_RowId"],"X-Auth-Token":XauthToken, "onBehalf":rowData["USERNAME"]}, success:function(response){
+         $.ajax({type:"DELETE","url":url, headers:{"x-csrf-token":token},"data":{"subscriptionid":rowData["SUBCRIPTION_ID"],"X-Auth-Token":XauthToken, "onBehalf":rowData["USERNAME"]}, success:function(response){
             $("#responseModal").find("div.modal-body").html("Subscription Cancelled").end().modal();
            }, failure:function(response){
             $("#responseModal").find("div.modal-body").html("Something went wrong").end().modal();  
@@ -626,7 +626,7 @@ setup.msgArray = [];
                   .next().find("button.confirmAction").data("action-type", "delete");
               $("#confirmModal").modal();
           } else {
-             opsUtil.deleteSubscription(rowData["DT_RowId"]);
+             opsUtil.deleteSubscription(rowData["SUBSCRIPTION_ID"]);
           }
       });
 
@@ -634,7 +634,7 @@ setup.msgArray = [];
       $("body").on("click", "button.confirmAction", function() {
           var myAction = $(this).data("action-type");
           /* Execute the method based on the action requested */
-          opsUtil[myAction + "Subscription"](rowData["DT_RowId"]);
+          opsUtil[myAction + "Subscription"](rowData["SUBSCRIPTION_ID"]);
           
       });
 

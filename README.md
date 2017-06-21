@@ -74,7 +74,7 @@ The following features are exposed in this plugin with the aim of enhancing the 
  + CSA-Enhanced-Operations/README.md
  + CSA-Enhanced-Operations/setup.json
 
-3. Add the corresponsding entry to the csa.war/dashboard/config.json depending on the installed csa version.
+3. Add the corresponding entry to the csa.war/dashboard/config.json depending on the installed csa version.
   (inside main.tiles array or in sub panel see **CSA Configuration guide** if unsure how to manipulate this file)
   
   **CSA 4.2**

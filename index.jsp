@@ -13,8 +13,7 @@
     response.setDateHeader("Expires", 0);
 %>
 
-<%@include file="/components/pages/partials/user.jsp" %>
-
+<%@include file="/html-lib/pages/partials/user.jsp" %>
 
 <html>
   <head>
