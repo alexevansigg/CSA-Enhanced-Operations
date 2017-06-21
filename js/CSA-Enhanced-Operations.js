@@ -104,7 +104,7 @@ setup.msgArray = [];
         type: "POST",
         url: "/csa/api/service/subscription/" + subscriptionID + "/resume",
         headers: {
-          "x-csrf-token": opsUtil.readCookie("x-csrf-token")
+          "X-XSRF-TOKEN": opsUtil.readCookie("XSRF-TOKEN")
         },
         success: function(response) {
           var newDate = new Date().toLocaleString();
@@ -131,7 +131,7 @@ setup.msgArray = [];
           type: "POST",
           url: "/csa/api/service/subscription/" + subscriptionID + "/cancel",
           headers: {
-              "x-csrf-token": opsUtil.readCookie("x-csrf-token")
+              "X-XSRF-TOKEN": opsUtil.readCookie("XSRF-TOKEN")
           },
           success: function(response) {
             var newDate = new Date().toLocaleString();
@@ -178,7 +178,7 @@ setup.msgArray = [];
       var selectedRows = opsTable.rows( { selected: true } ).data().toArray();
       /* Check the Subscriptions are owned by a single User */
       var multiUser = selectedRows.some(function(item, idx){ 
-        return item.USERNAME != selectedRows[0].USERNAME 
+        return item.USER_NAME != selectedRows[0].USER_NAME 
       }); 
       /* Check valid Status for Cancel */
       var inValidSubstatus = selectedRows.some(function(item, idx){
@@ -399,10 +399,10 @@ setup.msgArray = [];
                 "render": function(data, type, full, meta) {
 
                     /* Builds a direct Link to a Service Instance Page in MPP (Requires Consumer Admin Impersonation) */
-                    openInst = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm openInst' type='button' data-toggle='tooltip' data-placement='top' title='Open Instance (MPP)' href='" + config.MPP_HOST + "myservice/" + full.INSTANCE_ID + "/catalog/" + full.CATALOG_ID + "?fromSub=" + full.SUBSCRIPTION_ID + "&onBehalf=" + full.USERNAME + "' target='new'><span class='glyphicon glyphicon-share-alt' aria-hidden='true'></span></a>" : "";
+                    openInst = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm openInst' type='button' data-toggle='tooltip' data-placement='top' title='Open Instance (MPP)' href='" + config.MPP_HOST + "myservice/" + full.INSTANCE_ID + "/catalog/" + full.CATALOG_ID + "?fromSub=" + full.SUBSCRIPTION_ID + "&onBehalf=" + full.USER_NAME + "' target='new'><span class='glyphicon glyphicon-share-alt' aria-hidden='true'></span></a>" : "";
 
                     /* Builds a direct Link to a Subscription Modification Page in MPP (Requires Consumer Admin Impersonation)  */
-                    modifySub = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm' type='button' data-toggle='tooltip' data-placement='top' title='Modify Subscription (MPP)' href='" + config.MPP_HOST + "subscription/" + full.SUBSCRIPTION_ID + "/modify?onBehalf=" + full.USERNAME + "' target='new'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></a>" : "";
+                    modifySub = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm' type='button' data-toggle='tooltip' data-placement='top' title='Modify Subscription (MPP)' href='" + config.MPP_HOST + "subscription/" + full.SUBSCRIPTION_ID + "/modify?onBehalf=" + full.USER_NAME + "' target='new'><span class='glyphicon glyphicon-edit' aria-hidden='true'></span></a>" : "";
 
                     /* Builds a direct Link to Service Topology View in MPP (Requires Consumer Admin Impersonation) */
                     viewTop = (config.ENABLE_CONSUMER_ADMIN_LINKS) ? "<a class='btn btn-primary btn-sm viewTop' type='button' data-toggle='tooltip' data-placement='top' title='View Topology (MPP)' href='" + config.MPP_HOST + "topology/?id=" + full.INSTANCE_ID + "' target='new'><span class='glyphicon glyphicon-th-large' aria-hidden='true'></span></a>" : "";
@@ -567,7 +567,7 @@ setup.msgArray = [];
           myRow = $(this).closest("tr");
           rowData = opsTable.row(myRow).data();
           if ($('#reqConfirm').prop('checked')) {
-            var message = "<strong>Are you sure</strong> you want to Resume the Subscription<span class='label label-warning'>" + rowData["SUBSCRIPTION_NAME"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["USERNAME"] + "</span> ?";
+            var message = "<strong>Are you sure</strong> you want to Resume the Subscription<span class='label label-warning'>" + rowData["SUBSCRIPTION_NAME"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["USER_NAME"] + "</span> ?";
             $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'>" + message + "</div>")
                 .next().find("button.confirmAction").data("action-type", "resume");
             $("#confirmModal").modal();
@@ -581,7 +581,7 @@ setup.msgArray = [];
           myRow = $(this).closest("tr");
           rowData = opsTable.row(myRow).data();
           if ($('#reqConfirm').prop('checked')) {
-              var message = "<strong>Are you sure</strong> you want to Cancel the Subscription<span class='label label-warning'>" + rowData["SUBSCRIPTION_NAME"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["USERNAME"] + "</span> ?";
+              var message = "<strong>Are you sure</strong> you want to Cancel the Subscription<span class='label label-warning'>" + rowData["SUBSCRIPTION_NAME"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["USER_NAME"] + "</span> ?";
               $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'>" + message + "</div>")
                   .next().find("button.confirmAction").data("action-type", "cancel");
               $("#confirmModal").modal();
@@ -596,14 +596,14 @@ setup.msgArray = [];
          myRow = $(this).closest("tr");
          rowData = opsTable.row(myRow).data();
          if ($('#reqConfirm').prop('checked')) {
-           $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'><strong>Are you sure</strong> you wish to Delete the Subscription<span class='label label-warning'>" + rowData["subscription"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["USERNAME"] +"</span> ?</div>")
+           $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'><strong>Are you sure</strong> you wish to Delete the Subscription<span class='label label-warning'>" + rowData["subscription"] + "</span> Belonging to User <span class='label label-warning'>" + rowData["USER_NAME"] +"</span> ?</div>")
            .next().find("button.confirmAction").data("action-type","delete");
            $("#confirmModal").modal();
          }else{
            var url = "/csa/api/mpp/mpp-subscription/" + rowData["SUBSCRIPTION_ID"];
            var token = readCookie("x-csrf-token");
           
-         $.ajax({type:"DELETE","url":url, headers:{"x-csrf-token":token},"data":{"subscriptionid":rowData["SUBCRIPTION_ID"],"X-Auth-Token":XauthToken, "onBehalf":rowData["USERNAME"]}, success:function(response){
+         $.ajax({type:"DELETE","url":url, headers:{"x-csrf-token":token},"data":{"subscriptionid":rowData["SUBCRIPTION_ID"],"X-Auth-Token":XauthToken, "onBehalf":rowData["USER_NAME"]}, success:function(response){
             $("#responseModal").find("div.modal-body").html("Subscription Cancelled").end().modal();
            }, failure:function(response){
             $("#responseModal").find("div.modal-body").html("Something went wrong").end().modal();  
@@ -621,7 +621,7 @@ setup.msgArray = [];
           rowData = opsTable.row(myRow).data();
           if ($('#reqConfirm').prop('checked')) {
               var message = "<strong>Are you sure</strong> that you wish to <strong>delete</strong> the Subscription <span class='label label-warning'>" 
-              + rowData["SUBSCRIPTION_NAME"] + "</span> belonging to USERNAME <span class='label label-warning'>" + rowData["USERNAME"] + "</span> ?";
+              + rowData["SUBSCRIPTION_NAME"] + "</span> belonging to USERNAME <span class='label label-warning'>" + rowData["USER_NAME"] + "</span> ?";
               $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'>" + message + "</div>")
                   .next().find("button.confirmAction").data("action-type", "delete");
               $("#confirmModal").modal();
