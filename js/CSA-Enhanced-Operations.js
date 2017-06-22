@@ -1,20 +1,20 @@
 /*  File: CSA-Enhanced-Operations.js
  *  Author: Alex Evans
  *  Description: Contains the datatables initialization and accompanying event listeners for the Enhanced Operations page.
- * 
+ *
  * Todo: CSA 4.7 requires X-XSRF-TOKEN instead of x-csrf-token need to check how to support both
- * Todo: Check CATALOG_ID in 
+ * Todo: Check CATALOG_ID in
  */
 
 /* Initialize the common variables */
-var currentVersion, myRow, rowData, columns, dataUrl, openSub, openInst, modifySub, viewTop, cancelSub, deleteSub, config, cookieSetup, cv;
+var currentVersion, myRow, rowData, columns, dataUrl, openSub, openInst, modifySub, viewTop, cancelSub, deleteSub, config, cookieSetup, cv, xtoken = {};
 currentVersion = 0.8;
 setup.msgArray = [];
 
   var opsUtil = {
     init: function(){
       cookieSetup = this.readCookie(setup.CACHE_NAME);
-      try{    
+      try{
         /* Copy the initial config to the setup param */
         cv = JSON.parse(cookieSetup).currentVersion;
       }
@@ -22,17 +22,18 @@ setup.msgArray = [];
         cv = "x";
      }
 
+     /* Get the Correct Token */
+     xtoken[opsUtil.readCookie("XSRF-TOKEN") ? "X-XSRF-TOKEN": "x-csrf-token"] = opsUtil.readCookie("XSRF-TOKEN") || opsUtil.readCookie("x-csrf-token");
+     console.log(xtoken);
       /* when the cookie doesnt exist or the version is superceded override it */
       if (!cookieSetup || cv != currentVersion) {
         setup.currentVersion = currentVersion;
-     
-         
         /* Clone the column data to the column classes */
         for(var i in setup.COLUMNS) {
            var colClass= setup.COLUMNS[i].class;
            var colData = setup.COLUMNS[i].data;
            setup.COLUMNS[i].class = (typeof(colClass) != 'undefined') ? colClass + " " + colData : colData;
-        } 
+        }
         /* Add the Options Row */
         setup.COLUMNS.push({"title":"Options","data":"options","class":"options all no-clickable"});
         opsUtil.deleteCookie(setup.CACHE_NAME);
@@ -77,7 +78,7 @@ setup.msgArray = [];
     },
     /* Builds a direct Link to a Subscription Page in Operations Tab */
     makeSubLink: function(subscriptionID) {
-      return "<a class='btn btn-default  btn-sm' type='button' data-toggle='tooltip' data-placement='top' title='Open Subscription' href='/csa/operations/index.jsp#subscription/" 
+      return "<a class='btn btn-default  btn-sm' type='button' data-toggle='tooltip' data-placement='top' title='Open Subscription' href='/csa/operations/index.jsp#subscription/"
       + subscriptionID + "/overview' target='new'><span class='glyphicon glyphicon-share-alt' aria-hidden='true'></span></a>";
     },
     rebuildCache: function(){
@@ -87,7 +88,7 @@ setup.msgArray = [];
     reDrawNotifications: function(){
       $("div.notification-panel").html("");
       for (var i in config.msgArray){
-        var html = '<div class="alert alert-' + config.msgArray[i][0] + ' alert-dismissable page-alert" data-notificationIndex="'+ i +'">';    
+        var html = '<div class="alert alert-' + config.msgArray[i][0] + ' alert-dismissable page-alert" data-notificationIndex="'+ i +'">';
            html += '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>';
            html += '<p class="text-left">' + config.msgArray[i][2] + '</p>';
            html += '<p class="text-right"><small>' + config.msgArray[i][1] + '</small></p></div>';
@@ -103,14 +104,12 @@ setup.msgArray = [];
       $.ajax({
         type: "POST",
         url: "/csa/api/service/subscription/" + subscriptionID + "/resume",
-        headers: {
-          "X-XSRF-TOKEN": opsUtil.readCookie("XSRF-TOKEN")
-        },
+        headers: xtoken,
         success: function(response) {
           var newDate = new Date().toLocaleString();
           var notice = ["success",newDate, "<strong>" + subscriptionID + "</strong> subscription was resumed!"];
           config.msgArray.push(notice);
-          opsUtil.rebuildCache().reDrawNotifications().resetNotificationCount(); 
+          opsUtil.rebuildCache().reDrawNotifications().resetNotificationCount();
         },
         error: function(response) {
           var newDate = new Date().toLocaleString();
@@ -130,14 +129,12 @@ setup.msgArray = [];
         $.ajax({
           type: "POST",
           url: "/csa/api/service/subscription/" + subscriptionID + "/cancel",
-          headers: {
-              "X-XSRF-TOKEN": opsUtil.readCookie("XSRF-TOKEN")
-          },
+          headers: xtoken,
           success: function(response) {
             var newDate = new Date().toLocaleString();
             var notice = ["success",newDate, "<strong>" + subscriptionID + "</strong> Subscription cancel request Sent!"];
             config.msgArray.push(notice);
-            opsUtil.rebuildCache().reDrawNotifications().resetNotificationCount(); 
+            opsUtil.rebuildCache().reDrawNotifications().resetNotificationCount();
           },
           error: function(response) {
             var newDate = new Date().toLocaleString();
@@ -147,8 +144,8 @@ setup.msgArray = [];
           }
         });
         return this;
-      }   
-    }, 
+      }
+    },
     /* Cancels a subscription using hte legacy api method */
     legacyCancelSubscription: function(subscriptionID){
       var CATALOG_ID= opsTable.row("#"+subscriptionID).data()["CATALOG_ID"];
@@ -157,10 +154,10 @@ setup.msgArray = [];
         var newDate = new Date().toLocaleString();
         var notice = ["success",newDate, "<strong>" + subscriptionID + "</strong>" + response];
         config.msgArray.push(notice);
-        opsUtil.rebuildCache().reDrawNotifications().resetNotificationCount(); 
+        opsUtil.rebuildCache().reDrawNotifications().resetNotificationCount();
       });
       return this;
-    }, 
+    },
     /* Deletes a subscription using the legacy api method */
     deleteSubscription: function(subscriptionID){
       var CATALOG_ID= opsTable.row("#"+subscriptionID).data()["CATALOG_ID"];
@@ -169,7 +166,7 @@ setup.msgArray = [];
         var newDate = new Date().toLocaleString();
         var notice = ["success",newDate, "<strong>" + subscriptionID + "</strong>" + response];
         config.msgArray.push(notice);
-        opsUtil.rebuildCache().reDrawNotifications().resetNotificationCount(); 
+        opsUtil.rebuildCache().reDrawNotifications().resetNotificationCount();
       });
       return this;
     },
@@ -177,12 +174,12 @@ setup.msgArray = [];
     validateButtons: function(e, dt, type, indexes){
       var selectedRows = opsTable.rows( { selected: true } ).data().toArray();
       /* Check the Subscriptions are owned by a single User */
-      var multiUser = selectedRows.some(function(item, idx){ 
-        return item.USER_NAME != selectedRows[0].USER_NAME 
-      }); 
+      var multiUser = selectedRows.some(function(item, idx){
+        return item.USER_NAME != selectedRows[0].USER_NAME
+      });
       /* Check valid Status for Cancel */
       var inValidSubstatus = selectedRows.some(function(item, idx){
-          return (["Active","In Progress"].indexOf(item.INSTANCE_STATE) == -1) || item.INSTANCE_STATE == "In Progress" && item.LIFECYCLE_STATUS != "Transition paused" 
+          return (["Active","In Progress"].indexOf(item.INSTANCE_STATE) == -1) || item.INSTANCE_STATE == "In Progress" && item.LIFECYCLE_STATUS != "Transition paused"
       });
       /* Check Valid Status for Delete */
       var inValidDeleteSubstatus = selectedRows.some(function(item, idx){
@@ -250,10 +247,10 @@ setup.msgArray = [];
           $(this).focus();
       }
     }
-  }; 
+  };
 
   opsUtil.init();
-  
+
 
   $(document).ready(function() {
     opsTable = $('#opsTable').DataTable({
@@ -276,7 +273,7 @@ setup.msgArray = [];
       dom: 'lr<"toolbar">fBtip',
       // getIPs is returns a JSON Array with one object for each Entry Optionally if retired default is on the add retired subscriptions to default url
       ajax: config.DATA_URL + config.URL_PARAMS,
-  
+
       // Columns are defined above.
       columns: config.COLUMNS,
       buttons: [
@@ -286,7 +283,7 @@ setup.msgArray = [];
          action: function ( e, dt, node, config ) {
             $("#wrapper").toggleClass("toggled");
             $("#opsTable").find("thead tr th").css('min-width', '');
-            setTimeout(function(){ 
+            setTimeout(function(){
               opsTable.fixedHeader.adjust();
             }, 700);
               opsUtil.reDrawNotifications();
@@ -334,7 +331,7 @@ setup.msgArray = [];
         },
         { text: '<span class="glyphicon glyphicon-copy"></span>',
           titleAttr: 'Copy to Clipboard',
-          extend: 'copyHtml5'  
+          extend: 'copyHtml5'
         },
         { text: '<span class="glyphicon glyphicon-send"></span>',
           titleAttr: 'Export as CSV',
@@ -370,7 +367,8 @@ setup.msgArray = [];
           action: function ( e, dt, node, config ) {
             window.parent.$("iframe").css({
               "position": "fixed",
-              "top": 0
+              "top": 0,
+		"height":"100%!important"
             });
            node.hide().next().show();
            //parent.location.href= window.location.href;
@@ -393,7 +391,7 @@ setup.msgArray = [];
           // This Adds dynamic links to the the Options column.
             {
                 orderable: false,
-               
+
                 "targets": opsUtil.getColumnIndexesWithClass(config.COLUMNS, "options"),
                 "data": "options",
                 "render": function(data, type, full, meta) {
@@ -504,12 +502,12 @@ setup.msgArray = [];
     .on( 'column-visibility.dt', opsUtil.toggleAdvancedSearchBar)
     .on( 'responsive-resize', opsUtil.toggleAdvancedSearchBar)
      /* Delegated event listener to capture selection of a new row */
-    .on( 'select', opsUtil.validateButtons) 
+    .on( 'select', opsUtil.validateButtons)
     .on( 'deselect', opsUtil.validateButtons)
-    
+
     /* Delegated Event listener to capture change on Advancded Search */
     .on( 'keyup', "tr.singleSearch input", opsUtil.columnSearch)
- 
+
     .on( 'column-reorder', opsUtil.toggleAdvancedSearchBar);
 
     $("div.dt-buttons").addClass("pull-right");
@@ -561,7 +559,7 @@ setup.msgArray = [];
         return this.nodeType == 3; //Node.TEXT_NODE
     }).remove();
 
-    
+
       /* On click Resume do MPP API Resume action */
       $("#opsTable").on("click", "button.resumeSub", function(event) {
           myRow = $(this).closest("tr");
@@ -591,7 +589,7 @@ setup.msgArray = [];
       });
 
       /* On Click Cancel Sub check for confirmation otherwise trigger Deletion
-      Todo: the X-Auth-Token doesnt seem to work correctly for this action just yet 
+      Todo: the X-Auth-Token doesnt seem to work correctly for this action just yet
       $("table").on("click","button.deleteSub", function(){
          myRow = $(this).closest("tr");
          rowData = opsTable.row(myRow).data();
@@ -601,26 +599,26 @@ setup.msgArray = [];
            $("#confirmModal").modal();
          }else{
            var url = "/csa/api/mpp/mpp-subscription/" + rowData["SUBSCRIPTION_ID"];
-           var token = readCookie("x-csrf-token");
-          
-         $.ajax({type:"DELETE","url":url, headers:{"x-csrf-token":token},"data":{"subscriptionid":rowData["SUBCRIPTION_ID"],"X-Auth-Token":XauthToken, "onBehalf":rowData["USER_NAME"]}, success:function(response){
+
+
+         $.ajax({type:"DELETE","url":url, headers:{  xtoken.name: xtoken.value},"data":{"subscriptionid":rowData["SUBCRIPTION_ID"],"X-Auth-Token":XauthToken, "onBehalf":rowData["USER_NAME"]}, success:function(response){
             $("#responseModal").find("div.modal-body").html("Subscription Cancelled").end().modal();
            }, failure:function(response){
-            $("#responseModal").find("div.modal-body").html("Something went wrong").end().modal();  
+            $("#responseModal").find("div.modal-body").html("Something went wrong").end().modal();
            }
          });
-         }  
+         }
        });
        */
 
-      /* On click delete Subscription first check if confirmation is required, otherwise invoke Delete action in action.jsp. 
+      /* On click delete Subscription first check if confirmation is required, otherwise invoke Delete action in action.jsp.
       */
       $("#opsTable").on("click", "button.deleteSub", function() {
           myRow = $(this).closest("tr");
           var icon = $(this).find("span");
           rowData = opsTable.row(myRow).data();
           if ($('#reqConfirm').prop('checked')) {
-              var message = "<strong>Are you sure</strong> that you wish to <strong>delete</strong> the Subscription <span class='label label-warning'>" 
+              var message = "<strong>Are you sure</strong> that you wish to <strong>delete</strong> the Subscription <span class='label label-warning'>"
               + rowData["SUBSCRIPTION_NAME"] + "</span> belonging to USERNAME <span class='label label-warning'>" + rowData["USER_NAME"] + "</span> ?";
               $("#confirmModal div.modal-body").html("<div class='alert alert-danger' role='alert'>" + message + "</div>")
                   .next().find("button.confirmAction").data("action-type", "delete");
@@ -635,7 +633,7 @@ setup.msgArray = [];
           var myAction = $(this).data("action-type");
           /* Execute the method based on the action requested */
           opsUtil[myAction + "Subscription"](rowData["SUBSCRIPTION_ID"]);
-          
+
       });
 
       /* On Click "Show Retired" reload the datatable with the new source data */
@@ -658,9 +656,9 @@ setup.msgArray = [];
           opsUtil.createCookie(setup.CACHE_NAME, JSON.stringify(config), setup.CONFIG_CACHE);
       });
       if (config.ADVANCED_SEARCH) opsUtil.toggleAdvancedSearchBar();
-      
+
       opsTable.buttons([".cancelSelected",".deleteSelected", ".resumeSelected"]).disable();
-      
+
       /* if the Advanced search is turned on then cheange the view and update the cookie */
       $('#advSearch').change(function() {
         config.ADVANCED_SEARCH = $(this).prop('checked');
