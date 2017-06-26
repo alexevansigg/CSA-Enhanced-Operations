@@ -1,5 +1,5 @@
-<%-- 
-  - Author(s): Alexander Evans (Hewlett-Packard)
+<%--
+  - Author(s): Alexander Evans
   - Date: 23/10/2014
   - Copyright Notice: Copyright 2015 Hewlett-Packard 
   - @(#)
@@ -22,10 +22,10 @@
     <link rel="stylesheet" href="assets/css/dataTables.combined.min.css"> <!-- datatables responsive plugin -->
     <link rel="stylesheet" href="assets/css/bootstrap-toggle.min.css">
     <link rel="stylesheet" type="text/css" media="all" href="css/CSA-Enhanced-Operations.css"><!-- Core style sheet for Audit/Operations plugin -->
-    
+
     <script>
     var setup = <%@include file="setup.json" %>;
-  
+
    <%
    /*
    Small snippet to read the X-Auth-Token
@@ -39,11 +39,11 @@
          cookie = cookies[i];
         if (cookie.getName( ).equals("X-Auth-Token")){
           out.print("var XauthToken = '" + cookie.getValue( )+"';");
-        } 
-      } 
+        }
+      }
     }
    %>
- 
+
     </script>
     <script src="assets/js/jquery.min.js"></script> <!-- jQuery borrowed from CSA -->
     <script src="assets/js/bootstrap.min.js"></script><!-- bootstrap borrowed from CSA -->
@@ -53,9 +53,9 @@
 
 
   </head>
-  
+
   <body class="text-center">
-   
+
 
      <div id="wrapper" class="toggled">
 
@@ -81,7 +81,7 @@
         </div><!-- /#page-content-wrapper -->
       </div><!-- /#wrapper -->
 
-   
+
 <footer></footer>
  <!-- Modal for Action Confirmation -->
     <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -91,7 +91,7 @@
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             <h4 class="modal-title" id="myModalLabel">Confirm Action</h4>
           </div>
-          <div class="modal-body"></div><!--Content injected here by bootstrap model javascript --> 
+          <div class="modal-body"></div><!--Content injected here by bootstrap model javascript -->
           <div class="modal-footer">
             <button type="button" class="btn btn-default cancel" data-dismiss="modal">Cancel</button>
             <button type="button" class="btn btn-primary confirmAction" data-toggle='modal'  data-dismiss="modal">Confirm</button>
@@ -108,7 +108,7 @@
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
             <h4 class="modal-title" id="responseModalLabel">Response</h4>
           </div>
-          <div class="modal-body">  </div><!--Content injected here by bootstrap model javascript --> 
+          <div class="modal-body">  </div><!--Content injected here by bootstrap model javascript -->
           <div class="modal-footer">
              <button type="button" class="btn btn-info refresh" data-dismiss="modal">Close</button>
           </div>
@@ -149,7 +149,7 @@
               <li><b> Copy to Clipboard</b> - Copy the filtered dataset to the clipboard</li>
             </ul>
             <div class="alert alert-warning" role="alert"><b>Note:</b> that this is an Experimental feature which is provided as an unsupported plugin to the CSA MAnagement Console
-            </div>     
+            </div>
           </div>
           <div class="modal-footer">
              <button type="button" class="btn btn-primary refresh" data-dismiss="modal">Close</button>
