@@ -1,0 +1,30 @@
+{
+	"MPP_HOST":"https://csa480:8089/",
+	"DATA_URL":"pages/getSubs.jsp?sqlFile=getApprovals.sql",
+	"ENABLE_CONSUMER_ADMIN_LINKS":true,
+	"ENABLE_CANCEL_LINKS":false,
+	"ENABLE_RESUME_LINKS":false,
+	"ENABLE_DELETE_LINKS":false,
+	"REQUIRE_CONFIRMATION":true,
+	"SHOW_RETIRED":false,
+	"USE_FIXED_HEADER":true,
+	"CONFIG_CACHE":0,
+  "CACHE_NAME":"CSA-E-O-Conf2",
+	"DEFAULT_DISPLAY_LENGTH":25,
+	"SEARCH_TERM":"",
+  "ADVANCED_SEARCH":true,
+  "COLUMNS":[
+		{"title": "Subscription Name","data": "SUBSCRIPTION_NAME" },
+		{"title": "Request Type",			"data": "REQUEST_TYPE" },
+		{"title": "Icon",             "data": "ICON_URL",          		"class":"text-center" },
+		{"title": "Request Date",     "data": "REQUEST_DATE"},
+		{"title": "Requester",        "data": "REQUESTER",            "class":"text-center"},
+		{"title": "Status",           "data": "STATUS",   						"class":"text-center"},
+		{"title": "Catalog Name",     "data": "CATALOG_NAME",         "class":"text-center"},
+		{"title": "Consumer Org",     "data": "CONSUMER_ORG",        	"class":"text-center"},
+		{"title": "Offering Name",    "data": "OFFERING_NAME",        "class":"text-center"},
+		{"title": "Catalog ID",      	"data": "CATALOG_ID",    				"class":"none text-center"},
+		{"title": "Request ID",      	"data": "REQUEST_ID",    				"class":"none text-center"},
+		{"title": "Approval ID",      	"data": "APPROVAL_ID",    				"class":"none text-center"}
+	 ]
+}
