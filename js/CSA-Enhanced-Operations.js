@@ -259,7 +259,7 @@ setup.msgArray = [];
       colReorder:   true,
       rowId: "SUBSCRIPTION_ID",
       autoWidth:    false,
-      deferedRender: true,
+      deferRender: true,
       select: {
         style: 'os',
         selector: 'td:not(.no-clickable)'
