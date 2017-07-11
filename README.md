@@ -141,27 +141,15 @@ The following features are exposed in this plugin with the aim of enhancing the 
 	REQUIRE_CONFIRMATION		| Set as false to determine the default behaviour regarding confirmation prompts | true
 	SHOW_RETIRED				| Choose whether to include retired artifacts by default | false
 	USE_FIXED_HEADER			| Set as false to disable the fixed header behaviour | true
-  	CACHE_NAME            | The name of the http cookie used for storing user preferences | CSA-E-O-Conf
+  CACHE_NAME            | The name of the http cookie used for storing user preferences | CSA-E-O-Conf
 	CONFIG_CACHE				| Integer representing the number of days end user configuration remain in browser cache | 5
-  	DEFAULT_DISPLAY_LENGTH    | Set the Default number of rows should be displayed, possible values 10,25,50 or ALL | 25
+  DEFAULT_DISPLAY_LENGTH    | Set the Default number of rows should be displayed, possible values 10,25,50 or ALL | 25
 	SEARCH_TERM					| The default value set in the Datatables search field | "<Empty String>"
-  	ADVANCED_SEARCH   | The default setting for the individual column search field | true
+  ADVANCED_SEARCH   | The default setting for the individual column search field | true
 	COLUMNS						| An object array of columns show in the datatable, the order here is the default order the columns show in, the titles represent the column headers, the data values should not be changed, add/remove the call "none" to move the column into the child row (drill down). | 
 
 
-7. Update user partial path located on line 16 of the index.jsp depending on csa version. 
-
-  **CSA 4.2**
-  ```javascript
-  <%@include file="/components/pages/partials/user.jsp" %>
-  ```
-
-   **CSA 4.5+**
-  ```javascript
-  <%@include file="/html-lib/pages/partials/user.jsp" %>
-  ```
-
-8. As the plugin is installed to a custom directory in the csa webapp it's a good idea to add an intercept-url directive to the ```applicationContext-security.xml```. Adding such a rule will check the user accessing the url is allready authenticated with CSA, if its not an authenticated session it will redirect them to the login page. 
+7. As the plugin is installed to a custom directory in the csa webapp it's a good idea to add an intercept-url directive to the ```applicationContext-security.xml```. Adding such a rule will check the user accessing the url is allready authenticated with CSA, if its not an authenticated session it will redirect them to the login page. 
 The plugin itself is allready trying to check the users roles via the script defined in the previous step (user.jsp). But this expects an authenticated user. Adding the below mentioned directive will prevent exceptions being thrown and errors written in the csa.log.
   ```xml
   <intercept-url access="isAuthenticated()" pattern="/custom-content/**"/>

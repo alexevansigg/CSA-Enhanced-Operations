@@ -1,20 +1,41 @@
 <%--
   - Author(s): Alexander Evans
   - Date: 23/10/2014
-  - Copyright Notice: Copyright 2015 Hewlett-Packard 
-  - @(#)
-  - Description: index.jsp is part of the CSA Enhanced Operations custom Servelet designed to make managing CSA subscritpion easier.
-  - It makes extensive use of the Datatables library more information can be found at http://datatables.net .
+  - Description: index.jsp is part of the CSA Enhanced Operations custom Servlet designed to make CSA subscription management a breeze.
+  - This servlet makes extensive use of the Datatables jquery library ... more information can be found @ http://datatables.net .
   --%>
 <%@ page import="java.util.*" %>
+<%@ page import="java.io.InputStream" %>
+<%@ page import="org.apache.commons.io.IOUtils"%>
 <%
-    response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
-    response.setHeader("Pragma", "no-cache"); //HTTP 1.0
-    response.setDateHeader("Expires", 0);
+  response.setHeader("Cache-Control", "no-cache"); //HTTP 1.1
+  response.setHeader("Pragma", "no-cache"); //HTTP 1.0
+  response.setDateHeader("Expires", 0);
+
+  /* Load the csa Version number from class folder */
+  ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+  /* Initialize with default minimum version, do not change */
+  String csaVersionRaw = "4.2";
+
+  Double csaVersion = 4.2;
+
+  try{
+    csaVersionRaw = IOUtils.toString(classLoader.getResourceAsStream("/version.txt")).substring(0,4);
+    csaVersion = Double.valueOf(csaVersionRaw);
+  } 
+  catch (Exception e){ /* Do Nothing */ }
+  
+  
+  /* Default Location for Partials */
+  String partials = "/components/pages/partials/user.jsp";
+
+  // Load a different Partial if CSA is version 4.5 or greater
+  if (csaVersion >= 4.5){
+     partials = "/html-lib/pages/partials/user.jsp";
+  }
 %>
 
-<%@include file="/html-lib/pages/partials/user.jsp" %>
-
+<jsp:include page="<%=partials%>" />
 <html>
   <head>
     <link rel="icon" href="/csa/static/img/favicon.ico" sizes="32x32 48x48" type="image/vnd.microsoft.icon"><!-- Default CSA Favicon -->
@@ -25,7 +46,7 @@
 
     <script>
     var setup = <%@include file="setup.json" %>;
-
+    setup["csaVersion"] = "<%=csaVersion%>"
    <%
    /*
    Small snippet to read the X-Auth-Token
@@ -55,8 +76,6 @@
   </head>
 
   <body class="text-center">
-
-
      <div id="wrapper" class="toggled">
 
         <!-- Sidebar -->
