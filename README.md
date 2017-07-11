@@ -31,19 +31,23 @@ The following features are exposed in this plugin with the aim of enhancing the 
 #### CSA Compatability Matrix
 ---
 
+The Tool has been tested / developed againsnt the following configurations, in both windows base and linux installations, 
+it's likely other configurations work perfectly, it is after platform agnostic.
+
 |CSA Version|Database|CEO Tested|
-|-------|---------|-------|
-| 4.2x | MSSQL | Yes |
-| 4.2x | ORACLE | Yes |
-| 4.2x | POSTGRES | Yes |
-| 4.5x | MSSQL | Yes
-| 4.5x | ORACLE | Yes |
-| 4.5x | POSTGRES | Yes |
-| 4.6 | MSSQL | Yes
-| 4.6 | ORACLE | Yes |
-| 4.6 | POSTGRES | Yes |
-| 4.7x | POSTGRES | Yes |
-| 4.7x | ORACLE | Yes |
+|-------|-----------|-----|
+| 4.2   | MSSQL     | Yes |
+| 4.2   | ORACLE    | Yes |
+| 4.2   | POSTGRES  | Yes |
+| 4.5   | MSSQL     | Yes |
+| 4.5   | ORACLE    | Yes |
+| 4.5   | POSTGRES  | Yes |
+| 4.6   | MSSQL     | Yes |
+| 4.6   | ORACLE    | Yes |
+| 4.6   | POSTGRES  | Yes |
+| 4.7   | POSTGRES  | Yes |
+| 4.7   | ORACLE    | Yes |
+| 4.8   | POSTGRES  | Yes |
 
 ---
 #### Installation Instructions
