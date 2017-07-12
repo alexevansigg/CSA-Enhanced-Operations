@@ -22,10 +22,10 @@
   try{
     csaVersionRaw = IOUtils.toString(classLoader.getResourceAsStream("/version.txt")).substring(0,4);
     csaVersion = Double.valueOf(csaVersionRaw);
-  } 
+  }
   catch (Exception e){ /* Do Nothing */ }
-  
-  
+
+
   /* Default Location for Partials */
   String partials = "/components/pages/partials/user.jsp";
 
@@ -47,24 +47,6 @@
     <script>
     var setup = <%@include file="setup.json" %>;
     setup["csaVersion"] = "<%=csaVersion%>"
-   <%
-   /*
-   Small snippet to read the X-Auth-Token
-   Todo: Abstract and clean this up
-   */
-    Cookie[] cookies = null;
-    Cookie cookie = null;
-    cookies = request.getCookies();
-    if( cookies != null ){
-      for (int i = 0; i < cookies.length; i++){
-         cookie = cookies[i];
-        if (cookie.getName( ).equals("X-Auth-Token")){
-          out.print("var XauthToken = '" + cookie.getValue( )+"';");
-        }
-      }
-    }
-   %>
-
     </script>
     <script src="assets/js/jquery.min.js"></script> <!-- jQuery borrowed from CSA -->
     <script src="assets/js/bootstrap.min.js"></script><!-- bootstrap borrowed from CSA -->
