@@ -13,15 +13,17 @@
 <%@ page import="org.apache.commons.httpclient.UsernamePasswordCredentials"%>
 <%@ page import="org.apache.commons.httpclient.auth.AuthScope"%>
 <%@ page import="org.apache.commons.httpclient.methods.PostMethod"%>
+<%@ page import="org.apache.commons.httpclient.methods.PutMethod"%>
 <%@ page import="com.hp.csa.security.util.AESHelper" %>
 <%@page trimDirectiveWhitespaces="true" %>
 <%
 
 /* Initialize the variables*/
 String action;
-String subId;
-String catId;
-String userId;
+String subId = "";
+String catId = "";
+String userId = "";
+String approvalId = "";
 String userpass;
 String adminPass;
 String url;
@@ -52,17 +54,23 @@ if (request.getParameterMap().containsKey("action")){
   out.println("action is required");
   return;
 }
-if (request.getParameterMap().containsKey("subId")){
-  subId = request.getParameter("subId");
-} else{
-  out.println("subId is required");
-  return;
+if (action.equals("delete")){
+  if (request.getParameterMap().containsKey("subId")){
+    subId = request.getParameter("subId");
+  } else{
+    out.println("subId is required");
+    return;
+  }
 }
+
 if (request.getParameterMap().containsKey("catId")){
   catId = request.getParameter("catId");
 } else{
   out.println("catId is required");
   return;
+}
+if (request.getParameterMap().containsKey("approvalId")){
+  approvalId = request.getParameter("approvalId");
 }
 
 /* Set Fixed values and Build url & request Body */
@@ -73,7 +81,7 @@ AESHelper ae = new AESHelper();
 adminPass = ae.decrypt(props.getProperty("securityAdminPassword"));
 
 url = "";
-body="";
+body = "";
 
 if (action.equals("delete")){
   url        = csaBaseURL + "/csa/rest/user/multipleSubscription/delete?userIdentifier=" + userId;
@@ -87,7 +95,7 @@ if (action.equals("delete")){
               +"</catalogItem>"
               +"</ServiceSubscription>"
               +"</ServiceSubscriptionList>";
-} 
+}
 else if (action.equals("cancel")){
   url        = csaBaseURL + "/csa/rest/catalog/" + catId + "/request?userIdentifier=" + userId;
   body       = "<ServiceRequest><description>Manual Fail</description>"
@@ -99,9 +107,19 @@ else if (action.equals("cancel")){
               + "</ServiceRequest>";
 }
 
-
-
-
+else if (action.equals("approve")){
+  url         = csaBaseURL + "/csa/rest/catalog/" + catId + "/approval/" + approvalId + "?userIdentifier=" + userId;
+  body        = "<ApprovalProcess> <approvalResult>"
+              + "<name>APPROVED</name> </approvalResult>"
+              + "</ApprovalProcess>";
+}
+else if (action.equals("deny")){
+  url         = csaBaseURL + "/csa/rest/catalog/" + catId + "/approval/" + approvalId + "?userIdentifier=" + userId;
+  body        = "<ApprovalProcess> <approvalResult>"
+              + "<name>REJECTED</name> </approvalResult>"
+              + "<approvalComment>Rejected from CSA Enhanced Operations</approvalComment>"
+              + "</ApprovalProcess>";
+}
 /* Setup the HTTP Client */
 /* Todo: encrypt the transport password used here. see JBOSS AS7 encryption */
 client = new HttpClient();
@@ -112,30 +130,59 @@ client.getState().setCredentials(
 );
 
 /* This just initializes the HTTP Post object. */
-PostMethod post = new PostMethod(url);
-log.info(action + "  Subscription (Experimental) Invoked");
-try {
-  post.setDoAuthentication( true );
-  post.setRequestHeader("Content-type", "application/xml; charset=UTF-8");
-  post.setRequestHeader("Accept", "application/xml; charset=UTF-8");
-  post.setRequestBody(body);
-  status = client.executeMethod(post);
-  if(status == 200){
-    out.println("<p><span class='label label-success'>Success</span></p><p><span class='label label-default'>Return Code: "+status+"</span></p>");
-  } else{
-    out.println("<p><span class='label label-danger'>Error</span><br /></p><p><span class='label label-default'>Return Code: "+status+"</span></p>");
+if (action.equals("approve") || action.equals("deny")){
+  PutMethod put = new PutMethod(url);
+  try {
+    put.setDoAuthentication( true );
+    put.setRequestHeader("Content-type", "application/xml; charset=UTF-8");
+    put.setRequestHeader("Accept", "application/xml; charset=UTF-8");
+    put.setRequestBody(body);
+    status = client.executeMethod(put);
+    if(status == 200){
+      out.println("<p><span class='label label-success'>Success</span></p><p><span class='label label-default'>Return Code: "+status+"</span></p>");
+    } else{
+      out.println("<p><span class='label label-danger'>Error</span><br /></p><p><span class='label label-default'>Return Code: "+status+"</span></p>");
+  }
+    myResponse = put.getResponseBodyAsString();
+    esc = new StringEscapeUtils();
+    out.println("<well><pre><code>" + esc.escapeXml(myResponse) + "</code></pre></well>");
+  }
+  catch(Exception e){
+    log.error(action + " Subscription Failed " + e.getMessage());
+    e.printStackTrace(response.getWriter());
+  }
+  finally {
+    // release any connection resources used by the method
+    put.releaseConnection();
+  }
 }
-  myResponse = post.getResponseBodyAsString();
-  esc = new StringEscapeUtils();
-  out.println("<well><pre><code>" + esc.escapeXml(myResponse) + "</code></pre></well>");
+else{
+  PostMethod post = new PostMethod(url);
+  log.info(action + "  Subscription (Experimental) Invoked");
+  try {
+    post.setDoAuthentication( true );
+    post.setRequestHeader("Content-type", "application/xml; charset=UTF-8");
+    post.setRequestHeader("Accept", "application/xml; charset=UTF-8");
+    post.setRequestBody(body);
+    status = client.executeMethod(post);
+    if(status == 200){
+      out.println("<p><span class='label label-success'>Success</span></p><p><span class='label label-default'>Return Code: "+status+"</span></p>");
+    } else{
+      out.println("<p><span class='label label-danger'>Error</span><br /></p><p><span class='label label-default'>Return Code: "+status+"</span></p>");
+  }
+    myResponse = post.getResponseBodyAsString();
+    esc = new StringEscapeUtils();
+    out.println("<well><pre><code>" + esc.escapeXml(myResponse) + "</code></pre></well>");
+  }
+
+  catch(Exception e){
+    log.error(action + " Subscription Failed " + e.getMessage());
+    e.printStackTrace(response.getWriter());
+  }
+  finally {
+    // release any connection resources used by the method
+    post.releaseConnection();
+  }
 }
 
-catch(Exception e){
-  log.error(action + " Subscription Failed " + e.getMessage());
-  e.printStackTrace(response.getWriter());
-}     
-finally {
-  // release any connection resources used by the method
-  post.releaseConnection();
-}
 %>
