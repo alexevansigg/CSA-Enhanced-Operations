@@ -1,12 +1,12 @@
 #btn-toolbar{
   display:none;
 }
-
+div.tableSwitcher{
+  padding-left:5px;
+}
 /* Fix for Searchable Columns */
 tr.singleSearch th {
     padding-right: 5px!important;
-  
-    
 }
  tr.singleSearch > th > input {
     width: 100%!important;
@@ -28,7 +28,7 @@ td.options{
   width:45px;
   max-width:45px!important;
 }
-#opsTable_wrapper .input-group, .dataTables_length label{ 
+#opsTable_wrapper .input-group, .dataTables_length label{
   margin-right:10px;
 }
 #opsTable_wrapper div.rightToolbar{
@@ -47,7 +47,7 @@ div.dataTables_length{
 div.container-fluid{
   margin-top:4px!important;
 }
-div.dataTables_info { 
+div.dataTables_info {
   float: left!important;
 }
 .tooltip.in {
@@ -55,9 +55,9 @@ div.dataTables_info {
   filter: alpha(opacity=100);
 }
 .tooltip > .tooltip-inner {
-  background-color: #fff; 
-  color: #000; 
-  border: 1px solid #CCCCCC; 
+  background-color: #fff;
+  color: #000;
+  border: 1px solid #CCCCCC;
 }
 
 .tooltip.top > .tooltip-arrow{
@@ -164,7 +164,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before,
 table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
     font-family:'Glyphicons Halflings';
     content:"\e080";
-    float: left; 
+    float: left;
     margin-right:10px;
     color: grey;
     background: none;
@@ -196,7 +196,7 @@ table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child:before
     font-family           : "Arial";
     font-size             : 14px;
     font-weight           : 600;
-    
+
     position              : absolute;
 
     padding               : 0px 2px;
@@ -259,11 +259,10 @@ table.dataTable.dtr-inline.collapsed > tbody > tr.parent > th:first-child:before
 
 #page-content-wrapper {
     width: 100%;
-    position: relative; 
+    position: relative;
 }
 
 #wrapper.toggled #page-content-wrapper {
     position: relative;
     margin-right: -0px;
 }
-

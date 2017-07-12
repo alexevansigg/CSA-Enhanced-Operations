@@ -8,9 +8,15 @@ art3.DISPLAY_NAME as CATALOG_NAME,
 art3.UUID as CATALOG_ID,
 art4.DISPLAY_NAME as CONSUMER_ORG,
 art5.DISPLAY_NAME as OFFERING_NAME,
+art6.DISPLAY_NAME as APPROVAL_POLICY_NAME,
+cat2.DISPLAY_NAME as APPROVAL_TYPE,
+cap.AUTOMATIC_APPROVAL as AUTOMATIC_APPROVAL,
 req.UUID as REQUEST_ID,
 rad.name as REQUEST_TYPE
 FROM csa_approval_process ca
+INNER JOIN csa_app_templ cap ON ca.APPROVAL_TEMPLATE_ID = cap.UUID
+INNER JOIN csa_artifact art6 ON ca.APPROVAL_TEMPLATE_ID = art6.UUID
+INNER JOIN csa_category cat2 ON cap.approval_type_id = cat2.UUID
 INNER JOIN csa_artifact art ON ca.UUID=art.UUID
 INNER JOIN csa_category cat ON ca.approval_result_id = cat.UUID
 INNER JOIN csa_person per ON ca.created_by_id = per.UUID
