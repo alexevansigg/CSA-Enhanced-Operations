@@ -601,9 +601,9 @@ currentVersion = 0.8;
   $(document).ready(function() {
     tableSwitcher = '<div class="btn-group tableSwitcher" data-toggle="buttons">' +
                       '<label class="btn btn-sm btn-default active SUBSCRIPTIONS" id="subscriptionsPage">' +
-                        '<input type="radio" name="options" checked> Subscriptions</label>' +
+                        '<input type="radio" name="options" value="SUBSCRIPTIONS"> Subscriptions</label>' +
                       '<label class="btn btn-sm btn-default APPROVALS" id="approvalsPage">' +
-                        '<input type="radio" name="options" > Approvals</label>' +
+                        '<input type="radio" name="options" value="APPROVALS" >Approvals</label>' +
                       '</div>';
     config.CURRENT_VIEW = "SUBSCRIPTIONS";
     opsUtil.buildTable();
@@ -612,16 +612,16 @@ currentVersion = 0.8;
     .on( 'column-visibility.dt responsive-resize', opsUtil.toggleAdvancedSearchBar)
      /* Delegated event listener to capture selection of a new row */
     .on( 'select deselect draw', opsUtil.validateButtons)
-
-
     /* Delegated Event listener to capture change on Advancded Search */
     .on( 'keyup', "tr.singleSearch input", opsUtil.columnSearch)
     .on( 'column-reorder', opsUtil.toggleAdvancedSearchBar);
 
-    $('body').on('click','label.APPROVALS', function(){
-        $.get("setup_approvals.json", function(data){
+    $('body').on('change','div.tableSwitcher', function(){
+        var view = $(this).find('input[name=options]:checked').val();
+        var configURL = (view == "APPROVALS") ? "setup_approvals.json" : "setup.json";
+        $.get(configURL, function(data){
           setup = data;
-          setup["CURRENT_VIEW"] = "APPROVALS";
+          setup["CURRENT_VIEW"] = view;
           opsTable.state.clear();
           opsTable.clear();
           $('#opsTable thead').html("");
@@ -632,11 +632,11 @@ currentVersion = 0.8;
         });
       });
 
-      $('body').on('click','label.SUBSCRIPTIONS', function(){
+    /*  $('body').on('click','label.SUBSCRIPTIONS', function(){
           $.get("setup.json", function(data){
             setup = data;
             setup["CURRENT_VIEW"] = "SUBSCRIPTIONS";
-            console.log(setup.CURRENT_VIEW);
+            console.log("Hello");
             opsTable.state.clear();
             opsTable.clear();
             $('#opsTable thead').html("");
@@ -647,7 +647,7 @@ currentVersion = 0.8;
           });
         });
 
-
+        */
     $('body').on('click',"button.close", function () {
       var index = $(this).parent().attr("data-notificationIndex");
       config.msgArray.splice(index, 1);
