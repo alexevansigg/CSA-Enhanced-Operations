@@ -5,11 +5,18 @@
  */
 
 /* Initialize the common variables */
-var currentVersion, myRow, rowData, columns, dataUrl, openSub, openInst, modifySub, viewTop, cancelSub, deleteSub, config, cookieSetup, cv, xtoken = {}, tableSwitcher;
+var currentVersion, myRow, rowData, columns, dataUrl, openSub, openInst, modifySub, viewTop, cancelSub, deleteSub, config, cookieSetup, cv, xtoken = {}, tableSwitcher, opsTable,
 currentVersion = 0.8;
 
+tableSwitcher = '<div class="btn-group tableSwitcher" data-toggle="buttons">' +
+                  '<label class="btn btn-sm btn-default active SUBSCRIPTIONS" id="subscriptionsPage">' +
+                    '<input type="radio" name="options" value="SUBSCRIPTIONS"> Subscriptions</label>' +
+                  '<label class="btn btn-sm btn-default APPROVALS" id="approvalsPage">' +
+                    '<input type="radio" name="options" value="APPROVALS" >Approvals</label>' +
+                  '</div>';
 
   var opsUtil = {
+    /* Load the configuration files and other stuff. */
     init: function(){
       setup.msgArray = [];
       cookieSetup = this.readCookie(setup.CACHE_NAME);
@@ -19,7 +26,7 @@ currentVersion = 0.8;
       }
       catch (err){
         cv = "x";
-     }
+      }
 
      /* Get the Correct Token */
      xtoken[opsUtil.readCookie("XSRF-TOKEN") ? "X-XSRF-TOKEN": "x-csrf-token"] = opsUtil.readCookie("XSRF-TOKEN") || opsUtil.readCookie("x-csrf-token");
@@ -53,8 +60,10 @@ currentVersion = 0.8;
       config.SHOW_RETIRED = (config.SHOW_RETIRED) ? "checked" : "";
       config.ADVANCED_SEARCH = (config.ADVANCED_SEARCH) ? "checked" : "";
       config.URL_PARAMS = (config.SHOW_RETIRED) ? "?retired=true" : "";
-
+      config.CURRENT_VIEW = "SUBSCRIPTIONS";
+      return this;
     },
+    /* Load the Datatable */
     buildTable: function(){
       opsTable = $('#opsTable').DataTable({
         responsive:   true,
@@ -328,12 +337,16 @@ currentVersion = 0.8;
       $("div.toolbar").addClass("pull-left");
       if(config.CURRENT_VIEW == "SUBSCRIPTIONS"){
         $("div.toolbar").append('<input type="checkbox" ' + config.SHOW_RETIRED + ' data-toggle="toggle" data-size="small" id="retired">');
+      } else{
+        /* Remove the Multiselect Buttons */
+        opsTable.buttons(1).remove();
+        opsTable.buttons(1).remove();
+        opsTable.buttons(1).remove();
       }
 
-          $("div.toolbar").append('<input type="checkbox" ' + config.REQUIRE_CONFIRMATION + ' data-toggle="toggle"  data-size="small"  id="reqConfirm" >');
-          $("div.toolbar").append('<input type="checkbox" ' + config.ADVANCED_SEARCH + ' data-toggle="toggle"  data-size="small"  id="advSearch" >');
-          $("div.toolbar").append(tableSwitcher);
-
+      $("div.toolbar").append('<input type="checkbox" ' + config.REQUIRE_CONFIRMATION + ' data-toggle="toggle"  data-size="small"  id="reqConfirm" >');
+      $("div.toolbar").append('<input type="checkbox" ' + config.ADVANCED_SEARCH + ' data-toggle="toggle"  data-size="small"  id="advSearch" >');
+      $("div.toolbar").append(tableSwitcher);
       $('.tableSwitcher .' + setup.CURRENT_VIEW).addClass("active").siblings().removeClass("active");
       $('.tableSwitcher .btn').button();
 
@@ -351,7 +364,7 @@ currentVersion = 0.8;
           style: 'toggleMargin'
       });
 
-      /* Set Bootstrap Toggle on Confirmation Checkbox */
+      /* Set Bootstrap Toggle on Advanced Search Checkbox */
       $('#advSearch').bootstrapToggle({
           on: '<i class="glyphicon glyphicon glyphicon-zoom-in"></i> Advanced',
           off: '<i class="glyphicon glyphicon glyphicon-zoom-out"></i> Simple',
@@ -363,6 +376,7 @@ currentVersion = 0.8;
         container: "body",
         selector: "div.dt-buttons a,[data-toggle='tooltip'],[rel='tooltip']"
       });
+
       $("div.dt-buttons").addClass("pull-right");
       $("div.dt-buttons a").data("placement","bottom");
 
@@ -375,7 +389,15 @@ currentVersion = 0.8;
 
       /* turn on bootstrap toggle for all checkboxes */
       $('input[type="checkbox"]').bootstrapToggle();
+      if (config.ADVANCED_SEARCH) opsUtil.toggleAdvancedSearchBar();
+
+      opsTable.on('column-visibility.dt responsive-resize column-reorder', opsUtil.toggleAdvancedSearchBar)
+       /* Delegated event listener to capture selection of a new row */
+      .on('select deselect draw', opsUtil.validateButtons);
+      /* Delegated Event listener to capture change on Advancded Search */
+      $('#opsTable').on('keyup', "tr.singleSearch input", opsUtil.columnSearch);
     },
+    /* Simple helper Function to create a HTTP Cookie */
     createCookie: function(name, value, days) {
       if (days) {
           var date = new Date();
@@ -383,10 +405,13 @@ currentVersion = 0.8;
           var expires = "; expires=" + date.toGMTString();
       } else var expires = "";
       document.cookie = name + "=" + value + expires + "; path=/";
+      return this;
     },
+    /* Simple helper Function to delete an HTTP Cookie */
     deleteCookie: function(name) {
       document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:01 GMT;';
     },
+    /* Simple Helper Function with reads a given http cookie*/
     readCookie: function(name) {
       var nameEQ = name + "=";
       var ca = document.cookie.split(';');
@@ -599,22 +624,7 @@ currentVersion = 0.8;
   opsUtil.init();
 
   $(document).ready(function() {
-    tableSwitcher = '<div class="btn-group tableSwitcher" data-toggle="buttons">' +
-                      '<label class="btn btn-sm btn-default active SUBSCRIPTIONS" id="subscriptionsPage">' +
-                        '<input type="radio" name="options" value="SUBSCRIPTIONS"> Subscriptions</label>' +
-                      '<label class="btn btn-sm btn-default APPROVALS" id="approvalsPage">' +
-                        '<input type="radio" name="options" value="APPROVALS" >Approvals</label>' +
-                      '</div>';
-    config.CURRENT_VIEW = "SUBSCRIPTIONS";
     opsUtil.buildTable();
-
-    opsTable
-    .on( 'column-visibility.dt responsive-resize', opsUtil.toggleAdvancedSearchBar)
-     /* Delegated event listener to capture selection of a new row */
-    .on( 'select deselect draw', opsUtil.validateButtons)
-    /* Delegated Event listener to capture change on Advancded Search */
-    .on( 'keyup', "tr.singleSearch input", opsUtil.columnSearch)
-    .on( 'column-reorder', opsUtil.toggleAdvancedSearchBar);
 
     $('body').on('change','div.tableSwitcher', function(){
         var view = $(this).find('input[name=options]:checked').val();
@@ -626,28 +636,9 @@ currentVersion = 0.8;
           opsTable.clear();
           $('#opsTable thead').html("");
           opsTable.destroy();
-          opsUtil.createCookie(setup.CACHE_NAME, JSON.stringify(setup), setup.CONFIG_CACHE);
-          opsUtil.init();
-          opsUtil.buildTable();
+          opsUtil.createCookie(setup.CACHE_NAME, JSON.stringify(setup), setup.CONFIG_CACHE).init().buildTable();
         });
       });
-
-    /*  $('body').on('click','label.SUBSCRIPTIONS', function(){
-          $.get("setup.json", function(data){
-            setup = data;
-            setup["CURRENT_VIEW"] = "SUBSCRIPTIONS";
-            console.log("Hello");
-            opsTable.state.clear();
-            opsTable.clear();
-            $('#opsTable thead').html("");
-            opsTable.destroy();
-            opsUtil.createCookie(setup.CACHE_NAME, JSON.stringify(setup), setup.CONFIG_CACHE);
-            opsUtil.init();
-            opsUtil.buildTable();
-          });
-        });
-
-        */
     $('body').on('click',"button.close", function () {
       var index = $(this).parent().attr("data-notificationIndex");
       config.msgArray.splice(index, 1);
@@ -740,12 +731,12 @@ currentVersion = 0.8;
           config.REQUIRE_CONFIRMATION = $(this).prop('checked');
           opsUtil.createCookie(setup.CACHE_NAME, JSON.stringify(config), setup.CONFIG_CACHE);
       });
-      if (config.ADVANCED_SEARCH) opsUtil.toggleAdvancedSearchBar();
+
 
       opsTable.buttons([".cancelSelected",".deleteSelected", ".resumeSelected"]).disable();
 
       /* if the Advanced search is turned on then cheange the view and update the cookie */
-      $('#advSearch').change(function() {
+      $('body').on("change","#advSearch", function() {
         config.ADVANCED_SEARCH = $(this).prop('checked');
         opsUtil.toggleAdvancedSearchBar();
         opsUtil.createCookie(setup.CACHE_NAME, JSON.stringify(config), setup.CONFIG_CACHE);

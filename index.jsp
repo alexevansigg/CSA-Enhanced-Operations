@@ -16,7 +16,6 @@
   ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
   /* Initialize with default minimum version, do not change */
   String csaVersionRaw = "4.2";
-
   Double csaVersion = 4.2;
 
   try{
@@ -39,10 +38,10 @@
 <html>
   <head>
     <link rel="icon" href="/csa/static/img/favicon.ico" sizes="32x32 48x48" type="image/vnd.microsoft.icon"><!-- Default CSA Favicon -->
-    <link rel="stylesheet" href="assets/css/bootstrap.min.css"><!-- bootstrap 3.3.6 -->
-    <link rel="stylesheet" href="assets/css/dataTables.combined.min.css"> <!-- datatables responsive plugin -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css"><!-- bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="assets/css/dataTables.combined.min.css"> <!-- datatables combined library plugin -->
     <link rel="stylesheet" href="assets/css/bootstrap-toggle.min.css">
-    <link rel="stylesheet" type="text/css" media="all" href="css/CSA-Enhanced-Operations.css"><!-- Core style sheet for Audit/Operations plugin -->
+    <link rel="stylesheet" href="css/CSA-Enhanced-Operations.css"><!-- Core style sheet for Audit/Operations plugin -->
 
     <script>
     var setup = <%@include file="setup.json" %>;
@@ -77,7 +76,6 @@
               </div>
             </div>
           </div>
-
 
         </div><!-- /#page-content-wrapper -->
       </div><!-- /#wrapper -->
@@ -159,7 +157,7 @@
       </div>
     </div><!-- End of help Model -->
 
-  
+
 
   </body>
 
