@@ -31,7 +31,7 @@ The following features are exposed in this plugin with the aim of enhancing the 
 #### CSA Compatability Matrix
 ---
 
-The Tool has been tested / developed againsnt the following configurations, in both windows base and linux installations, 
+The Tool has been tested / developed againsnt the following configurations, in both windows base and linux installations,
 it's likely other configurations work perfectly, it is after platform agnostic.
 
 |CSA Version|Database|CEO Tested|
@@ -81,7 +81,7 @@ it's likely other configurations work perfectly, it is after platform agnostic.
 
 3. Add the corresponding entry to the csa.war/dashboard/config.json depending on the installed csa version.
   (inside main.tiles array or in sub panel see **CSA Configuration guide** if unsure how to manipulate this file)
-  
+
   **CSA 4.2**
   ```JSON
   	{
@@ -97,7 +97,7 @@ it's likely other configurations work perfectly, it is after platform agnostic.
   	}
   ```
   **CSA 4.6+**
-  ```JSON 
+  ```JSON
   	{
   		"id": "CSA-Enhanced-Operations",
   		"name": "CSA-Enhanced-Operations",
@@ -132,29 +132,52 @@ it's likely other configurations work perfectly, it is after platform agnostic.
   	}
   ```
 
-6. Configure the settings in csa.war/custom-content/CSA-Enhanced-Operations/setup.json
-
-	Name | Description  | Default
-	------------- | ------------- |-------------
-	MPP_HOST 					| The url of a MPP instance, Required for Consumer Admin Links  | https://localhost:8089/
-	DATA_URL 					| The path to the URL for retrieving the Subscriptions          | pages/getSubs.jsp
-	ENABLE_CONSUMER_ADMIN_LINKS | Set as false to disable direct links to Manage Subscriptions as Consumer Admin | true
-	ENABLE_CANCEL_LINKS 		| Set as false to disable Cancel subscription functionality  | true
-	ENABLE_RESUME_LINKS			| Set as false to disable resuming paused subscription functionality | true
-	ENABLE_DELETE_LINKS			| Set as false to disable deleting offline subscription functionality | true
-	REQUIRE_CONFIRMATION		| Set as false to determine the default behaviour regarding confirmation prompts | true
-	SHOW_RETIRED				| Choose whether to include retired artifacts by default | false
-	USE_FIXED_HEADER			| Set as false to disable the fixed header behaviour | true
-  CACHE_NAME            | The name of the http cookie used for storing user preferences | CSA-E-O-Conf
-	CONFIG_CACHE				| Integer representing the number of days end user configuration remain in browser cache | 5
-  DEFAULT_DISPLAY_LENGTH    | Set the Default number of rows should be displayed, possible values 10,25,50 or ALL | 25
-	SEARCH_TERM					| The default value set in the Datatables search field | "<Empty String>"
-  ADVANCED_SEARCH   | The default setting for the individual column search field | true
-	COLUMNS						| An object array of columns show in the datatable, the order here is the default order the columns show in, the titles represent the column headers, the data values should not be changed, add/remove the call "none" to move the column into the child row (drill down). | 
-
-
-7. As the plugin is installed to a custom directory in the csa webapp it's a good idea to add an intercept-url directive to the ```applicationContext-security.xml```. Adding such a rule will check the user accessing the url is allready authenticated with CSA, if its not an authenticated session it will redirect them to the login page. 
-The plugin itself is allready trying to check the users roles via the script defined in the previous step (user.jsp). But this expects an authenticated user. Adding the below mentioned directive will prevent exceptions being thrown and errors written in the csa.log.
+6. As the plugin is installed to a custom directory in the csa webapp it's a good idea to add an intercept-url directive to the ```applicationContext-security.xml```. Adding such a rule will check the user accessing the url is already authenticated with CSA. When the session is not authenticated the directive will redirect them to the login page. Adding the below mentioned directive will prevent exceptions being thrown and errors being output in the csa.log.
   ```xml
   <intercept-url access="isAuthenticated()" pattern="/custom-content/**"/>
   ```
+
+7. Configure the settings in **csa.war/custom-content/CSA-Enhanced-Operations/setup.json**
+
+|Name|Description|Default|
+|----------------------------|-----------------------------------------------------------------------|-------------------------|
+|MPP_HOST 		               | The url of a MPP instance, Required for Consumer Admin Links          | https://localhost:8089/ |
+|DATA_URL 				           | The path to the URL for retrieving the Subscriptions                  | pages/getSubs.jsp       |
+|ENABLE_CONSUMER_ADMIN_LINKS | Enables direct links to Manage Subscriptions as Consumer Admin        | true                    |
+|ENABLE_CANCEL_LINKS 		     | Enables Cancel subscription functionality                             | true                    |
+|ENABLE_RESUME_LINKS			   | Enables resuming paused subscription functionality                    | true                    |
+|ENABLE_DELETE_LINKS			   | Set as false to disable deleting offline subscription functionality   | true                    |
+|REQUIRE_CONFIRMATION		     | Whether a confirmation prompt is display before submitting requests   | true                    |
+|SHOW_RETIRED				         | Choose whether to include retired artifacts by default                | false                   |
+|USE_FIXED_HEADER			       | Set as false to disable the fixed header behaviour                    | true                    |
+|CACHE_NAME                  | The name of the http cookie used for storing user preferences         | CSA-E-O-Conf            |
+|CONFIG_CACHE				         | Expiry period in days of user cache                                   | 5                       |
+|DEFAULT_DISPLAY_LENGTH      | How many rows are displayed, possible values 10,25,50 or ALL          | 25                      |
+|SEARCH_TERM					       | The default value set in the Datatables search field                  | "<Empty String>"        |
+|ADVANCED_SEARCH             | The default setting for the individual column search field            | true                    |
+|COLUMNS						         | Table column definitions                                              | see below               |
+
+---
+#### Optional: SQL Query and Column Customization
+---
+
+The datatable sources it's dataset from SQL queries defined in the folder **/pages/sql/** When the SQL queries are modified to return additional/alternative fields then the columns definition inside the setup.json file must also be updated.
+
+The dataset returned from the SQL query is parsed into a JSON object in a format which is directly consumed by the datatable. any column names returned from the query are capitalised to ensure standardisation between different RDBMS.
+
+The column definitions should look as follows
+
+```JSON
+[
+    {"title": "Subscription Name",     "data": "SUBSCRIPTION_NAME" },
+    {"title": "Icon",                  "data": "ICON_URL",          "class":"text-center" },
+    {"title": "Instance Name",         "data": "INSTANCE_NAME"},
+    {"title": "Owner Group",           "data": "SUBCRIPTION_OWNER_GROUP"}        
+]
+```
+
+Each entry in the Object Array denotes a single column in the datatable, The title attribute is contains the display name of the field, the data attribute contains the name of the field in the JSON object returned by the SQL query (important this is always capital), The class field can contain the following:
+- **text-center** - Jusitfies the column in the center.
+- **text-left** - Justifies the column to the left.
+- **text-right** - Justifies the column to the right.
+- **none** - Hides the column from the table and only displays it in the drill down summary.
