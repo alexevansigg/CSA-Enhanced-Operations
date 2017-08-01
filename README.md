@@ -161,11 +161,11 @@ it's likely other configurations work perfectly, it is after platform agnostic.
 #### Optional: SQL Query and Column Customization
 ---
 
-The datatable sources it's dataset from SQL queries defined in the folder **/pages/sql/** When the SQL queries are modified to return additional/alternative fields then the columns definition inside the setup.json file must also be updated.
+The datatable sources it's dataset from SQL queries defined in the folder **/pages/sql/** When the SQL queries are modified to return additional/alternative fields then the columns definition inside the **setup.json** file must also be updated.
 
-The dataset returned from the SQL query is parsed into a JSON object in a format which is directly consumed by the datatable. any column names returned from the query are capitalised to ensure standardisation between different RDBMS.
+The dataset returned from the SQL query is parsed into a JSON object in a format which is directly consumed by the datatable. Each column name returned from the query are capitalised to ensure standardisation between different RDBMS.
 
-The column definitions should look as follows
+The column definitions in **setup.json** should follow a similiar format to below:
 
 ```JSON
 [
@@ -176,7 +176,7 @@ The column definitions should look as follows
 ]
 ```
 
-Each entry in the Object Array denotes a single column in the datatable, The title attribute is contains the display name of the field, the data attribute contains the name of the field in the JSON object returned by the SQL query (important this is always capital), The class field can contain the following:
+Each entry in the Object Array denotes a single column in the datatable, The title attribute contains the display name of the column, the data attribute correspondes to the name of the field in the JSON object returned by the SQL query (important: this is always capital), The class field can contain the following delimited by a space:
 - **text-center** - Jusitfies the column in the center.
 - **text-left** - Justifies the column to the left.
 - **text-right** - Justifies the column to the right.
