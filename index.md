@@ -136,7 +136,7 @@ it's likely other configurations work perfectly, it is after platform agnostic.
   ```
 
 6. As the plugin is installed to a custom directory in the csa webapp it's a good idea to add an intercept-url directive to the ```applicationContext-security.xml```. Adding such a rule will check the user accessing the url is already authenticated with CSA. When the session is not authenticated the directive will redirect them to the login page. Adding the below mentioned directive will prevent exceptions being thrown and errors being output in the csa.log.
-  ```xml
+  ```XML
   <intercept-url access="isAuthenticated()" pattern="/custom-content/**"/>
   ```
 
