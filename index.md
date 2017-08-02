@@ -184,3 +184,4 @@ Each entry in the Object Array denotes a single column in the datatable, The tit
 - **text-left** - Justifies the column to the left.
 - **text-right** - Justifies the column to the right.
 - **none** - Hides the column from the table and only displays it in the drill down summary.
+
