@@ -7,8 +7,11 @@
 
 This plugin allows a *Super Admin* to manage Subscriptions across multiple users and organisations efficiently. [See Here](http://alexevansigg.github.io/CSA-Enhanced-Operations)
 
-![CSA Enhanced Operations interface](assets/img/capture.png "CSA Example Interface")
+Additionally request approval can be viewed and approvals based upon a Delegated approval template can be approved/denied.
 
+![CSA Enhanced Operations interface](assets/img/csaeo-subs.png "CSA Example Interface")
+
+![CSA Enhanced Operations Approval interface](assets/img/csaeo-approvals.png "CSA Example Approval Interface")
 
 The following features are exposed in this plugin with the aim of enhancing the CSA Operations experience
 

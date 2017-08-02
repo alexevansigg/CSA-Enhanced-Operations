@@ -60,7 +60,6 @@ tableSwitcher = '<div class="btn-group tableSwitcher" data-toggle="buttons">' +
       config.SHOW_RETIRED = (config.SHOW_RETIRED) ? "checked" : "";
       config.ADVANCED_SEARCH = (config.ADVANCED_SEARCH) ? "checked" : "";
       config.URL_PARAMS = (config.SHOW_RETIRED) ? "?retired=true" : "";
-      config.CURRENT_VIEW = "SUBSCRIPTIONS";
       return this;
     },
     /* Load the Datatable */
@@ -147,7 +146,7 @@ tableSwitcher = '<div class="btn-group tableSwitcher" data-toggle="buttons">' +
           },
           { text: '<span class="glyphicon glyphicon-send"></span>',
             titleAttr: 'Export as CSV',
-            title:'Subscriptions',
+            title: config.CURRENT_VIEW,
             extend: 'csvHtml5'
           },
           { text:'<span class="glyphicon glyphicon-refresh"></span>',
