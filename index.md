@@ -2,13 +2,16 @@
 #  CSA Operations Enhanced
 
 ---
-####  Current Version 0.06
+####  Current Version 0.08
 ----
 
-This plugin allows a *Super Admin* to manage Subscriptions across multiple users and organisations efficiently. [See Here](http://alexevansigg.github.io/CSA-Enhanced-Operations)
+This plugin allows a *Super Admin* to manage Subscriptions across multiple users and organisations efficiently. 
 
-![CSA Enhanced Operations interface](assets/img/capture.png "CSA Example Interface")
+Additionally request approval can be viewed and approvals based upon a Delegated approval template can be approved/denied.
 
+![CSA Enhanced Operations interface](assets/img/csaeo-subs.png "CSA Example Interface")
+
+![CSA Enhanced Operations Approval interface](assets/img/csaeo-approvals.png "CSA Example Approval Interface")
 
 The following features are exposed in this plugin with the aim of enhancing the CSA Operations experience
 
@@ -31,24 +34,29 @@ The following features are exposed in this plugin with the aim of enhancing the 
 #### CSA Compatability Matrix
 ---
 
+The Tool has been tested / developed againsnt the following configurations, in both windows base and linux installations,
+it's likely other configurations work perfectly, it is after platform agnostic.
+
 |CSA Version|Database|CEO Tested|
-|-------|---------|-------|
-| 4.2x | MSSQL | Yes |
-| 4.2x | ORACLE | Yes |
-| 4.2x | POSTGRES | Yes |
-| 4.5x | MSSQL | Yes
-| 4.5x | ORACLE | Yes |
-| 4.5x | POSTGRES | Yes |
-| 4.6 | MSSQL | Yes
-| 4.6 | ORACLE | Yes |
-| 4.6 | POSTGRES | Yes |
-| 4.7x | ? | ? |
+|-------|-----------|-----|
+| 4.2   | MSSQL     | Yes |
+| 4.2   | ORACLE    | Yes |
+| 4.2   | POSTGRES  | Yes |
+| 4.5   | MSSQL     | Yes |
+| 4.5   | ORACLE    | Yes |
+| 4.5   | POSTGRES  | Yes |
+| 4.6   | MSSQL     | Yes |
+| 4.6   | ORACLE    | Yes |
+| 4.6   | POSTGRES  | Yes |
+| 4.7   | POSTGRES  | Yes |
+| 4.7   | ORACLE    | Yes |
+| 4.8   | POSTGRES  | Yes |
 
 ---
 #### Installation Instructions
 ---
 
-1. Create the folder custom-content (if it doesnt allready exist) in directory **<csahome>/jboss-as/standalone/csa.war**
+1. Create the folder custom-content (if it doesnt allready exist) in directory **<CSAHOME>/jboss-as/standalone/csa.war**
 2. Extract the Plugin contents into the custom-content folder, observe the correct folder structure in the custom-content folder as below:
 
  File Contents / Folder Structure
@@ -74,9 +82,9 @@ The following features are exposed in this plugin with the aim of enhancing the 
  + CSA-Enhanced-Operations/README.md
  + CSA-Enhanced-Operations/setup.json
 
-3. Add the corresponsding entry to the csa.war/dashboard/config.json depending on the installed csa version.
-  (inside main.tiles array or in sub panel see **Configuration guide** if unsure how to manipulate this file)
-  
+3. Add the corresponding entry to the csa.war/dashboard/config.json depending on the installed csa version.
+  (inside main.tiles array or in sub panel see **CSA Configuration guide** if unsure how to manipulate this file)
+
   **CSA 4.2**
   ```JSON
   	{
@@ -91,8 +99,8 @@ The following features are exposed in this plugin with the aim of enhancing the 
   		"roles": ["CSA_ADMIN"]
   	}
   ```
-  **CSA 4.6**
-  ```JSON 
+  **CSA 4.6+**
+  ```JSON
   	{
   		"id": "CSA-Enhanced-Operations",
   		"name": "CSA-Enhanced-Operations",
@@ -106,7 +114,7 @@ The following features are exposed in this plugin with the aim of enhancing the 
   	}
   ```
 
-4. Open the file csa.war/dashboard/messages/common/messages.properties and location section entitled:
+4. Open the file **csa.war/dashboard/messages/common/messages.properties** and navigate to the section entitled:
   ```
   # Page titles and descriptions, used for the dashboard tiles and for navigation views
   ```
@@ -118,7 +126,7 @@ The following features are exposed in this plugin with the aim of enhancing the 
   	Manage Subscriptions across all organizations efficiently (Experimental)
   ```
 
-5. To fix the CSA styling on the dashboard you can add the following css snippet to the end of the file **csa.war/dashboard/css/base.css** to make the Tile Title fit better.
+5. To fix the CSA styling on the dashboard you can add the following css snippet to the end of the file **csa.war/dashboard/css/base.css**. This will prevent the text from overlaying when viewing the dashboard on smaller viewports.
 
   ```CSS
   	.tile h3 {
@@ -127,35 +135,52 @@ The following features are exposed in this plugin with the aim of enhancing the 
   	}
   ```
 
-6. Configure the settings in csa.war/custom-content/CSA-Enhanced-Operations/setup.json
-
-	Name | Description  | Default
-	------------- | ------------- |-------------
-	MPP_HOST 					| The url of a MPP instance, Required for Consumer Admin Links  | https://localhost:8089/
-	DATA_URL 					| The path to the URL for retrieving the Subscriptions          | pages/getSubs.jsp
-	ENABLE_CONSUMER_ADMIN_LINKS | Set as false to disable direct links to Manage Subscriptions as Consumer Admin | true
-	ENABLE_CANCEL_LINKS 		| Set as false to disable Cancel subscription functionality  | true
-	ENABLE_RESUME_LINKS			| Set as false to disable resuming paused subscription functionality | true
-	ENABLE_DELETE_LINKS			| Set as false to disable deleting offline subscription functionality | true
-	REQUIRE_CONFIRMATION		| Set as false to determine the default behaviour regarding confirmation prompts | true
-	SHOW_RETIRED				| Choose weather to include retired artifacts by default | false
-	USE_FIXED_HEADER			| Set as false to disable the fixed header behaviour | true
-  CACHE_NAME            | The name of the http cookie used for storing user preferences | CSA-E-O-Conf
-	CONFIG_CACHE				| Integer representing the number of days end user configuration remain in browser cache | 5
-  DEFAULT_DISPLAY_LENGTH    | Set the Default number of rows should be displayed, possible values 10,25,50 or ALL | 25
-	SEARCH_TERM					| The default value set in the Datatables search field | "<Empty String>"
-  ADVANCED_SEARCH   | The default setting for the individual column search field | true
-	COLUMNS						| An object array of columns show in the datatable, the order here is the default order the columns show in, the titles represent the column headers, the data values should not be changed, add/remove the call "none" to move the column into the child row (drill down). | 
-
-
-7. Update user partial path located on line 16 of the index.jsp depending on csa version. 
-
-  **CSA 4.2**
-  ```javascript
-  <%@include file="/components/pages/partials/user.jsp" %>
+6. As the plugin is installed to a custom directory in the csa webapp it's a good idea to add an intercept-url directive to the ```applicationContext-security.xml```. Adding such a rule will check the user accessing the url is already authenticated with CSA. When the session is not authenticated the directive will redirect them to the login page. Adding the below mentioned directive will prevent exceptions being thrown and errors being output in the csa.log.
+  ```xml
+  <intercept-url access="isAuthenticated()" pattern="/custom-content/**"/>
   ```
 
-   **CSA 4.5+**
-  ```javascript
-  <%@include file="/html-lib/pages/partials/user.jsp" %>
-  ```
+7. Configure the settings in **csa.war/custom-content/CSA-Enhanced-Operations/setup.json**
+
+|Name|Description|Default|
+|----------------------------|-----------------------------------------------------------------------|-------------------------|
+|MPP_HOST 		               | The url of a MPP instance, Required for Consumer Admin Links          | https://localhost:8089/ |
+|DATA_URL 				           | The path to the URL for retrieving the Subscriptions                  | pages/getSubs.jsp       |
+|ENABLE_CONSUMER_ADMIN_LINKS | Enables direct links to Manage Subscriptions as Consumer Admin        | true                    |
+|ENABLE_CANCEL_LINKS 		     | Enables Cancel subscription functionality                             | true                    |
+|ENABLE_RESUME_LINKS			   | Enables resuming paused subscription functionality                    | true                    |
+|ENABLE_DELETE_LINKS			   | Set as false to disable deleting offline subscription functionality   | true                    |
+|REQUIRE_CONFIRMATION		     | Whether a confirmation prompt is display before submitting requests   | true                    |
+|SHOW_RETIRED				         | Choose whether to include retired artifacts by default                | false                   |
+|USE_FIXED_HEADER			       | Set as false to disable the fixed header behaviour                    | true                    |
+|CACHE_NAME                  | The name of the http cookie used for storing user preferences         | CSA-E-O-Conf            |
+|CONFIG_CACHE				         | Expiry period in days of user cache                                   | 5                       |
+|DEFAULT_DISPLAY_LENGTH      | How many rows are displayed, possible values 10,25,50 or ALL          | 25                      |
+|SEARCH_TERM					       | The default value set in the Datatables search field                  | "<Empty String>"        |
+|ADVANCED_SEARCH             | The default setting for the individual column search field            | true                    |
+|COLUMNS						         | Table column definitions                                              | see below               |
+
+---
+#### Optional: SQL Query and Column Customization
+---
+
+The datatable sources it's dataset from SQL queries defined in the folder **/pages/sql/** When the SQL queries are modified to return additional/alternative fields then the columns definition inside the **setup.json** file must also be updated.
+
+The dataset returned from the SQL query is parsed into a JSON object in a format which is directly consumed by the datatable. Each column name returned from the query are capitalised to ensure standardisation between different RDBMS.
+
+The column definitions in **setup.json** should follow a similiar format to below:
+
+```JSON
+[
+    {"title": "Subscription Name",     "data": "SUBSCRIPTION_NAME" },
+    {"title": "Icon",                  "data": "ICON_URL",          "class":"text-center" },
+    {"title": "Instance Name",         "data": "INSTANCE_NAME"},
+    {"title": "Owner Group",           "data": "SUBCRIPTION_OWNER_GROUP"}        
+]
+```
+
+Each entry in the Object Array denotes a single column in the datatable, The title attribute contains the display name of the column, the data attribute correspondes to the name of the field in the JSON object returned by the SQL query (important: this is always capital), The class field can contain the following delimited by a space:
+- **text-center** - Jusitfies the column in the center.
+- **text-left** - Justifies the column to the left.
+- **text-right** - Justifies the column to the right.
+- **none** - Hides the column from the table and only displays it in the drill down summary.
