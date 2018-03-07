@@ -49,12 +49,12 @@ csaBaseURL = props.getProperty("csa.provider.rest.protocol") + "://" + props.get
 
 /* Validate required Inputs */
 if (request.getParameterMap().containsKey("action")){
-  action = request.getParameter("action");
+  action = request.getParameter("action").toLowerCase();
 } else{
   out.println("action is required");
   return;
 }
-if (action.equals("delete")){
+if (action.equals("delete") || action.equals("cancel")){
   if (request.getParameterMap().containsKey("subId")){
     subId = request.getParameter("subId");
   } else{
